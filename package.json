@@ -1,0 +1,20 @@
+{
+  "name": "violet-poc-alexa",
+  "version": "0.0.1",
+  "description": "alexa skill",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vineet-sinha/violet-poc-alexa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vineet-sinha/violet-poc-alexa/issues"
+  },
+  "homepage": "https://github.com/vineet-sinha/violet-poc-alexa#readme",
+  "dependencies": {
+    "alexa-app-server": "^3.0.0"
+  }
+}

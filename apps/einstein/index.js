@@ -37,7 +37,8 @@ app.intent("welcome", {
       response.say("Welcome " + name + " I will remember that you are " + age + ". Magic is " + magic);
     else
       response.say("Welcome " + name + " I will remember that you are " + age);
-    response.say("another test");
+    response.say("another test")
+      .shouldEndSession(false);
   }
 );
 

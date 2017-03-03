@@ -31,7 +31,7 @@ app.intent("welcome", {
     var age = request.slot('age');
     request.getSession().set('name', name);
     request.getSession().set('age', age);
-    response.say("Welcome " + name + " I will remember that you are " + age);
+    response.say("Welcome " + name + " I heard that you are " + age + ". I will remember you.");
     response.shouldEndSession(false);
   }
 );

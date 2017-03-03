@@ -1,9 +1,0 @@
-{
-  "name": "einstein",
-  "version": "0.0.1",
-  "description": "einstein skill",
-  "main": "index.js",
-  "dependencies": {
-    "alexa-app": "^3.0.0"
-  }
-}

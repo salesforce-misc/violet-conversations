@@ -5,6 +5,7 @@ var app = new alexa.app( 'einstein' );
 
 
 app.launch( function( request, response ) {
+  request.getSession().set('magic', 42);
 	response
       .say( 'Welcome to Einstein. What is your name and how old are you?' )
       .shouldEndSession( false );
@@ -31,7 +32,12 @@ app.intent("welcome", {
     var name = request.slot('name');
     var age = request.slot('age');
     request.getSession().set('age', age);
-    response.say("Welcome " + name + " I will remember that you are " + age);
+    var magic = request.getSession().get('magic');
+    if (magic)
+      response.say("Welcome " + name + " I will remember that you are " + age + ". Magic is " + magic);
+    else
+      response.say("Welcome " + name + " I will remember that you are " + age);
+    response.say("another test");
   }
 );
 

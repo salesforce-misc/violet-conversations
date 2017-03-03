@@ -18,11 +18,11 @@ app.error = function( exception, request, response ) {
 
 app.intent("welcome", {
     "slots": {
-      "name": "AMAZON.US_FIRST_NAME",
+      "firstName": "AMAZON.US_FIRST_NAME",
       "age": "NUMBER"
     },
     "utterances": [
-      "my {name is|name's} {name} and {I am|I'm} {-|age}{ years old|}"
+      "my {name is|name's} {-|name} and {I am|I'm} {-|age}{ years old|}"
     ]
   },
   function(request, response) {

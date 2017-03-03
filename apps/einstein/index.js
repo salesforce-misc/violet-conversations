@@ -1,7 +1,7 @@
 'use strict';
 
 var alexa = require( 'alexa-app' );
-var app = new alexa.app( 'say-number' );
+var app = new alexa.app( 'einstein' );
 
 
 app.launch( function( request, response ) {

@@ -18,7 +18,7 @@ app.error = function( exception, request, response ) {
 
 app.intent("welcome", {
     "slots": {
-      "firstName": "AMAZON.US_FIRST_NAME",
+      "name": "AMAZON.US_FIRST_NAME",
       "age": "NUMBER"
     },
     "utterances": [

@@ -35,11 +35,11 @@ app.intent("welcome", {
 app.intent('saySpecificNumber',
   {
     "slots":{"number":"NUMBER"},
-  	"utterances":[
-  		"say the number {1-100|number}",
+       "utterances":[
+               "say the number {1-100|number}",
       "give me the number {1-100|number}",
-  		"tell me the number {1-100|number}",
-  		"I want to hear you say the number {1-100|number}"]
+               "tell me the number {1-100|number}",
+               "I want to hear you say the number {1-100|number}"]
   },
   function(request,response) {
     var number = request.slot('number');
@@ -51,11 +51,11 @@ function getRandomInt(min, max) {
 }
 app.intent('sayRandomNumber',
   {
-	  "utterances":[
-  		"say a random number",
+         "utterances":[
+               "say a random number",
       "give me a random number",
-  		"tell me a random number",
-  		"I want to hear you say a random number"]
+               "tell me a random number",
+               "I want to hear you say a random number"]
   },
   function(request,response) {
     response.say("A random number that you asked for is " + getRandomInt(0,100));

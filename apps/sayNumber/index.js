@@ -18,16 +18,16 @@ app.error = function( exception, request, response ) {
 
 app.intent("welcome", {
     "slots": {
-      "NAME": "AMAZON.US_FIRST_NAME",
-      "AGE": "NUMBER"
+      "name": "AMAZON.US_FIRST_NAME",
+      "age": "NUMBER"
     },
     "utterances": [
-      "my {name is|name's} {NAME} and {I am|I'm} {-|AGE}{ years old|}"
+      "my {name is|name's} {name} and {I am|I'm} {-|age}{ years old|}"
     ]
   },
   function(request, response) {
-    var age = request.slot('AGE');
-    var name = request.slot('NAME');
+    var name = request.slot('name');
+    var age = request.slot('age');
     response.say("Welcome " + name + " I will remember that you are " + age);
   }
 );
@@ -58,7 +58,7 @@ app.intent('sayRandomNumber',
   		"I want to hear you say a random number"]
   },
   function(request,response) {
-    response.say("You asked for the number "+getRandomInt(0,100));
+    response.say("A random number that you asked for is " + getRandomInt(0,100));
   }
 );
 

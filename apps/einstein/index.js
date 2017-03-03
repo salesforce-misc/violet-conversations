@@ -30,7 +30,7 @@ app.intent("welcome", {
   function(request, response) {
     var name = request.slot('name');
     var age = request.slot('age');
-    session.getSession().set('age', age);
+    //session.getSession().set('age', age);
     response.say("Welcome " + name + " I will remember that you are " + age);
   }
 );

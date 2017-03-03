@@ -5,11 +5,9 @@ var app = new alexa.app( 'einstein' );
 
 
 app.launch( function( request, response ) {
-  request.getSession().set('magic', 42);
-	response
-      .say( 'Welcome to Einstein. What is your name and how old are you?' )
-      .shouldEndSession( false );
-} );
+	response.say('Welcome to Einstein. What is your name and how old are you?');
+  response.shouldEndSession( false );
+});
 
 
 app.error = function( exception, request, response ) {
@@ -31,22 +29,17 @@ app.intent("welcome", {
   function(request, response) {
     var name = request.slot('name');
     var age = request.slot('age');
+    request.getSession().set('name', name);
     request.getSession().set('age', age);
-    var magic = request.getSession().get('magic');
-    if (magic)
-      response.say("Welcome " + name + " I will remember that you are " + age + ". Magic is " + magic);
-    else
-      response.say("Welcome " + name + " I will remember that you are " + age);
-    response.say("another test")
-      .shouldEndSession(false);
+    response.say("Welcome " + name + " I will remember that you are " + age);
+    response.shouldEndSession(false);
   }
 );
 
 app.intent("myAge", {
     "utterances": [
       "how old am I",
-      "do you know my age",
-      "what is my age"
+      "{do you know|what is} my age"
     ]
   },
   function(request, response) {
@@ -55,8 +48,23 @@ app.intent("myAge", {
       response.say("I remember you telling me that you are " + age);
     else
       response.say("I do not know your age.");
-  }
-);
+    response.shouldEndSession(false);
+});
+
+app.intent("myName", {
+    "utterances": [
+      "what do I call myself",
+      "{do you know|what is} my name"
+    ]
+  },
+  function(request, response) {
+    var name = request.getSession().get('name');
+    if (name)
+      response.say("I remember you telling me that you are " + name);
+    else
+      response.say("I do not know your name.");
+    response.shouldEndSession(false);
+});
 
 app.intent('saySpecificNumber',
   {
@@ -70,11 +78,13 @@ app.intent('saySpecificNumber',
   function(request,response) {
     var number = request.slot('number');
     response.say("You asked for the number "+number);
-  }
-);
+    response.shouldEndSession(false);
+});
+
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
 app.intent('sayRandomNumber',
   {
     "utterances":[
@@ -85,7 +95,7 @@ app.intent('sayRandomNumber',
   },
   function(request,response) {
     response.say("A random number that you asked for is " + getRandomInt(0,100));
-  }
-);
+    response.shouldEndSession(false);
+});
 
 module.exports = app;

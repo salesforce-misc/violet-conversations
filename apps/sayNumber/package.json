@@ -1,7 +1,7 @@
 {
-  "name": "say-number",
+  "name": "einstein",
   "version": "0.0.1",
-  "description": "say number skill",
+  "description": "einstein skill",
   "main": "index.js",
   "dependencies": {
     "alexa-app": "^3.0.0"

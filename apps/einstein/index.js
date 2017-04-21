@@ -3,19 +3,30 @@
 var alexa = require( 'alexa-app' );
 var app = new alexa.app( 'einstein' );
 
+// violet services - to modulazie later >>>
+// a little kludgy - but it works
+var broadcast = () => {console.log('Broadcasting not initialized...');}
+app.setBroadcaster = (broadcaster) => {broadcast = broadcaster;}
 
-app.launch( function( request, response ) {
-	response.say('Welcome to Einstein. What is your name and how old are you?');
-  response.shouldEndSession( false );
-});
-
+var say = function(response, str) {
+  broadcast({
+    response: str
+  });
+  response.say(str);
+  response.shouldEndSession(false);
+}
 
 app.error = function( exception, request, response ) {
 	console.log(exception)
 	console.log(request);
 	console.log(response);
-	response.say( 'Sorry an error occured ' + error.message);
+	say(response, 'Sorry an error occured ' + error.message);
 };
+// <<< violet services
+
+app.launch( function( request, response ) {
+	say(response, 'Welcome to Einstein. What is your name and how old are you?');
+});
 
 app.intent("welcome", {
     "slots": {
@@ -31,8 +42,7 @@ app.intent("welcome", {
     var age = request.slot('age');
     request.getSession().set('name', name);
     request.getSession().set('age', age);
-    response.say("Welcome " + name + " I heard that you are " + age + ". I will remember you.");
-    response.shouldEndSession(false);
+    say(response, "Welcome " + name + " I heard that you are " + age + ". I will remember you.");
   }
 );
 
@@ -45,10 +55,9 @@ app.intent("myAge", {
   function(request, response) {
     var age = request.getSession().get('age');
     if (age)
-      response.say("I remember you telling me that you are " + age);
+      say(response, "I remember you telling me that you are " + age);
     else
-      response.say("I do not know your age.");
-    response.shouldEndSession(false);
+      say(response, "I do not know your age.");
 });
 
 app.intent("myName", {
@@ -60,10 +69,9 @@ app.intent("myName", {
   function(request, response) {
     var name = request.getSession().get('name');
     if (name)
-      response.say("I remember you telling me that you are " + name);
+      say(response, "I remember you telling me that you are " + name);
     else
-      response.say("I do not know your name.");
-    response.shouldEndSession(false);
+      say(response, "I do not know your name.");
 });
 
 app.intent('saySpecificNumber',
@@ -77,8 +85,7 @@ app.intent('saySpecificNumber',
   },
   function(request,response) {
     var number = request.slot('number');
-    response.say("You asked for the number "+number);
-    response.shouldEndSession(false);
+    say(response, "You asked for the number "+number);
 });
 
 function getRandomInt(min, max) {
@@ -94,8 +101,7 @@ app.intent('sayRandomNumber',
       "I want to hear you say a random number"]
   },
   function(request,response) {
-    response.say("A random number that you asked for is " + getRandomInt(0,100));
-    response.shouldEndSession(false);
+    say(response, "A random number that you asked for is " + getRandomInt(0,100));
 });
 
 module.exports = app;

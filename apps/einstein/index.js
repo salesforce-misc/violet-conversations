@@ -46,8 +46,15 @@ var _registeredIntents = 0;
 var violet = {
   respondTo: function(userSpeech, responseImplCB) {
     var genIntentName = function() {
+      // trying to generate: A, B, C, ... Z, AA, AB, AC, ... AZ, BA, BB, ...
+      var validChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var indices = _registeredIntents.toString(validChars.length);
+      var retStr = 'Intent';
+      for(var ndxOfIndices=0; ndxOfIndices<indices.length; ndxOfIndices++) {
+        retStr += validChars.charAt(parseInt(indices.charAt(ndxOfIndices), validChars.length));;
+      }
       _registeredIntents++;
-      return 'Intent' + _registeredIntents;
+      return retStr;
     }
     var intentParams = {};
     if (!Array.isArray(userSpeech)) {

@@ -68,7 +68,7 @@ var violet = {
     console.log('registering: ', intentParams);
     app.intent(genIntentName(), intentParams, (req, resp) => {
       var respond = (potResponses) => {_say(resp, potResponses)};
-      var params = (varName) => {return request.slot(varName);};
+      var params = (varName) => {return req.slot(varName);};
       var session = req.getSession();
       responseImplCB(respond, params, session, req, resp);
     });

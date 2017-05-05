@@ -69,7 +69,7 @@ var violet = {
     app.intent(genIntentName(), intentParams, (req, resp) => {
       var respond = (potResponses) => {_say(resp, potResponses)};
       var params = (varName) => {return request.slot(varName);};
-      var session = request.getSession();
+      var session = req.getSession();
       responseImplCB(respond, params, session, req, resp);
     });
   }

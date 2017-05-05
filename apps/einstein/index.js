@@ -23,10 +23,28 @@ var _say = function(response, potResponses) {
   response.say(str);
   response.shouldEndSession(false);
 }
+var _extractParamsFromSpeech = function(userSpeech) {
+  var expectedParams = {};
+  userSpeech.forEach((speechStr) => {
+    var extractedVars = speechStr.match(/\|[a-z]*}/g);
+    if (!extractedVars) return;
+    extractedVars.forEach((extractedVar) => {
+      var ev = extractedVar.slice(1,-1); // strip first and last characters
+      if (ev.length == 0) return;
+      if (keyTypes[ev]) {
+        expectedParams[ev] = keyTypes[ev];
+      } else {
+        console.log('Received undexpected type :', ev);
+        expectedParams[ev] = 'AMAZON.LITERAL';
+      }
+    });
+  });
+  return expectedParams;
+}
 
 var _registeredIntents = 0;
 var violet = {
-  respondTo: function(userSpeech, responseImplCB, expectedParams) {
+  respondTo: function(userSpeech, responseImplCB) {
     var genIntentName = function() {
       _registeredIntents++;
       return 'Intent' + _registeredIntents;
@@ -36,7 +54,8 @@ var violet = {
       userSpeech = [userSpeech];
     }
     intentParams["utterances"] = userSpeech;
-    if (expectedParams)
+    var expectedParams = _extractParamsFromSpeech(userSpeech);
+    if (Object.keys(expectedParams).length > 0)
       intentParams["slots"] = expectedParams;
 
     console.log('registering: ', intentParams);
@@ -61,6 +80,12 @@ app.launch( function( request, response ) {
 });
 // <<< violet services
 
+var keyTypes = {
+  "name": "AMAZON.US_FIRST_NAME",
+  "age": "NUMBER",
+  "number": "NUMBER"
+}
+
 
 
 violet.respondTo("my {name is|name's} {-|name} and {I am|I'm} {-|age}{ years old|}",
@@ -70,9 +95,7 @@ violet.respondTo("my {name is|name's} {-|name} and {I am|I'm} {-|age}{ years old
     respond("Welcome " + name + " I heard that you are " + age + ". I will remember you.");
     session.set('name', name);
     session.set('age', age);
-  },
-  { "name": "AMAZON.US_FIRST_NAME", "age": "NUMBER" }
-);
+});
 
 violet.respondTo(["how old am I", "{do you know|what is} my age"],
   function(respond, params, session) {
@@ -100,9 +123,7 @@ violet.respondTo([
   function(respond, params) {
     var number = params('number');
     respond("You asked for the number "+number);
-  },
-  {"number":"NUMBER"}
-);
+});
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;

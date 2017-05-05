@@ -94,9 +94,9 @@ var broadcastAlertState = () => {
   broadcast({alert: fAlert});
 };
 app.intent('setAlert', {"utterances": ["set alert"]}, (req, resp) => {fAlert=true; broadcastAlertState();});
-app.intent('unsetAlert', {"utterances": ["disable alert"]}, (req, resp) => {fAlert=false; broadcastAlertState();});
+app.intent('unsetAlert', {"utterances": ["disable alert", "clear alert"]}, (req, resp) => {fAlert=false; broadcastAlertState();});
 
-app.intent('closeSession', {"utterances": ["I am good", "Thanks", "Thank you"]}, () => {}); // by default session ends
+app.intent('closeSession', {"utterances": ["I am good", "No, I am good", "Thanks", "Thank you"]}, () => {}); // by default session ends
 // <<< violet services
 
 var keyTypes = {
@@ -104,6 +104,73 @@ var keyTypes = {
   "age": "NUMBER",
   "number": "NUMBER"
 }
+
+
+
+
+
+
+
+
+
+
+
+
+violet.respondTo([
+      "Is there anything interesting on Chatter?"
+    ], function(respond) {
+    respond("Yes. There is a post on the All Salesforce group and the SE Trailblazer group.");
+});
+
+violet.respondTo([
+      "What is the post on the All Salesforce group about?"
+    ], function(respond) {
+    respond("Jim Cavalieri posted: Team - I am please to announce that V2MAX has been updated with FY18 V2MOM. Feel free to check out your V2MOM alignment with your team, manager, division, and the company. Should I continue, or would you like this post sent to you?");
+});
+
+violet.respondTo([
+      "Yes, please email it to me."
+    ], function(respond) {
+    respond("Done. Anything else I can help you with?");
+});
+
+
+
+
+
+
+
+
+violet.respondTo([
+      "What's up?",
+      "What is happening?",
+      "What is the alert about?"
+    ], function(respond) {
+    respond("You received an e-mail from David Torchiana. Your notes say that he is the CEO of Partners Healthcare.");
+});
+
+violet.respondTo([
+      "I am busy. Can you forward it to Ash?"
+    ], function(respond) {
+    respond("Sure.");
+    setTimeout(()=>{respond("I do not see an Ash in your address book. Do you have an e-mail address?")}, 5000);
+});
+
+violet.respondTo([
+      "Is there an Ashita Saluja in my address book?"
+    ], function(respond) {
+    respond("Found it. Should I forward the e-mail to her? And should I set up an Alias for Ash?");
+});
+
+violet.respondTo([
+      "Yes and Yes"
+    ], function(respond) {
+    respond("Done and Done");
+});
+
+
+
+
 
 
 

@@ -82,9 +82,21 @@ app.error = function( exception, request, response ) {
 	_say(response, 'Sorry an error occured ' + exception.message);
 };
 
+var fAlert = false;
 app.launch( function( request, response ) {
+  if (fAlert) {
+    _say(response, 'You have an alert.');
+    return;
+  }
 	_say(response, ['Yes. How can I help?', 'Hey. Need me?', 'Yup. I am here.']);
 });
+var broadcastAlertState = () => {
+  broadcast({alert: fAlert});
+};
+app.intent('setAlert', {"utterances": ["set alert"]}, (req, resp) => {fAlert=true; broadcastAlertState();});
+app.intent('unsetAlert', {"utterances": ["disable alert"]}, (req, resp) => {fAlert=false; broadcastAlertState();});
+
+app.intent('closeSession', {"utterances": ["I am good", "Thanks", "Thank you"]}, () => {}); // by default session ends
 // <<< violet services
 
 var keyTypes = {

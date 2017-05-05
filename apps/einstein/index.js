@@ -3,12 +3,20 @@
 var alexa = require( 'alexa-app' );
 var app = new alexa.app( 'einstein' );
 
-// violet services - to modulazie later >>>
+// violet services - to modularize later >>>
 // a little kludgy - but it works
 var broadcast = () => {console.log('Broadcasting not initialized...');}
 app.setBroadcaster = (broadcaster) => {broadcast = broadcaster;}
 
-var say = function(response, str) {
+var getRand = function(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+var say = function(response, potResponses) {
+  var str = potResponses;
+  if (Array.isArray(potResponses)) {
+    str = potResponses[getRand(0, potResponses.length)];
+  }
   broadcast({
     response: str
   });
@@ -16,92 +24,97 @@ var say = function(response, str) {
   response.shouldEndSession(false);
 }
 
+var _registeredIntents = 0;
+var violet = {
+  respondTo: function(userSpeech, responseImplCB, expectedParams) {
+    var genIntentName = function() {
+      _registeredIntents++;
+      return 'Intent' + _registeredIntents;
+    }
+    var intentParams = {};
+    if (!Array.isArray(userSpeech)) {
+      userSpeech = [userSpeech];
+    }
+    intentParams["utterances"] = userSpeech;
+    if (expectedParams)
+      intentParams["slots"] = expectedParams;
+
+    console.log('registering: ', intentParams);
+    app.intent(genIntentName(), intentParams, (req, resp) => {
+      var respond = (potResponses) => {say(resp, potResponses)};
+      var params = (varName) => {return request.slot(varName);};
+      var session = session;
+      responseImplCB(respond, params, session, req, resp);
+    });
+  }
+}
+
 app.error = function( exception, request, response ) {
 	console.log(exception)
 	console.log(request);
 	console.log(response);
-	say(response, 'Sorry an error occured ' + error.message);
+	say(response, 'Sorry an error occured ' + exception.message);
 };
-// <<< violet services
 
 app.launch( function( request, response ) {
-	say(response, 'Welcome to Einstein. What is your name and how old are you?');
+	say(response, ['Yes', 'Hey', 'Yup']);
 });
+// <<< violet services
 
-app.intent("welcome", {
-    "slots": {
-      "name": "AMAZON.US_FIRST_NAME",
-      "age": "NUMBER"
-    },
-    "utterances": [
-      "my {name is|name's} {-|name} and {I am|I'm} {-|age}{ years old|}"
-    ]
+
+
+violet.respondTo("my {name is|name's} {-|name} and {I am|I'm} {-|age}{ years old|}",
+  function(respond, params, session) {
+    var name = params('name');
+    var age = params('age');
+    respond("Welcome " + name + " I heard that you are " + age + ". I will remember you.");
+    session.set('name', name);
+    session.set('age', age);
   },
-  function(request, response) {
-    var name = request.slot('name');
-    var age = request.slot('age');
-    request.getSession().set('name', name);
-    request.getSession().set('age', age);
-    say(response, "Welcome " + name + " I heard that you are " + age + ". I will remember you.");
-  }
+  { "name": "AMAZON.US_FIRST_NAME", "age": "NUMBER" }
 );
 
-app.intent("myAge", {
-    "utterances": [
-      "how old am I",
-      "{do you know|what is} my age"
-    ]
-  },
-  function(request, response) {
-    var age = request.getSession().get('age');
+violet.respondTo(["how old am I", "{do you know|what is} my age"],
+  function(respond, params, session) {
+    var age = session.get('age');
     if (age)
-      say(response, "I remember you telling me that you are " + age);
+      respond("I remember you telling me that you are " + age);
     else
-      say(response, "I do not know your age.");
+      respond("I do not know your age.");
 });
 
-app.intent("myName", {
-    "utterances": [
-      "what do I call myself",
-      "{do you know|what is} my name"
-    ]
-  },
-  function(request, response) {
-    var name = request.getSession().get('name');
+violet.respondTo(["what do I call myself", "{do you know|what is} my name"],
+  function(respond, params, session) {
+    var name = session.get('name');
     if (name)
-      say(response, "I remember you telling me that you are " + name);
+      respond("I remember you telling me that you are " + name);
     else
-      say(response, "I do not know your name.");
+      respond("I do not know your name.");
 });
 
-app.intent('saySpecificNumber',
-  {
-    "slots":{"number":"NUMBER"},
-    "utterances":[
+violet.respondTo([
        "say the number {1-100|number}",
        "give me the number {1-100|number}",
        "tell me the number {1-100|number}",
-       "I want to hear you say the number {1-100|number}"]
+       "I want to hear you say the number {1-100|number}"],
+  function(respond, params) {
+    var number = params('number');
+    respond("You asked for the number "+number);
   },
-  function(request,response) {
-    var number = request.slot('number');
-    say(response, "You asked for the number "+number);
-});
+  {"number":"NUMBER"}
+);
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-app.intent('sayRandomNumber',
-  {
-    "utterances":[
+violet.respondTo([
       "say a random number",
       "give me a random number",
       "tell me a random number",
-      "I want to hear you say a random number"]
-  },
-  function(request,response) {
-    say(response, "A random number that you asked for is " + getRandomInt(0,100));
+      "I want to hear you say a random number"],
+  function(respond) {
+    respond("A random number that you asked for is " + getRandomInt(0,100));
 });
 
 module.exports = app;

@@ -79,11 +79,11 @@ app.error = function( exception, request, response ) {
 	console.log(exception)
 	console.log(request);
 	console.log(response);
-	say(response, 'Sorry an error occured ' + exception.message);
+	_say(response, 'Sorry an error occured ' + exception.message);
 };
 
 app.launch( function( request, response ) {
-	say(response, ['Yes', 'Hey', 'Yup']);
+	_say(response, ['Yes', 'Hey', 'Yup']);
 });
 // <<< violet services
 

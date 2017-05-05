@@ -83,7 +83,7 @@ app.error = function( exception, request, response ) {
 };
 
 app.launch( function( request, response ) {
-	_say(response, ['Yes', 'Hey', 'Yup']);
+	_say(response, ['Yes. How can I help?', 'Hey. Need me?', 'Yup. I am here.']);
 });
 // <<< violet services
 

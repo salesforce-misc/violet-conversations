@@ -8,14 +8,14 @@ var app = new alexa.app( 'einstein' );
 var broadcast = () => {console.log('Broadcasting not initialized...');}
 app.setBroadcaster = (broadcaster) => {broadcast = broadcaster;}
 
-var getRand = function(min, max) {
+var _getRand = function(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-var say = function(response, potResponses) {
+var _say = function(response, potResponses) {
   var str = potResponses;
   if (Array.isArray(potResponses)) {
-    str = potResponses[getRand(0, potResponses.length)];
+    str = potResponses[_getRand(0, potResponses.length)];
   }
   broadcast({
     response: str
@@ -41,7 +41,7 @@ var violet = {
 
     console.log('registering: ', intentParams);
     app.intent(genIntentName(), intentParams, (req, resp) => {
-      var respond = (potResponses) => {say(resp, potResponses)};
+      var respond = (potResponses) => {_say(resp, potResponses)};
       var params = (varName) => {return request.slot(varName);};
       var session = session;
       responseImplCB(respond, params, session, req, resp);

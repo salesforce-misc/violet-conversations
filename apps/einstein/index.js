@@ -5,11 +5,11 @@ var app = new alexa.app( 'einstein' );
 var violet = require('../../lib/violet.js')(app);
 
 
-var keyTypes = {
+violet.addKeyTypes({
   "name": "AMAZON.US_FIRST_NAME",
   "age": "NUMBER",
   "number": "NUMBER"
-}
+});
 
 
 

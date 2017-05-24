@@ -64,7 +64,7 @@ violet.respondTo([
       "I love you",
       "Einstein, I love you"
     ], function(respond) {
-    respond("I know");
+    respond("I have known that for some time.");
 });
 
 module.exports = app;

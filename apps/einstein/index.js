@@ -11,8 +11,12 @@ violet.addKeyTypes({
   "number": "NUMBER"
 });
 
-
-
+violet.addPhraseEquivalents([
+  ["name is", "name's"],
+  ["I am", "I'm"],
+  ["Do you know", "What is"],
+  ["say", "give", "give me", "tell", "tell me"]
+]);
 
 
 
@@ -76,11 +80,7 @@ violet.respondTo([
 
 
 
-
-
-
-
-violet.respondTo("my {name is|name's} {-|name} and {I am|I'm} {-|age}{ years old|}",
+violet.respondTo("my name is {{name}} and I am {{age}} {years old|}",
   function(respond, params, session) {
     var name = params('name');
     var age = params('age');
@@ -89,7 +89,7 @@ violet.respondTo("my {name is|name's} {-|name} and {I am|I'm} {-|age}{ years old
     session.set('age', age);
 });
 
-violet.respondTo(["how old am I", "{do you know|what is} my age"],
+violet.respondTo(["how old am I", "do you know my age"],
   function(respond, params, session) {
     var age = session.get('age');
     if (age)
@@ -98,7 +98,7 @@ violet.respondTo(["how old am I", "{do you know|what is} my age"],
       respond("I do not know your age.");
 });
 
-violet.respondTo(["what do I call myself", "{do you know|what is} my name"],
+violet.respondTo(["what do I call myself", "do you know my name"],
   function(respond, params, session) {
     var name = session.get('name');
     if (name)
@@ -109,8 +109,6 @@ violet.respondTo(["what do I call myself", "{do you know|what is} my name"],
 
 violet.respondTo([
        "say the number {1-100|number}",
-       "give me the number {1-100|number}",
-       "tell me the number {1-100|number}",
        "I want to hear you say the number {1-100|number}"],
   function(respond, params) {
     var number = params('number');
@@ -123,8 +121,6 @@ function getRandomInt(min, max) {
 
 violet.respondTo([
       "say a random number",
-      "give me a random number",
-      "tell me a random number",
       "I want to hear you say a random number"],
   function(respond) {
     respond("A random number that you asked for is " + getRandomInt(0,100));

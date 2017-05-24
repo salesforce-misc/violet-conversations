@@ -84,7 +84,7 @@ violet.respondTo("my name is {{name}} and I am {{age}} {years old|}",
   function(respond, params, session) {
     var name = params('name');
     var age = params('age');
-    respond("Welcome " + name + " I heard that you are " + age + ". I will remember you.");
+    respond("Welcome {{name}} I heard that you are {{age}}. I will remember you.");
     session.set('name', name);
     session.set('age', age);
 });
@@ -111,8 +111,7 @@ violet.respondTo([
        "say the number {1-100|number}",
        "I want to hear you say the number {1-100|number}"],
   function(respond, params) {
-    var number = params('number');
-    respond("You asked for the number "+number);
+    respond("You asked for the number {{number}}");
 });
 
 function getRandomInt(min, max) {

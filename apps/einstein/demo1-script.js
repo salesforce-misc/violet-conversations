@@ -82,8 +82,8 @@ violet.respondTo([
 
 violet.respondTo("my name is {{name}} and I am {{age}} {years old|}",
   function(respond, params, session) {
-    var name = params('name');
-    var age = params('age');
+    var name = params.get('name');
+    var age = params.get('age');
     respond("Welcome {{name}} I heard that you are {{age}}. I will remember you.");
     session.set('name', name);
     session.set('age', age);

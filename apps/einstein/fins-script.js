@@ -41,7 +41,7 @@ violet.respondTo([
       "Einstein, Can you show me by category"
     ], function(respond) {
     respond(["Sure. Will do.", "Ok. Done"]);
-    postToHaiku("by category");
+    postToHaiku("category");
 });
 
 violet.respondTo([
@@ -49,7 +49,7 @@ violet.respondTo([
       "Einstein, Can you show me by amount"
     ], function(respond) {
     respond(["Sure. Will do.", "Ok. Done"]);
-    postToHaiku("by amount");
+    postToHaiku("amount");
 });
 
 violet.respondTo([

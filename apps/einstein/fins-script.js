@@ -31,7 +31,7 @@ var postToHaiku = function(showValue) {
 violet.respondTo([
       "Can you show me all",
       "Einstein, Can you show me all"
-    ], function(respond) {
+    ], (response) => {
     response.out(["Sure. Will do.", "Ok. Done"]);
     postToHaiku("all");
 });
@@ -39,7 +39,7 @@ violet.respondTo([
 violet.respondTo([
       "Can you show me by category",
       "Einstein, Can you show me by category"
-    ], function(respond) {
+    ], (response) => {
     response.out(["Sure. Will do.", "Ok. Done"]);
     postToHaiku("category");
 });
@@ -47,7 +47,7 @@ violet.respondTo([
 violet.respondTo([
       "Can you show me by amount",
       "Einstein, Can you show me by amount"
-    ], function(respond) {
+    ], (response) => {
     response.out(["Sure. Will do.", "Ok. Done"]);
     postToHaiku("amount");
 });
@@ -55,7 +55,7 @@ violet.respondTo([
 violet.respondTo([
       "Can you show me recommendations",
       "Einstein, Can you show me recommendations"
-    ], function(respond) {
+    ], (response) => {
     response.out(["Sure. Will do.", "Ok. Done"]);
     postToHaiku("recommendations");
 });
@@ -63,7 +63,7 @@ violet.respondTo([
 violet.respondTo([
       "I love you",
       "Einstein, I love you"
-    ], function(respond) {
+    ], (response) => {
     response.out("I have known that for some time.");
 });
 

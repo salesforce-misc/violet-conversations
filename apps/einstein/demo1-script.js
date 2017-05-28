@@ -80,24 +80,24 @@ violet.respondTo([
 
 
 
-violet.respondTo("My name is {{name}} and I am {{age}} {years old|}",
+violet.respondTo("My name is ((name)) and I am ((age)) {years old|}",
   (response) => {
-    response.out("Welcome {{name}} I heard that you are {{age}}. I will remember you.");
+    response.out("Welcome ((name)) I heard that you are ((age)). I will remember you.");
     response.do(['saveInputIntoSession:name', 'saveInputIntoSession:age']);
 });
 
 violet.respondTo(["how old am I", "do you know my age"],
   (response) => {
-    if (response.get('<<age>>'))
-      response.out("I remember you telling me that you are <<age>>");
+    if (response.get('{{age}}'))
+      response.out("I remember you telling me that you are {{age}}");
     else
       response.out("I do not know your age.");
 });
 
 violet.respondTo(["what do I call myself", "do you know my name"],
   (response) => {
-    if (response.get('<<name>>'))
-      response.out("I remember you telling me that you are <<name>>");
+    if (response.get('{{name}}'))
+      response.out("I remember you telling me that you are {{name}}");
     else
       response.out("I do not know your name.");
 });
@@ -106,7 +106,7 @@ violet.respondTo([
        "say the number {1-100|number}",
        "I want to hear you say the number {1-100|number}"],
   (response) => {
-    response.out("You asked for the number {{number}}");
+    response.out("You asked for the number ((number))");
 });
 
 function getRandomInt(min, max) {

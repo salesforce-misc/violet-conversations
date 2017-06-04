@@ -83,7 +83,8 @@ violet.respondTo([
 violet.respondTo("My name is ((name)) and I am ((age)) {years old|}",
   (response) => {
     response.out("Welcome ((name)) I heard that you are ((age)). I will remember you.");
-    response.do(['saveInputIntoSession:name', 'saveInputIntoSession:age']);
+    response.set('{{name}}', response.get('((name))') );
+    response.set('{{age}}', response.get('((age))') );
 });
 
 violet.respondTo(["how old am I", "do you know my age"],

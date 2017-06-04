@@ -3,6 +3,7 @@
 var alexa = require('alexa-app');
 var app = new alexa.app('einstein');
 var violet = require('../../lib/violet.js')(app);
+module.exports = app;
 
 ////////////////
 // 101 - basics
@@ -11,7 +12,7 @@ violet.addKeyTypes({
   '((name))': 'AMAZON.US_FIRST_NAME',
 });
 
-violet.respondTo(['My name is ((name))',
+violet.respondTo(['My name is ((name))'],
  (response) => {
    response.say('I like the name ((name))')
  });
@@ -46,7 +47,7 @@ violet.respondTo({
    response.set('{{age}}', response.get('((age))') );
 }});
 
-violet.respondTo('How old am I?'
+violet.respondTo('How old am I?',
   (response) => {
     if (response.get('{{age}}'))
       response.say('You are ((age)) years old');
@@ -58,7 +59,7 @@ violet.respondTo('How old am I?'
 // 104 - persistence (*** not implemented yet ***)
 ////////////////
 
-violet.respondTo('I recieved a bill from ((company)) today for ((amount))'
+violet.respondTo('I recieved a bill from ((company)) today for ((amount))',
   (response) => {
     response.set('<<bills.user>>', response.get('((userId))') );
     response.set('<<bills.from>>', response.get('((company))') );
@@ -67,7 +68,7 @@ violet.respondTo('I recieved a bill from ((company)) today for ((amount))'
     response.say('xxxx');
 });
 
-violet.respondTo('Who did I receive my bill from most recently?'
+violet.respondTo('Who did I receive my bill from most recently?',
   (response) => {
     response.load('<<bills>>', response.get('((userId))') );
     response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
@@ -89,12 +90,12 @@ violet.addKeyTypes({
   '((flightDay))': 'LITERAL',
 });
 
-violet.respondTo('What time does the ((airline)) flight arrive', 'from ((city))'
+violet.respondTo('What time does the ((airline)) flight arrive', 'from ((city))',
   (response) => {
     response.addGoal('{{flightArrivalTime}}');
 });
 
-violet.respondTo('What time does the flight arrive from ((city))'
+violet.respondTo('What time does the flight arrive from ((city))',
   (response) => {
     response.addGoal('{{flightArrivalTime}}');
 });
@@ -125,7 +126,7 @@ violet.meetGoal({
     expecting: '((airline))',
     resolve: (response) => {
       response.set('{{airline}}', response.get('((airline))') );
-  }]
+  }}]
 });
 
 violet.meetGoal({
@@ -135,7 +136,7 @@ violet.meetGoal({
     expecting: '((city))',
     resolve: (response) => {
       response.set('{{city}}', response.get('((city))') );
-  }]
+  }}]
 });
 
 violet.meetGoal({
@@ -145,7 +146,7 @@ violet.meetGoal({
     expecting: '((flightDay))',
     resolve: (response) => {
       response.set('{{flightDay}}', response.get('((flightDay))') );
-  }]
+  }}]
 });
 
 

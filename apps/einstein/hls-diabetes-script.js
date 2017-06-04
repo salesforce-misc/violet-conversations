@@ -142,7 +142,7 @@ violet.meetGoal({
     resolve: (response) => {
       response.set('{{cannotTestBloodSugarReason}}', 'out-of-strips'); response.say(yCall);
   }}, {
-    expecting: '{{I am|} not sure|} how to test',
+    expecting: '{I am not sure|not sure|} how to test',
     resolve: (response) => {
       response.set('{{cannotTestBloodSugarReason}}', 'not-sure-how-to-test'); response.say(yCall);
     }}, {

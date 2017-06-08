@@ -41,6 +41,8 @@ violet.meetGoal({
   }}]
 });
 
+violet.setTopLevelGoal('{{checkIn}}');
+
 violet.meetGoal({
   goal: '{{checkInDetails}}',
   resolve: (response) => {

@@ -170,6 +170,6 @@ violet.meetGoal({
   }}]
 });
 
-violetUtils.repeat(48*60*60, (response)=>{response.addGoal('{{checkIn}}')});
+violetUtils.repeat(48*60, ()=>{ violet.addGoal('{{checkIn}}'); });
 
 module.exports = app;

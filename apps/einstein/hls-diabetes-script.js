@@ -80,6 +80,12 @@ violet.meetGoal({
     }
 
     // TODO: log data - because we need to check back for 7-14 days
+    response.set('<<diabetesLogs.user>>', response.get('[[userId]]'));
+    response.set('<<diabetesLogs.timeOfCheckin>>', response.get('{{timeOfCheckin}}') );
+    response.set('<<diabetesLogs.bloodSugarLvl>>', response.get('{{bloodSugarLvl}}') );
+    response.set('<<diabetesLogs.feetWounds>>', response.get('{{feetWounds}}') );
+    response.set('<<diabetesLogs.missedDosages>>', response.get('{{missedDosages}}') );
+    response.store('<<diabetesLogs>>');
 
 }});
 

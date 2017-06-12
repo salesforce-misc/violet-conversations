@@ -46,10 +46,10 @@ violet.setTopLevelGoal('{{checkIn}}');
 violet.meetGoal({
   goal: '{{checkInDetails}}',
   resolve: (response) => {
-    if (!response.goalFilled('{{timeOfCheckin}}', '((timeOfCheckin))')
-        || !response.goalFilled('{{bloodSugarLvl}}', '((bloodSugarLvl))')
-        || !response.goalFilled('{{feetWounds}}', '((feetWounds))')
-        || !response.goalFilled('{{missedDosages}}', '((missedDosages))') ) {
+    if (!response.goalFilled('{{timeOfCheckin}}', '[[timeOfCheckin]]')
+        || !response.goalFilled('{{bloodSugarLvl}}', '[[bloodSugarLvl]]')
+        || !response.goalFilled('{{feetWounds}}', '[[feetWounds]]')
+        || !response.goalFilled('{{missedDosages}}', '[[missedDosages]]') ) {
           return false; // dependent goals not met
         }
 
@@ -101,9 +101,9 @@ violet.meetGoal({
   goal: '{{bloodSugarLvl}}',
   prompt: 'What was your blood sugar level?',
   respondTo: [{
-    expecting: ['((bloodSugarLvl))'],
+    expecting: ['[[bloodSugarLvl]]'],
     resolve: (response) => {
-      response.set('{{bloodSugarLvl}}', response.get('((bloodSugarLvl))') );
+      response.set('{{bloodSugarLvl}}', response.get('[[bloodSugarLvl]]') );
   }}]
 });
 

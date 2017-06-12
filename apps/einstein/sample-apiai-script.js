@@ -7,9 +7,9 @@ var violet = require('../../lib/violet.js')(app);
 // Implementing https://docs.api.ai/docs/dialogs
 
 violet.addKeyTypes({
-  '((destination))': 'AMAZON.US_CITY',
-  '((checkinDate))': 'AMAZON.DATE',
-  '((checkoutDate))': 'AMAZON.DATE',
+  '[[destination]]': 'AMAZON.US_CITY',
+  '[[checkinDate]]': 'AMAZON.DATE',
+  '[[checkoutDate]]': 'AMAZON.DATE',
 });
 
 
@@ -18,7 +18,7 @@ violet.addPhraseEquivalents([
 
 
 violet.respondTo({
-  expecting: ['Book a hotel in ((destination)) check in ((checkinDate)) check out ((checkoutDate))'],
+  expecting: ['Book a hotel in [[destination]] check in [[checkinDate]] check out [[checkoutDate]]'],
   resolve: (response) => {
     addGoal('{{bookHotel}}');
   }
@@ -27,9 +27,9 @@ violet.respondTo({
 violet.meetGoal({
   goal: '{{bookHotel}}',
   resolve: (response) => {
-    if (!response.goalFilled('{{checkinDate}}', '((checkinDate))')
-        || !response.goalFilled('{{checkoutDate}}', '((checkoutDate))')
-        || !response.goalFilled('{{destination}}', '((destination))') ) {
+    if (!response.goalFilled('{{checkinDate}}', '[[checkinDate]]')
+        || !response.goalFilled('{{checkoutDate}}', '[[checkoutDate]]')
+        || !response.goalFilled('{{destination}}', '[[destination]]') ) {
           return false; // dependent goals not met
         }
     var checkinDate = response.get('{{checkinDate}}');
@@ -52,9 +52,9 @@ violet.meetGoal({
   prompt: ['What date', 'When are you arriving?'],
 });
 violent.respondTo({
-    expecting: ['{{checkinDate}}', '((checkinDate))'],
+    expecting: ['{{checkinDate}}', '[[checkinDate]]'],
     resolve: (response) => {
-      response.set('{{checkinDate}}', response.get('((checkinDate))') );
+      response.set('{{checkinDate}}', response.get('[[checkinDate]]') );
     }
 });
 
@@ -64,9 +64,9 @@ violet.meetGoal({
   prompt: 'xxxx xxxx',
 });
 violent.respondTo({
-    expecting: ['{{checkoutDate}}', '((checkoutDate))'],
+    expecting: ['{{checkoutDate}}', '[[checkoutDate]]'],
     resolve: (response) => {
-      response.set('{{checkoutDate}}', response.get('((checkoutDate))') );
+      response.set('{{checkoutDate}}', response.get('[[checkoutDate]]') );
     }
 });
 
@@ -76,9 +76,9 @@ violet.meetGoal({
   prompt: 'xxxx xxxx',
 });
 violent.respondTo({
-    expecting: ['{{destination}}', '((destination))'],
+    expecting: ['{{destination}}', '[[destination]]'],
     resolve: (response) => {
-      response.set('{{destination}}', response.get('((destination))') );
+      response.set('{{destination}}', response.get('[[destination]]') );
     }
 });
 

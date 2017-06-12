@@ -63,7 +63,7 @@ violet.respondTo([
       "I am busy. Can you forward it to Ash?"
     ], (response) => {
     response.out("Sure. Will do.");
-    setTimeout(()=>{response.out("I do not see an Ash in your address book. Do you have an e-mail address?")}, 5000);
+    setTimeout[[)=>{response.out("I do not see an Ash in your address book. Do you have an e-mail address?")}, 5000);
 });
 
 violet.respondTo([
@@ -80,11 +80,11 @@ violet.respondTo([
 
 
 
-violet.respondTo("My name is ((name)) and I am ((age)) {years old|}",
+violet.respondTo("My name is [[name]] and I am [[age]] {years old|}",
   (response) => {
-    response.out("Welcome ((name)) I heard that you are ((age)). I will remember you.");
-    response.set('{{name}}', response.get('((name))') );
-    response.set('{{age}}', response.get('((age))') );
+    response.out("Welcome [[name]] I heard that you are [[age]]. I will remember you.");
+    response.set('{{name}}', response.get('[[name]]') );
+    response.set('{{age}}', response.get('[[age]]') );
 });
 
 violet.respondTo(["how old am I", "do you know my age"],
@@ -107,11 +107,11 @@ violet.respondTo([
        "say the number {1-100|number}",
        "I want to hear you say the number {1-100|number}"],
   (response) => {
-    response.out("You asked for the number ((number))");
+    response.out("You asked for the number [[number]]");
 });
 
 function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(Math.random() * (max - min + 1]] + min;
 }
 
 violet.respondTo([

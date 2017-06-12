@@ -70,8 +70,12 @@ violet.meetGoal({
     // }
 
     if (response.get('{{feetWounds}}') == 'yes') {
-      response.say(yCall);
       // TODO: implement logic correctly based on historical data
+      response.load('<<diabetesLogs>>', response.get('[[userId]]'), 'last 7 days');
+      if (response.get('<<diabetesLogs.feetWounds>>') > 7)
+        response.say(rCall);
+      else
+        response.say(yCall);
     }
 
     if (response.get('{{missedDosages}}') == 'yes') {
@@ -80,7 +84,7 @@ violet.meetGoal({
     }
 
     // TODO: log data - because we need to check back for 7-14 days
-    response.set('<<diabetesLogs.user>>', response.get('[[userId]]'));
+    response.set('<<diabetesLogs.user>>', response.get('[[userId]]') );
     response.set('<<diabetesLogs.timeOfCheckin>>', response.get('{{timeOfCheckin}}') );
     response.set('<<diabetesLogs.bloodSugarLvl>>', response.get('{{bloodSugarLvl}}') );
     response.set('<<diabetesLogs.feetWounds>>', response.get('{{feetWounds}}') );

@@ -23,9 +23,17 @@ violet.addKeyTypes({
   "bloodSugarLvl": "NUMBER",
 });
 
+//common across multiple goals
 violet.addPhraseEquivalents([
 ]);
 
+//expecting - can be multiple values
+//this is the definition of the goal
+//multiple prompts (randomizes prompts)
+//can have more than 2 expecting
+//addGoal = lower level goal
+//if i say "I tested by blood sugar level", we can skip the prompt
+//response.ask = ask with a pause to get answer from the user
 violet.meetGoal({
   goal: '{{checkIn}}',
   prompt: ['Did you check your blood sugar level today?'],
@@ -43,6 +51,7 @@ violet.meetGoal({
 
 violet.setTopLevelGoal('{{checkIn}}');
 
+//subgoal concept
 violet.meetGoal({
   goal: '{{checkInDetails}}',
   resolve: (response) => {

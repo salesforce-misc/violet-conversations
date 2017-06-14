@@ -71,7 +71,7 @@ violet.meetGoal({
 
     if (response.get('{{feetWounds}}') == 'yes') {
       // TODO: implement logic correctly based on historical data
-      response.load('<<diabetesLogs>>', '<<diabetesLogs.user>>', response.get('[[userId]]'), 'last 7 days');
+      response.load('<<diabetesLogs>>', '<<diabetesLogs.user>>', response.get('[[userId]]'), 'CreatedDate = LAST_N_DAYS:7');
       if (response.get('<<diabetesLogs.feetWounds>>') > 7)
         response.say(rCall);
       else

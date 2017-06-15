@@ -187,6 +187,8 @@ violet.meetGoal({
   }}]
 });
 
+violet.registerGlobalIntents();
+
 violetUtils.repeat(48*60, ()=>{ violet.addGoal('{{checkIn}}'); });
 
 module.exports = app;

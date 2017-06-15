@@ -5,6 +5,13 @@ var app = new alexa.app('einstein');
 var violet = require('../../lib/violet.js')(app);
 var violetUtils = require('../../lib/violetUtils.js')(violet);
 
+var violetSFStore = require('../../lib/violetSFStore.js');
+violet.setPersistentStore(violetSFStore.store);
+violetSFStore.store.propOfInterest = {
+  'diabetesLog': ['user', 'timeOfCheckin', 'bloodSugarLvl', 'feetWounds', 'missedDosages']
+}
+
+
 /*
  * TODO: Get UX better. Right now it is a literal translation of the stop light card
  *       need to make it more conversational. Once this is working we says this
@@ -71,8 +78,8 @@ violet.meetGoal({
 
     if (response.get('{{feetWounds}}') == 'yes') {
       // TODO: implement logic correctly based on historical data
-      response.load('<<diabetesLogs>>', '<<diabetesLogs.user>>', response.get('[[userId]]'), 'CreatedDate = LAST_N_DAYS:7');
-      if (response.get('<<diabetesLogs.feetWounds>>') > 7)
+      response.load('<<diabetesLog>>', '<<diabetesLog.user>>', response.get('[[userId]]'), 'CreatedDate = LAST_N_DAYS:7');
+      if (response.get('<<diabetesLog.feetWounds>>') > 7)
         response.say(rCall);
       else
         response.say(yCall);
@@ -84,12 +91,12 @@ violet.meetGoal({
     }
 
     // TODO: log data - because we need to check back for 7-14 days
-    response.set('<<diabetesLogs.user>>', response.get('[[userId]]') );
-    response.set('<<diabetesLogs.timeOfCheckin>>', response.get('{{timeOfCheckin}}') );
-    response.set('<<diabetesLogs.bloodSugarLvl>>', response.get('{{bloodSugarLvl}}') );
-    response.set('<<diabetesLogs.feetWounds>>', response.get('{{feetWounds}}') );
-    response.set('<<diabetesLogs.missedDosages>>', response.get('{{missedDosages}}') );
-    response.store('<<diabetesLogs>>');
+    response.set('<<diabetesLog.user>>', response.get('[[userId]]') );
+    response.set('<<diabetesLog.timeOfCheckin>>', response.get('{{timeOfCheckin}}') );
+    response.set('<<diabetesLog.bloodSugarLvl>>', response.get('{{bloodSugarLvl}}') );
+    response.set('<<diabetesLog.feetWounds>>', response.get('{{feetWounds}}') );
+    response.set('<<diabetesLog.missedDosages>>', response.get('{{missedDosages}}') );
+    response.store('<<diabetesLog>>');
 
 }});
 
@@ -123,11 +130,11 @@ violet.meetGoal({
   respondTo: [{
     expecting: ['GLOBAL No'],
     resolve: (response) => {
-      response.set('{{feetWounds}}', 'no' );
+      response.set('{{feetWounds}}', false );
   }}, {
     expecting: ['GLOBAL Yes'],
     resolve: (response) => {
-      response.set('{{feetWounds}}', 'yes' );
+      response.set('{{feetWounds}}', true );
   }}]
 });
 
@@ -137,11 +144,11 @@ violet.meetGoal({
   respondTo: [{
     expecting: ['GLOBAL No'],
     resolve: (response) => {
-      response.set('{{missedDosages}}', 'no' );
+      response.set('{{missedDosages}}', false );
   }}, {
     expecting: ['GLOBAL Yes'],
     resolve: (response) => {
-      response.set('{{missedDosages}}', 'yes' );
+      response.set('{{missedDosages}}', true );
   }}]
 });
 

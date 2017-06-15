@@ -121,11 +121,11 @@ violet.meetGoal({
   goal: '{{feetWounds}}',
   prompt: 'Do you have any wounds on your feet?',
   respondTo: [{
-    expecting: ['No'],
+    expecting: ['GLOBAL No'],
     resolve: (response) => {
       response.set('{{feetWounds}}', 'no' );
   }}, {
-    expecting: ['Yes'],
+    expecting: ['GLOBAL Yes'],
     resolve: (response) => {
       response.set('{{feetWounds}}', 'yes' );
   }}]
@@ -135,11 +135,11 @@ violet.meetGoal({
   goal: '{{missedDosages}}',
   prompt: 'Did you miss any doses of medicine?',
   respondTo: [{
-    expecting: ['No'],
+    expecting: ['GLOBAL No'],
     resolve: (response) => {
       response.set('{{missedDosages}}', 'no' );
   }}, {
-    expecting: ['Yes'],
+    expecting: ['GLOBAL Yes'],
     resolve: (response) => {
       response.set('{{missedDosages}}', 'yes' );
   }}]

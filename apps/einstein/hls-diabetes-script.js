@@ -36,7 +36,7 @@ violet.addPhraseEquivalents([
 violet.addTopLevelGoal('{{checkIn}}');
 
 violet.respondTo({
-  expecting: ['Can I check in', 'I would like to chck in'],
+  expecting: ['Can I check in', 'I would like to check in'],
   resolve: (response) => {
    response.say('Sure.');
    response.addGoal('{{checkIn}}');
@@ -46,7 +46,7 @@ violet.defineGoal({
   goal: '{{checkIn}}',
   prompt: ['Did you check your blood sugar level today?'],
   respondTo: [{
-    expecting: ['I tested my blood sugar level'],
+    expecting: ['GLOBAL Yes', 'I tested my blood sugar level'],
     resolve: (response) => {
      response.say('Great.');
      response.addGoal('{{checkInDetails}}');

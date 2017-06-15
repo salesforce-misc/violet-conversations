@@ -70,7 +70,7 @@ violet.respondTo('I recieved a bill from [[company]] today for [[amount]]',
 
 violet.respondTo('Who did I receive my bill from most recently?',
   (response) => {
-    response.load('<<bills>>', response.get('[[userId]]') );
+    response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') );
     response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
 });
 

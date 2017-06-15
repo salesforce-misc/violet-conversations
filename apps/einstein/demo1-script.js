@@ -63,7 +63,7 @@ violet.respondTo([
       "I am busy. Can you forward it to Ash?"
     ], (response) => {
     response.out("Sure. Will do.");
-    setTimeout[[)=>{response.out("I do not see an Ash in your address book. Do you have an e-mail address?")}, 5000);
+    setTimeout(()=>{response.out("I do not see an Ash in your address book. Do you have an e-mail address?")}, 5000);
 });
 
 violet.respondTo([

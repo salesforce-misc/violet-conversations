@@ -100,7 +100,7 @@ violet.respondTo('What time does the flight arrive from [[city]]',
     response.addGoal('{{flightArrivalTime}}');
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{flightArrivalTime}}',
   resolve: (response) => {
     if (!response.goalFilled('{{airline}}', '[[airline]]')
@@ -118,7 +118,7 @@ violet.meetGoal({
   }
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{airline}}',
   /*(resolve: func) OR (prompt and [L;respondTo)*/
   prompt: ['What airline', 'What airlines are you looking for the arrival time?'],
@@ -129,7 +129,7 @@ violet.meetGoal({
   }}]
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{city}}',
   prompt: ['What city do you want the flight to be arriving from'],
   respondTo: [{
@@ -139,7 +139,7 @@ violet.meetGoal({
   }}]
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{flightDay}}',
   prompt: 'Are you looking for flights today, tomorrow, or the day after?',
   respondTo: [{
@@ -150,7 +150,7 @@ violet.meetGoal({
 });
 
 
-// violet.meetGoal({
+// violet.defineGoal({
 //   goal: '{{foo}}',
 //   describe: '????'
 //   ask: ['x', 'y', 'z'],

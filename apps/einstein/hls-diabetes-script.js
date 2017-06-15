@@ -36,7 +36,7 @@ violet.addPhraseEquivalents([
 violet.addTopLevelGoal('{{checkIn}}');
 
 violet.respondTo({
-  expecting: ['Can I check in', 'I would like to check in'],
+  expecting: ['Check in', 'Can I check in', 'I would like to check in'],
   resolve: (response) => {
    response.say('Sure.');
    response.addGoal('{{checkIn}}');
@@ -111,11 +111,11 @@ violet.defineGoal({
   goal: '{{timeOfCheckin}}',
   prompt: 'Was this before a meal or 2 hours after a meal?',
   respondTo: [{
-    expecting: ['Before my meal'],
+    expecting: ['Before', 'Before my meal'],
     resolve: (response) => {
       response.set('{{timeOfCheckin}}', 'before-my-meal');
   }}, {
-    expecting: ['2 hours after my meal'],
+    expecting: ['After', '2 hours after my meal'],
     resolve: (response) => {
       response.set('{{timeOfCheckin}}', '2hrs-after-my-meal');
   }}]

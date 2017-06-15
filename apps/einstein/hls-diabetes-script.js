@@ -51,7 +51,7 @@ violet.defineGoal({
      response.say('Great.');
      response.addGoal('{{checkInDetails}}');
   }}, {
-    expecting: ['I cannot test my blood sugar level'],
+    expecting: ['GLOBAL No', 'I cannot test my blood sugar level'],
     resolve: (response) => {
       response.addGoal('{{whyCannotTestBloodSugar}}');
   }}]
@@ -125,7 +125,7 @@ violet.defineGoal({
   goal: '{{bloodSugarLvl}}',
   prompt: 'What was your blood sugar level?',
   respondTo: [{
-    expecting: ['[[bloodSugarLvl]]'],
+    expecting: ['My blood sugar level is [[bloodSugarLvl]]', '[[bloodSugarLvl]]'],
     resolve: (response) => {
       response.set('{{bloodSugarLvl}}', response.get('[[bloodSugarLvl]]') );
   }}]

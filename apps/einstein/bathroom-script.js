@@ -21,7 +21,7 @@ violet.addPhraseEquivalents([
 ]);
 
 violet.respondTo({
-  expecting: ['When is my appointment with Dr. Spock?', 'When do I see Dr. Spock next', 'Do I have an appointment with Dr. Spock'],
+  expecting: ['When is my appointment with Dr Spock?', 'When do I see Dr. Spock next', 'Do I have an appointment with Dr. Spock'],
   resolve: (response) => {
    response.say('Your next appt is in 3 days, on Thursday at 1130 AM.')
 }});

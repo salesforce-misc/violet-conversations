@@ -67,15 +67,21 @@ violet.defineGoal({
           return false; // dependent goals not met
         }
 
+    response.say('Thanks for checking in - I am logging the data for you.');
+
     if (response.get('{{bloodSugarLvl}}') < rBloodSugarLo) {
+      response.say('Your blood sugar level is very low.');
       response.say(rCall);
     } else if (response.get('{{bloodSugarLvl}}') < yBloodSugarLo) {
+      response.say('Your blood sugar level is low.');
       response.say(yCall);
     }
 
     if (response.get('{{bloodSugarLvl}}') > rBloodSugarHi) {
+      response.say('Your blood sugar level is very high.');
       response.say(rCall);
     } else if (response.get('{{bloodSugarLvl}}') > yBloodSugarHi) {
+      response.say('Your blood sugar level is high.');
       response.say(yCall);
     }
     // if (response.get('{{timeOfCheckin}}') == 'before-my-meal') {
@@ -86,13 +92,17 @@ violet.defineGoal({
     if (response.get('{{feetWounds}}') == 'yes') {
       // TODO: implement logic correctly based on historical data
       response.load('<<diabetesLog>>', '<<diabetesLog.user>>', response.get('[[userId]]'), 'CreatedDate = LAST_N_DAYS:7');
-      if (response.get('<<diabetesLog.feetWounds>>') > 7)
+      if (response.get('<<diabetesLog.feetWounds>>') > 7) {
+        response.say('Your feet wounds are an indicator of a big problem.');
         response.say(rCall);
-      else
+      } else {
+        response.say('Your feet wounds are an indicator of a problem.');
         response.say(yCall);
+      }
     }
 
     if (response.get('{{missedDosages}}') == 'yes') {
+      response.say('Your missed dosage is a problem.');
       response.say(yCall);
       // TODO: implement rCall for dosages
     }
@@ -109,7 +119,7 @@ violet.defineGoal({
 
 violet.defineGoal({
   goal: '{{timeOfCheckin}}',
-  prompt: 'Was this before a meal or 2 hours after a meal?',
+  prompt: 'Was this before a meal, or 2 hours after a meal?',
   respondTo: [{
     expecting: ['Before', 'Before my meal'],
     resolve: (response) => {

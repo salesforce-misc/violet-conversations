@@ -33,7 +33,9 @@ violet.addKeyTypes({
 violet.addPhraseEquivalents([
 ]);
 
-violet.meetGoal({
+violet.addTopLevelGoal('{{checkIn}}');
+
+violet.defineGoal({
   goal: '{{checkIn}}',
   prompt: ['Did you check your blood sugar level today?'],
   respondTo: [{
@@ -48,9 +50,7 @@ violet.meetGoal({
   }}]
 });
 
-violet.setTopLevelGoal('{{checkIn}}');
-
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{checkInDetails}}',
   resolve: (response) => {
     if (!response.goalFilled('{{timeOfCheckin}}', '[[timeOfCheckin]]')
@@ -100,7 +100,7 @@ violet.meetGoal({
 
 }});
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{timeOfCheckin}}',
   prompt: 'Was this before a meal or 2 hours after a meal?',
   respondTo: [{
@@ -114,7 +114,7 @@ violet.meetGoal({
   }}]
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{bloodSugarLvl}}',
   prompt: 'What was your blood sugar level?',
   respondTo: [{
@@ -124,7 +124,7 @@ violet.meetGoal({
   }}]
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{feetWounds}}',
   prompt: 'Do you have any wounds on your feet?',
   respondTo: [{
@@ -138,7 +138,7 @@ violet.meetGoal({
   }}]
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{missedDosages}}',
   prompt: 'Did you miss any doses of medicine?',
   respondTo: [{
@@ -153,7 +153,7 @@ violet.meetGoal({
 });
 
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{whyCannotTestBloodSugar}}',
   prompt: 'Are you out of strips, not sure how to test, sweaty, shaky, lightheaded, or confused?',
   respondTo: [{

@@ -2,4 +2,4 @@
 // module.exports = require('./demo1-script.js');
 // module.exports = require('./fins-script.js');
 // module.exports = require('./sample-tutorial-script.js');
-module.exports = require('./bathroom-script.js');
+module.exports = require('./hls-diabetes-script.js');

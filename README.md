@@ -4,6 +4,14 @@ A proof-of-concept building Amazon Skills. Skills are built as apps, with this
 project consisting of the `einstein` skill. Each skill has multiple intents and
 supports a set of utterances by the user.
 
+## Setup
+
+If you are using the Salesforce integration (as used by the Diabetes Script),
+then you will need to set up the following environment variables (locally and on
+any deployed platform): `V_SFDC_CLIENT_ID`, `V_SFDC_CLIENT_SECRET`,
+`V_SFDC_USERNAME` and `V_SFDC_PASSWORD`.
+
+
 ## Local execution
 
 Can be run locally to ensure no syntax errors and to view intent schemas (for

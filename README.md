@@ -29,6 +29,8 @@ https://developer.amazon.com/edw/home.html#/skills/list. The skill will be
 using a `Custom Interaction Model`, will need values from the services skill
 configuration page.
 
+For step-by-step instructions - see here: https://salesforce.quip.com/I8YOAC3Q1UGC
+
 ## Building from scratch
 
 There is a step-by-step set of instructions that you can use here: [Create an Alexa skill in Node.Js and host it on Heroku](https://iwritecrappycode.wordpress.com/2016/04/01/create-an-alexa-skill-in-node-js-and-hosting-it-on-heroku/)

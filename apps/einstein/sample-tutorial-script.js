@@ -9,7 +9,7 @@ module.exports = app;
 // 101 - basics
 ////////////////
 violet.addKeyTypes({
-  '[[name]]': 'AMAZON.US_FIRST_NAME',
+  'name': 'AMAZON.US_FIRST_NAME',
 });
 
 violet.respondTo(['My name is [[name]]'],
@@ -29,8 +29,8 @@ violet.addPhraseEquivalents([
 // 103 - a few bells and whistles: allowing complexity, optional input commands, setting and using conversational variables
 ////////////////
 violet.addKeyTypes({
-  '[[city]]': 'AMAZON.US_CITY',
-  '[[age]]': 'NUMBER',
+  'city': 'AMAZON.US_CITY',
+  'age': 'NUMBER',
 });
 
 violet.respondTo({
@@ -85,9 +85,9 @@ violet.respondTo('Who did I receive my bill from most recently?',
 - ask vs say
 */
 violet.addKeyTypes({
-  '[[airline]]': 'LITERAL',
-  '[[city]]': 'AMAZON.US_CITY',
-  '[[flightDay]]': 'LITERAL',
+  'airline': 'LITERAL',
+  'city': 'AMAZON.US_CITY',
+  'flightDay': 'LITERAL',
 });
 
 violet.respondTo('What time does the [[airline]] flight arrive', 'from [[city]]',

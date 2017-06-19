@@ -5,14 +5,10 @@ var app = new alexa.app('einstein');
 var violet = require('../../lib/violet.js')(app);
 var violetUtils = require('../../lib/violetUtils.js')(violet);
 
-/*
- * TODO: Get UX better. Right now it is a literal translation of the stop light card
- *       need to make it more conversational. Once this is working we says this
- *       as v1 and improve UX
- */
+//Violet queries for list of doctors associated with me and creates an array of expected results
 
 violet.addKeyTypes({
-  "bloodSugarLvl": "NUMBER",
+  'doctor': 'AMAZON.US_FIRST_NAME'
 });
 
 //common across multiple goals
@@ -21,9 +17,9 @@ violet.addPhraseEquivalents([
 ]);
 
 violet.respondTo({
-  expecting: ['When is my appointment with Dr Spock?', 'When do I see Dr. Spock next', 'Do I have an appointment with Dr. Spock'],
+  expecting: ['When is my appointment with [[doctor]]?', 'When do I see [[doctor]] next', 'Do I have an upcoming appointment with [[doctor]]'],
   resolve: (response) => {
-   response.say('Your next appt is in 3 days, on Thursday at 1130 AM.')
+   response.say('Your next appointment is in 3 days, on Thursday at 1130 AM.')
 }});
 
 module.exports = app;

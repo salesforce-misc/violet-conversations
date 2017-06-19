@@ -14,7 +14,7 @@ var violetSFStore = require('../../lib/violetSFStore.js');
 violet.setPersistentStore(violetSFStore.store);
 
 violetSFStore.store.propOfInterest = {
-  'diabetesLog': ['user', 'timeOfCheckin', 'bloodSugarLvl', 'feetWounds', 'missedDosages']
+  'doctor': ['user', 'timeOfCheckin', 'bloodSugarLvl', 'feetWounds', 'missedDosages']
 }
 
 // mock objects
@@ -36,23 +36,23 @@ var storeTest = () => {
 
 var loadTest = () => {
   setTimeout(()=>{
-    response.load('<<diabetesLog>>', '<<diabetesLog.user>>', 'blah:blah:blah2');
+    response.load('<<doctor>>', '<<doctor.user>>', 'blah:blah:blah2');
   }, 2*1000);
 };
 
 var loadTest2 = () => {
   setTimeout(()=>{
-    response.load('<<diabetesLog>>', null, null, 'CreatedDate >= TODAY');
+    response.load('<<doctor>>', null, null, null);
   }, 2*1000);
 };
 
 var loadTest3 = () => {
   setTimeout(()=>{
-    response.load('<<diabetesLog>>', '<<diabetesLog.user>>', 'blah:blah:blah2', 'CreatedDate >= TODAY');
+    response.load('<<doctor>>', '<<doctor.user>>', 'blah:blah:blah2', 'CreatedDate >= TODAY');
   }, 2*1000);
 };
 
 // storeTest();
 // loadTest();
 // loadTest2();
-loadTest3();
+loadTest2();

@@ -8,7 +8,7 @@ var violetUtils = require('../../lib/violetUtils.js')(violet);
 //Violet queries for list of doctors associated with me and creates an array of expected results
 
 violet.addKeyTypes({
-  'doctor': 'AMAZON.US_FIRST_NAME'
+  'doctor': 'AMAZON.US_FIRST_NAME',
 });
 
 //common across multiple goals
@@ -19,7 +19,13 @@ violet.addPhraseEquivalents([
 violet.respondTo({
   expecting: ['When is my appointment with [[doctor]]?', 'When do I see [[doctor]] next', 'Do I have an upcoming appointment with [[doctor]]'],
   resolve: (response) => {
-    response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is in 3 days, on Thursday at 1130 AM.')
+    var doctor = response.get('[[doctor]]');
+    var days = 3;
+    var time = '11:30 AM';
+    var dayOfTheWeek = 'Thursday';
+
+    response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is in ' + days + ' days, \
+      on ' + dayOfTheWeek + ' at ' + time);
 }});
 
 module.exports = app;

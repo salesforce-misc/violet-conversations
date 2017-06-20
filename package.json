@@ -16,7 +16,9 @@
   "homepage": "https://github.com/vineet-sinha/violet-poc-alexa#readme",
   "dependencies": {
     "alexa-app-server": "^3.0.0",
+    "bluebird": "^3.5.0",
     "bufferutil": "^3.0.0",
+    "co": "^4.6.0",
     "nforce": "^1.7.0",
     "request": "^2.81.0",
     "utf-8-validate": "^3.0.1",

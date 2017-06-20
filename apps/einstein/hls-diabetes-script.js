@@ -57,9 +57,15 @@ violet.defineGoal({
   }}]
 });
 
+violet.respondTo({
+  expecting: ['Is everything running well'],
+  resolve: function *(response) {
+  }
+});
+
 violet.defineGoal({
   goal: '{{checkInDetails}}',
-  resolve: (response) => {
+  resolve: function *(response) {
     if (!response.goalFilled('{{timeOfCheckin}}', '[[timeOfCheckin]]')
         || !response.goalFilled('{{bloodSugarLvl}}', '[[bloodSugarLvl]]')
         || !response.goalFilled('{{feetWounds}}', '[[feetWounds]]')
@@ -90,12 +96,24 @@ violet.defineGoal({
     // }
 
     if (response.get('{{feetWounds}}') == 'yes') {
-      // TODO: implement logic correctly based on historical data
-      response.load('<<diabetesLog>>', '<<diabetesLog.user>>', response.get('[[userId]]'), 'CreatedDate = LAST_N_DAYS:7');
-      if (response.get('<<diabetesLog.feetWounds>>') > 7) {
+      var diabetesLog = yield response.load('<<diabetesLog>>', '<<diabetesLog.user>>', response.get('[[userId]]'), 'CreatedDate = LAST_N_DAYS:14')
+      //console.log('load-results', diabetesLog);
+
+      var sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate()-7);
+
+      var yWarn = true;
+      var rWarn = true;
+      diabetesLog.forEach((logItem)=>{
+        // we have already filtered for the last 14 days
+        if (logItem.feetWounds == false) rWarn = false;
+        var itemDate = new Date(logItem.CreatedDate);
+        if (itemDate.getTime() > sevenDaysAgo.getTime() && logItem.feetWounds == false) yWarn = false;
+      });
+      if (rWarn) {
         response.say('Your feet wounds are an indicator of a big problem.');
         response.say(rCall);
-      } else {
+      } else if (yWarn){
         response.say('Your feet wounds are an indicator of a problem.');
         response.say(yCall);
       }

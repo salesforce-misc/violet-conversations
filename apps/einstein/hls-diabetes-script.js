@@ -66,10 +66,10 @@ violet.respondTo({
 violet.defineGoal({
   goal: '{{checkInDetails}}',
   resolve: function *(response) {
-    if (!response.goalFilled('{{timeOfCheckin}}', '[[timeOfCheckin]]')
-        || !response.goalFilled('{{bloodSugarLvl}}', '[[bloodSugarLvl]]')
-        || !response.goalFilled('{{feetWounds}}', '[[feetWounds]]')
-        || !response.goalFilled('{{missedDosages}}', '[[missedDosages]]') ) {
+    if (!response.goalFilled('{{timeOfCheckin}}')
+        || !response.goalFilled('{{bloodSugarLvl}}')
+        || !response.goalFilled('{{feetWounds}}')
+        || !response.goalFilled('{{missedDosages}}') ) {
           return false; // dependent goals not met
         }
 

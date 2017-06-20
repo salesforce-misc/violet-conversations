@@ -118,9 +118,9 @@ violet.respondTo('What time does the flight arrive from [[city]]',
 violet.defineGoal({
   goal: '{{flightArrivalTime}}',
   resolve: (response) => {
-    if (!response.goalFilled('{{airline}}', '[[airline]]')
-        || !response.goalFilled('{{city}}', '[[city]]')
-        || !response.goalFilled('{{flightDay}}', '[[flightDay]]') ) {
+    if (!response.goalFilled('{{airline}}')
+        || !response.goalFilled('{{city}}')
+        || !response.goalFilled('{{flightDay}}') ) {
           return false; // dependent goals not met
         }
     var airline = response.get('{{airline}}');

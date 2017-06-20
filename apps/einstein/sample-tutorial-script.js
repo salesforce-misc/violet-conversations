@@ -68,9 +68,24 @@ violet.respondTo('I recieved a bill from [[company]] today for [[amount]]',
     response.say('xxxx');
 });
 
-violet.respondTo('Who did I receive my bill from most recently?',
-  (response) => {
-    response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') );
+// caution: load returns a promise to the db results  - if you need to use the
+// values retrieved from it, you need to (a) either use a .then after it OR
+// (b) you need to make you resolve method a generator and place a yield before
+// the call to the load method
+// example a:
+violet.respondTo(
+  expecting: 'Who did I receive my bill from most recently?',
+  resolve: (response) => {
+    response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') )
+      .then(()=>{
+        response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
+      });
+});
+// example b: (note the 'function *' and the 'yield' below)
+violet.respondTo(
+  expecting: 'Who did I receive my bill from most recently?',
+  resolve: function *(response) {
+    yield response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') )
     response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
 });
 

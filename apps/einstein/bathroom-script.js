@@ -13,7 +13,8 @@ violet.addKeyTypes({
 
 //common across multiple goals
 violet.addPhraseEquivalents([
-  ['When\'s', 'When is']
+  ['When\'s', 'When is'],
+  ['I\'d', 'I would']
 ]);
 
 violet.respondTo({
@@ -26,6 +27,12 @@ violet.respondTo({
 
     response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is in ' + days + ' days, \
       on ' + dayOfTheWeek + ' at ' + time);
+}});
+
+violet.respondTo({
+  expecting: ['Can you set a reminder for me?', 'I would like to set a reminder'],
+  resolve: (response) => {
+    response.say('I can do that for you. Please start recording your reminder now');
 }});
 
 module.exports = app;

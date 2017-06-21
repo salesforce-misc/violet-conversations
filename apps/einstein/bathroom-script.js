@@ -32,7 +32,7 @@ violet.respondTo({
 violet.respondTo({
   expecting: ['Can you set a reminder for me?', 'I would like to set a reminder'],
   resolve: (response) => {
-    response.say('I can do that for you. Please start recording your reminder now');
+    response.say('I can do that for you. Please start recording your reminder after the beep.');
 }});
 
 module.exports = app;

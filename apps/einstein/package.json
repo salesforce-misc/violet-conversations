@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "alexa-app": "^3.0.0",
+    "dateformat": "^2.0.0",
     "nforce": "^1.7.0"
   }
 }

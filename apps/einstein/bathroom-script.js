@@ -43,7 +43,7 @@ violet.addPhraseEquivalents([
 violet.respondTo({
  expecting: ['When is my appointment with [[doctor]]?', 'When do I see [[doctor]] next', 'Do I have an upcoming appointment with [[doctor]]'],
   resolve: function *(response) {
-    yield response.load('<<appointment>>', '<<appointment.doctor_name>>', response.get('[[doctor]]'), null, 'ORDER BY appointment_date_time__c ASC NULLS FIRST LIMIT 1')
+    yield response.load('<<appointment>>', '<<appointment.doctor_name>>', response.get('[[doctor]]'), null, 'AND appointment_date_time__c >= today ORDER BY appointment_date_time__c ASC NULLS FIRST LIMIT 1')
     var apptDateArray = response.get('<<appointment>>');
 
     if (apptDateArray.length > 0) {
@@ -58,13 +58,34 @@ violet.respondTo({
         var apptDayOfTheMonth = apptDate.getDate();
         var hour = apptDate.getHours();
         var minutes = apptDate.getMinutes();
+        var minutesString = minutes;
+
+        var amOrPm = 'A M';
+
+        if (hour >= 12) {
+          amOrPm = 'P M'
+        }
+
+        if (hour > 12) {
+          hour = hour - 12;
+        }
+
+        if (minutes == 0) {
+          minutesString = '';
+        }
+
 
         console.log(daysBetween);
-
-        if (daysBetween < 7) {
-          response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is on ' + dayOfTheWeek + ' at ' + hour + " " + minutes);  
+          
+        if (daysBetween == 0) {
+          response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is today at ' + hour + " " + minutesString + ' ' + amOrPm);    
+        } else if (daysBetween == 1) {
+          response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is tomorrow at ' + hour + " " + minutesString + ' ' + amOrPm);  
+        }
+        else if (daysBetween < 7) {
+          response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is on ' + dayOfTheWeek + ' at ' + hour + " " + minutesString + ' ' + amOrPm);  
         } else {
-          response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is on ' + dayOfTheWeek + ' ' + apptMonth + ' ' + apptDayOfTheMonth + ' at ' + hour + " " + minutes);  
+          response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is on ' + dayOfTheWeek + ' ' + apptMonth + ' ' + apptDayOfTheMonth + ' at ' + hour + " " + minutes+ ' ' + amOrPm);  
         }
       }
     }

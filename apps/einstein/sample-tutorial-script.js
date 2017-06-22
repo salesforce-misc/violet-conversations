@@ -76,7 +76,7 @@ violet.respondTo('I recieved a bill from [[company]] today for [[amount]]',
 violet.respondTo(
   expecting: 'Who did I receive my bill from most recently?',
   resolve: (response) => {
-    response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') )
+    return response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') )
       .then(()=>{
         response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
       });

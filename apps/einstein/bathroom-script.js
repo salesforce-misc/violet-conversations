@@ -10,7 +10,23 @@ violetSFStore.store.propOfInterest = {
   'appointment': ['doctor_name', 'appointment_date_time']
 }
 
+const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const months = ['January','February','March','April','May','June','July', 'August', 'September', 'October', 'November', 'December'];
 
+Date.daysBetween = function( date1, date2 ) {
+  //Get 1 day in milliseconds
+  var one_day=1000*60*60*24;
+
+  // Convert both dates to milliseconds
+  var date1_ms = date1.getTime();
+  var date2_ms = date2.getTime();
+
+  // Calculate the difference in milliseconds
+  var difference_ms = date2_ms - date1_ms;
+    
+  // Convert back to days and return
+  return Math.round(difference_ms/one_day); 
+}
 
 //Violet queries for list of doctors associated with me and creates an array of expected results
 
@@ -25,14 +41,35 @@ violet.addPhraseEquivalents([
 ]);
 
 violet.respondTo({
-  expecting: ['When is my appointment with [[doctor]]?', 'When do I see [[doctor]] next', 'Do I have an upcoming appointment with [[doctor]]'],
-  resolve: (response) => {
-    response.load('<<appointment>>', 'doctor_name', response.get('[[doctor]]'), 'ORDER BY appointment_date_time__c ASC NULLS FIRST LIMIT 1')
-      .then(()=>{
-        response.say('You received a bill from <<appointment.appointment_date_time>>');
-      });
-  }  
+ expecting: ['When is my appointment with [[doctor]]?', 'When do I see [[doctor]] next', 'Do I have an upcoming appointment with [[doctor]]'],
+  resolve: function *(response) {
+    yield response.load('<<appointment>>', '<<appointment.doctor_name>>', response.get('[[doctor]]'), null, 'ORDER BY appointment_date_time__c ASC NULLS FIRST LIMIT 1')
+    var apptDateTime = response.get('<<appointment>>')[0].appointment_date_time;
+
+    if (apptDateTime) {
+      var apptDate = new Date(apptDateTime);
+      var noDayOfWeek = apptDate.getDay();
+      var dayOfTheWeek = days[noDayOfWeek];
+      var daysBetween = Date.daysBetween(new Date(), apptDate);
+      var apptMonth = months[apptDate.getMonth()];
+      var apptDayOfTheMonth = apptDate.getDate();
+      var hour = apptDate.getHours();
+      var minutes = apptDate.getMinutes();
+
+      console.log(daysBetween);
+
+      if (daysBetween < 7) {
+        response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is on ' + dayOfTheWeek + ' at ' + hour + " " + minutes);  
+      } else {
+        response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is on ' + dayOfTheWeek + ' ' + apptMonth + ' ' + apptDayOfTheMonth + ' at ' + hour + " " + minutes);  
+      }
+    }
+    else {
+      response.say('I do not see an appointment with ' + response.get('[[doctor]]') + ' on your calendar. Would you like me to schedule one?');
+    }
+
     
+  }
 });
 
 violet.respondTo({

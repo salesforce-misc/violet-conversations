@@ -44,24 +44,28 @@ violet.respondTo({
  expecting: ['When is my appointment with [[doctor]]?', 'When do I see [[doctor]] next', 'Do I have an upcoming appointment with [[doctor]]'],
   resolve: function *(response) {
     yield response.load('<<appointment>>', '<<appointment.doctor_name>>', response.get('[[doctor]]'), null, 'ORDER BY appointment_date_time__c ASC NULLS FIRST LIMIT 1')
-    var apptDateTime = response.get('<<appointment>>')[0].appointment_date_time;
+    var apptDateArray = response.get('<<appointment>>');
 
-    if (apptDateTime) {
-      var apptDate = new Date(apptDateTime);
-      var noDayOfWeek = apptDate.getDay();
-      var dayOfTheWeek = days[noDayOfWeek];
-      var daysBetween = Date.daysBetween(new Date(), apptDate);
-      var apptMonth = months[apptDate.getMonth()];
-      var apptDayOfTheMonth = apptDate.getDate();
-      var hour = apptDate.getHours();
-      var minutes = apptDate.getMinutes();
+    if (apptDateArray.length > 0) {
+      var apptDateTime = response.get('<<appointment>>')[0].appointment_date_time;
 
-      console.log(daysBetween);
+      if (apptDateTime) {
+        var apptDate = new Date(apptDateTime);
+        var noDayOfWeek = apptDate.getDay();
+        var dayOfTheWeek = days[noDayOfWeek];
+        var daysBetween = Date.daysBetween(new Date(), apptDate);
+        var apptMonth = months[apptDate.getMonth()];
+        var apptDayOfTheMonth = apptDate.getDate();
+        var hour = apptDate.getHours();
+        var minutes = apptDate.getMinutes();
 
-      if (daysBetween < 7) {
-        response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is on ' + dayOfTheWeek + ' at ' + hour + " " + minutes);  
-      } else {
-        response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is on ' + dayOfTheWeek + ' ' + apptMonth + ' ' + apptDayOfTheMonth + ' at ' + hour + " " + minutes);  
+        console.log(daysBetween);
+
+        if (daysBetween < 7) {
+          response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is on ' + dayOfTheWeek + ' at ' + hour + " " + minutes);  
+        } else {
+          response.say('Your next appointment with ' + response.get('[[doctor]]') + ' is on ' + dayOfTheWeek + ' ' + apptMonth + ' ' + apptDayOfTheMonth + ' at ' + hour + " " + minutes);  
+        }
       }
     }
     else {

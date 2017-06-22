@@ -13,11 +13,18 @@ var violetSFStore = require('../../lib/violetSFStore.js');
 var nforceWrapper = require('./nforceWrapper.js');
 var db = nforceWrapper.getDB();
 
-var loadTest = () => {
+
+var saveText = () => {
   setTimeout(()=>{
-    db.query('appointment', '');
-  }, 3*1000);
+    db.create('reminder__c', 'testing reminder');
+  }, 2*1000);
 };
 
+var callMeToProcess = (apptDate) => {
+	console.log('Im processing');
+	console.log(apptDate);
+}
 
-loadTest();
+setTimeout(function(){ db.queryAppt('fred', callMeToProcess); }, 2000);
+
+

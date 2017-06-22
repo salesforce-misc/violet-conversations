@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "alexa-app": "^3.0.0",
-    "dateformat": "^2.0.0",
+    "bluebird": "^3.5.0",
+    "co": "^4.6.0",
     "nforce": "^1.7.0"
   }
 }

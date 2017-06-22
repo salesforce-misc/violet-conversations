@@ -24,7 +24,7 @@ violet.respondTo({
   }
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{bookHotel}}',
   resolve: (response) => {
     if (!response.goalFilled('{{checkinDate}}', '[[checkinDate]]')
@@ -47,7 +47,7 @@ violet.meetGoal({
 });
 
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{checkinDate}}',
   prompt: ['What date', 'When are you arriving?'],
 });
@@ -59,7 +59,7 @@ violent.respondTo({
 });
 
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{checkoutDate}}',
   prompt: 'xxxx xxxx',
 });
@@ -71,7 +71,7 @@ violent.respondTo({
 });
 
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{destination}}',
   prompt: 'xxxx xxxx',
 });
@@ -83,7 +83,7 @@ violent.respondTo({
 });
 
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{confirmBooking}}',
   prompt: 'Book hotel room at {{destination}} checking in on {{checkinDate}} for {{numNights}} at {{dailyRate}} dollars per night'
 });

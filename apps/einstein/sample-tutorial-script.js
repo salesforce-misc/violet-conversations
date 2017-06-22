@@ -9,7 +9,7 @@ module.exports = app;
 // 101 - basics
 ////////////////
 violet.addKeyTypes({
-  '[[name]]': 'AMAZON.US_FIRST_NAME',
+  'name': 'AMAZON.US_FIRST_NAME',
 });
 
 violet.respondTo(['My name is [[name]]'],
@@ -29,8 +29,8 @@ violet.addPhraseEquivalents([
 // 103 - a few bells and whistles: allowing complexity, optional input commands, setting and using conversational variables
 ////////////////
 violet.addKeyTypes({
-  '[[city]]': 'AMAZON.US_CITY',
-  '[[age]]': 'NUMBER',
+  'city': 'AMAZON.US_CITY',
+  'age': 'NUMBER',
 });
 
 violet.respondTo({
@@ -68,9 +68,24 @@ violet.respondTo('I recieved a bill from [[company]] today for [[amount]]',
     response.say('xxxx');
 });
 
-violet.respondTo('Who did I receive my bill from most recently?',
-  (response) => {
-    response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') );
+// caution: load returns a promise to the db results  - if you need to use the
+// values retrieved from it, you need to (a) either use a .then after it OR
+// (b) you need to make you resolve method a generator and place a yield before
+// the call to the load method
+// example a:
+violet.respondTo(
+  expecting: 'Who did I receive my bill from most recently?',
+  resolve: (response) => {
+    response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') )
+      .then(()=>{
+        response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
+      });
+});
+// example b: (note the 'function *' and the 'yield' below)
+violet.respondTo(
+  expecting: 'Who did I receive my bill from most recently?',
+  resolve: function *(response) {
+    yield response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') )
     response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
 });
 
@@ -85,9 +100,9 @@ violet.respondTo('Who did I receive my bill from most recently?',
 - ask vs say
 */
 violet.addKeyTypes({
-  '[[airline]]': 'LITERAL',
-  '[[city]]': 'AMAZON.US_CITY',
-  '[[flightDay]]': 'LITERAL',
+  'airline': 'LITERAL',
+  'city': 'AMAZON.US_CITY',
+  'flightDay': 'LITERAL',
 });
 
 violet.respondTo('What time does the [[airline]] flight arrive', 'from [[city]]',
@@ -100,12 +115,12 @@ violet.respondTo('What time does the flight arrive from [[city]]',
     response.addGoal('{{flightArrivalTime}}');
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{flightArrivalTime}}',
   resolve: (response) => {
-    if (!response.goalFilled('{{airline}}', '[[airline]]')
-        || !response.goalFilled('{{city}}', '[[city]]')
-        || !response.goalFilled('{{flightDay}}', '[[flightDay]]') ) {
+    if (!response.goalFilled('{{airline}}')
+        || !response.goalFilled('{{city}}')
+        || !response.goalFilled('{{flightDay}}') ) {
           return false; // dependent goals not met
         }
     var airline = response.get('{{airline}}');
@@ -118,7 +133,7 @@ violet.meetGoal({
   }
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{airline}}',
   /*(resolve: func) OR (prompt and [L;respondTo)*/
   prompt: ['What airline', 'What airlines are you looking for the arrival time?'],
@@ -129,7 +144,7 @@ violet.meetGoal({
   }}]
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{city}}',
   prompt: ['What city do you want the flight to be arriving from'],
   respondTo: [{
@@ -139,7 +154,7 @@ violet.meetGoal({
   }}]
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{flightDay}}',
   prompt: 'Are you looking for flights today, tomorrow, or the day after?',
   respondTo: [{
@@ -150,7 +165,7 @@ violet.meetGoal({
 });
 
 
-// violet.meetGoal({
+// violet.defineGoal({
 //   goal: '{{foo}}',
 //   describe: '????'
 //   ask: ['x', 'y', 'z'],

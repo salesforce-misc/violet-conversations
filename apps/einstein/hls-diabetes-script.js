@@ -1,10 +1,16 @@
-
 'use strict';
 
 var alexa = require('alexa-app');
 var app = new alexa.app('einstein');
 var violet = require('../../lib/violet.js')(app);
 var violetUtils = require('../../lib/violetUtils.js')(violet);
+
+var violetSFStore = require('../../lib/violetSFStore.js');
+violet.setPersistentStore(violetSFStore.store);
+violetSFStore.store.propOfInterest = {
+  'diabetesLog': ['user', 'timeOfCheckin', 'bloodSugarLvl', 'feetWounds', 'missedDosages']
+}
+
 
 /*
  * TODO: Get UX better. Right now it is a literal translation of the stop light card
@@ -24,54 +30,64 @@ violet.addKeyTypes({
   "bloodSugarLvl": "NUMBER",
 });
 
-//common across multiple goals
 violet.addPhraseEquivalents([
 ]);
 
-//expecting - can be multiple values
-//this is the definition of the goal
-//multiple prompts (randomizes prompts)
-//can have more than 2 expecting
-//addGoal = lower level goal
-//if i say "I tested by blood sugar level", we can skip the prompt
-//response.ask = ask with a pause to get answer from the user
-violet.meetGoal({
+violet.addTopLevelGoal('{{checkIn}}');
+
+violet.respondTo({
+  expecting: ['Check in', 'Can I check in', 'I would like to check in'],
+  resolve: (response) => {
+   response.say('Sure.');
+   response.addGoal('{{checkIn}}');
+}});
+
+violet.defineGoal({
   goal: '{{checkIn}}',
   prompt: ['Did you check your blood sugar level today?'],
   respondTo: [{
-    expecting: ['I tested my blood sugar level'],
+    expecting: ['GLOBAL Yes', 'I tested my blood sugar level'],
     resolve: (response) => {
      response.say('Great.');
      response.addGoal('{{checkInDetails}}');
   }}, {
-    expecting: ['I cannot test my blood sugar level'],
+    expecting: ['GLOBAL No', 'I cannot test my blood sugar level'],
     resolve: (response) => {
       response.addGoal('{{whyCannotTestBloodSugar}}');
   }}]
 });
 
-violet.setTopLevelGoal('{{checkIn}}');
+violet.respondTo({
+  expecting: ['Is everything running well'],
+  resolve: function *(response) {
+  }
+});
 
-//subgoal concept
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{checkInDetails}}',
-  resolve: (response) => {
-    if (!response.goalFilled('{{timeOfCheckin}}', '[[timeOfCheckin]]')
-        || !response.goalFilled('{{bloodSugarLvl}}', '[[bloodSugarLvl]]')
-        || !response.goalFilled('{{feetWounds}}', '[[feetWounds]]')
-        || !response.goalFilled('{{missedDosages}}', '[[missedDosages]]') ) {
+  resolve: function *(response) {
+    if (!response.goalFilled('{{timeOfCheckin}}')
+        || !response.goalFilled('{{bloodSugarLvl}}')
+        || !response.goalFilled('{{feetWounds}}')
+        || !response.goalFilled('{{missedDosages}}') ) {
           return false; // dependent goals not met
         }
 
+    response.say('Thanks for checking in - I am logging the data for you.');
+
     if (response.get('{{bloodSugarLvl}}') < rBloodSugarLo) {
+      response.say('Your blood sugar level is very low.');
       response.say(rCall);
     } else if (response.get('{{bloodSugarLvl}}') < yBloodSugarLo) {
+      response.say('Your blood sugar level is low.');
       response.say(yCall);
     }
 
     if (response.get('{{bloodSugarLvl}}') > rBloodSugarHi) {
+      response.say('Your blood sugar level is very high.');
       response.say(rCall);
     } else if (response.get('{{bloodSugarLvl}}') > yBloodSugarHi) {
+      response.say('Your blood sugar level is high.');
       response.say(yCall);
     }
     // if (response.get('{{timeOfCheckin}}') == 'before-my-meal') {
@@ -80,83 +96,99 @@ violet.meetGoal({
     // }
 
     if (response.get('{{feetWounds}}') == 'yes') {
-      // TODO: implement logic correctly based on historical data
-      response.load('<<diabetesLogs>>', response.get('[[userId]]'), 'last 7 days');
-      if (response.get('<<diabetesLogs.feetWounds>>') > 7)
+      var diabetesLog = yield response.load('<<diabetesLog>>', '<<diabetesLog.user>>', response.get('[[userId]]'), 'CreatedDate = LAST_N_DAYS:14')
+      //console.log('load-results', diabetesLog);
+
+      var sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate()-7);
+
+      var yWarn = true;
+      var rWarn = true;
+      diabetesLog.forEach((logItem)=>{
+        // we have already filtered for the last 14 days
+        if (logItem.feetWounds == false) rWarn = false;
+        var itemDate = new Date(logItem.CreatedDate);
+        if (itemDate.getTime() > sevenDaysAgo.getTime() && logItem.feetWounds == false) yWarn = false;
+      });
+      if (rWarn) {
+        response.say('Your feet wounds are an indicator of a big problem.');
         response.say(rCall);
-      else
+      } else if (yWarn){
+        response.say('Your feet wounds are an indicator of a problem.');
         response.say(yCall);
+      }
     }
 
     if (response.get('{{missedDosages}}') == 'yes') {
+      response.say('Your missed dosage is a problem.');
       response.say(yCall);
       // TODO: implement rCall for dosages
     }
 
     // TODO: log data - because we need to check back for 7-14 days
-    response.set('<<diabetesLogs.user>>', response.get('[[userId]]') );
-    response.set('<<diabetesLogs.timeOfCheckin>>', response.get('{{timeOfCheckin}}') );
-    response.set('<<diabetesLogs.bloodSugarLvl>>', response.get('{{bloodSugarLvl}}') );
-    response.set('<<diabetesLogs.feetWounds>>', response.get('{{feetWounds}}') );
-    response.set('<<diabetesLogs.missedDosages>>', response.get('{{missedDosages}}') );
-    response.store('<<diabetesLogs>>');
+    response.set('<<diabetesLog.user>>', response.get('[[userId]]') );
+    response.set('<<diabetesLog.timeOfCheckin>>', response.get('{{timeOfCheckin}}') );
+    response.set('<<diabetesLog.bloodSugarLvl>>', response.get('{{bloodSugarLvl}}') );
+    response.set('<<diabetesLog.feetWounds>>', response.get('{{feetWounds}}') );
+    response.set('<<diabetesLog.missedDosages>>', response.get('{{missedDosages}}') );
+    response.store('<<diabetesLog>>');
 
 }});
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{timeOfCheckin}}',
-  prompt: 'Was this before a meal or 2 hours after a meal?',
+  prompt: 'Was this before a meal, or 2 hours after a meal?',
   respondTo: [{
-    expecting: ['Before my meal'],
+    expecting: ['Before', 'Before my meal'],
     resolve: (response) => {
       response.set('{{timeOfCheckin}}', 'before-my-meal');
   }}, {
-    expecting: ['2 hours after my meal'],
+    expecting: ['After', '2 hours after my meal'],
     resolve: (response) => {
       response.set('{{timeOfCheckin}}', '2hrs-after-my-meal');
   }}]
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{bloodSugarLvl}}',
   prompt: 'What was your blood sugar level?',
   respondTo: [{
-    expecting: ['[[bloodSugarLvl]]'],
+    expecting: ['My blood sugar level is [[bloodSugarLvl]]', '[[bloodSugarLvl]]'],
     resolve: (response) => {
       response.set('{{bloodSugarLvl}}', response.get('[[bloodSugarLvl]]') );
   }}]
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{feetWounds}}',
   prompt: 'Do you have any wounds on your feet?',
   respondTo: [{
-    expecting: ['No'],
+    expecting: ['GLOBAL No'],
     resolve: (response) => {
-      response.set('{{feetWounds}}', 'no' );
+      response.set('{{feetWounds}}', false );
   }}, {
-    expecting: ['Yes'],
+    expecting: ['GLOBAL Yes'],
     resolve: (response) => {
-      response.set('{{feetWounds}}', 'yes' );
+      response.set('{{feetWounds}}', true );
   }}]
 });
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{missedDosages}}',
   prompt: 'Did you miss any doses of medicine?',
   respondTo: [{
-    expecting: ['No'],
+    expecting: ['GLOBAL No'],
     resolve: (response) => {
-      response.set('{{missedDosages}}', 'no' );
+      response.set('{{missedDosages}}', false );
   }}, {
-    expecting: ['Yes'],
+    expecting: ['GLOBAL Yes'],
     resolve: (response) => {
-      response.set('{{missedDosages}}', 'yes' );
+      response.set('{{missedDosages}}', true );
   }}]
 });
 
 
-violet.meetGoal({
+violet.defineGoal({
   goal: '{{whyCannotTestBloodSugar}}',
   prompt: 'Are you out of strips, not sure how to test, sweaty, shaky, lightheaded, or confused?',
   respondTo: [{
@@ -189,6 +221,8 @@ violet.meetGoal({
       response.set('{{cannotTestBloodSugarReason}}', 'confused'); response.say(rCall);
   }}]
 });
+
+violet.registerGlobalIntents();
 
 violetUtils.repeat(48*60, ()=>{ violet.addGoal('{{checkIn}}'); });
 

@@ -4,27 +4,55 @@
 // module.exports = require('./sample-tutorial-script.js');
 // module.exports = require('./hls-diabetes-script.js');
 
-
 var alexa = require('alexa-app');
 var app = new alexa.app('einstein');
 var violet = require('../../lib/violet.js')(app);
 var violetUtils = require('../../lib/violetUtils.js')(violet);
+
 var violetSFStore = require('../../lib/violetSFStore.js');
-var nforceWrapper = require('./nforceWrapper.js');
-var db = nforceWrapper.getDB();
 
+violet.setPersistentStore(violetSFStore.store);
 
-var saveText = () => {
+violetSFStore.store.propOfInterest = {
+  'diabetesLog': ['user', 'timeOfCheckin', 'bloodSugarLvl', 'feetWounds', 'missedDosages']
+}
+
+// mock objects
+var response = violet._getResponseForDebugging({
+  getSession: ()=>{}
+}, {});
+
+// test methods
+var storeTest = () => {
+  response.set('<<diabetesLog.user>>', 'blah:blah:blah2' );
+  response.set('<<diabetesLog.timeOfCheckin>>', 'after-meal' );
+  response.set('<<diabetesLog.bloodSugarLvl>>', 125 );
+  response.set('<<diabetesLog.feetWounds>>', true );
+  response.set('<<diabetesLog.missedDosages>>', false );
   setTimeout(()=>{
-    db.create('reminder__c', 'testing reminder');
+    response.store('<<diabetesLog>>');
   }, 2*1000);
 };
 
-var callMeToProcess = (apptDate) => {
-	console.log('Im processing');
-	console.log(apptDate);
-}
+var loadTest = () => {
+  setTimeout(()=>{
+    response.load('<<diabetesLog>>', '<<diabetesLog.user>>', 'blah:blah:blah2');
+  }, 2*1000);
+};
 
-setTimeout(function(){ db.queryAppt('fred', callMeToProcess); }, 2000);
+var loadTest2 = () => {
+  setTimeout(()=>{
+    response.load('<<diabetesLog>>', null, null, 'CreatedDate >= TODAY');
+  }, 2*1000);
+};
 
+var loadTest3 = () => {
+  setTimeout(()=>{
+    response.load('<<diabetesLog>>', '<<diabetesLog.user>>', 'blah:blah:blah2', 'CreatedDate >= TODAY');
+  }, 2*1000);
+};
 
+// storeTest();
+// loadTest();
+// loadTest2();
+loadTest3();

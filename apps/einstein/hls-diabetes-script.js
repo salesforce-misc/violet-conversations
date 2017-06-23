@@ -46,12 +46,12 @@ violet.defineGoal({
   goal: '{{checkIn}}',
   prompt: ['Did you check your blood sugar level today?'],
   respondTo: [{
-    expecting: ['GLOBAL Yes', 'I tested my blood sugar level'],
+    expecting: ['Yes', 'I tested my blood sugar level'],
     resolve: (response) => {
      response.say('Great.');
      response.addGoal('{{checkInDetails}}');
   }}, {
-    expecting: ['GLOBAL No', 'I cannot test my blood sugar level'],
+    expecting: ['No', 'I cannot test my blood sugar level'],
     resolve: (response) => {
       response.addGoal('{{whyCannotTestBloodSugar}}');
   }}]
@@ -163,11 +163,11 @@ violet.defineGoal({
   goal: '{{feetWounds}}',
   prompt: 'Do you have any wounds on your feet?',
   respondTo: [{
-    expecting: ['GLOBAL No'],
+    expecting: ['No'],
     resolve: (response) => {
       response.set('{{feetWounds}}', false );
   }}, {
-    expecting: ['GLOBAL Yes'],
+    expecting: ['Yes'],
     resolve: (response) => {
       response.set('{{feetWounds}}', true );
   }}]
@@ -177,11 +177,11 @@ violet.defineGoal({
   goal: '{{missedDosages}}',
   prompt: 'Did you miss any doses of medicine?',
   respondTo: [{
-    expecting: ['GLOBAL No'],
+    expecting: ['No'],
     resolve: (response) => {
       response.set('{{missedDosages}}', false );
   }}, {
-    expecting: ['GLOBAL Yes'],
+    expecting: ['Yes'],
     resolve: (response) => {
       response.set('{{missedDosages}}', true );
   }}]
@@ -222,7 +222,7 @@ violet.defineGoal({
   }}]
 });
 
-violet.registerGlobalIntents();
+violet.registerIntents();
 
 violetUtils.repeat(48*60, ()=>{ violet.addGoal('{{checkIn}}'); });
 

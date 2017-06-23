@@ -125,13 +125,13 @@ violet.defineGoal({
       // TODO: implement rCall for dosages
     }
 
-    // TODO: log data - because we need to check back for 7-14 days
-    response.set('<<diabetesLog.user>>', response.get('[[userId]]') );
-    response.set('<<diabetesLog.timeOfCheckin>>', response.get('{{timeOfCheckin}}') );
-    response.set('<<diabetesLog.bloodSugarLvl>>', response.get('{{bloodSugarLvl}}') );
-    response.set('<<diabetesLog.feetWounds>>', response.get('{{feetWounds}}') );
-    response.set('<<diabetesLog.missedDosages>>', response.get('{{missedDosages}}') );
-    response.store('<<diabetesLog>>');
+    response.store('<<diabetesLog>>', {
+      'user': response.get('[[userId]]'),
+      'timeOfCheckin': response.get('{{timeOfCheckin}}'),
+      'bloodSugarLvl': response.get('{{bloodSugarLvl}}'),
+      'feetWounds': response.get('{{feetWounds}}'),
+      'missedDosages': response.get('{{missedDosages}}')
+    });
 
 }});
 

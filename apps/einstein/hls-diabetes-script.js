@@ -12,12 +12,6 @@ violetSFStore.store.propOfInterest = {
 }
 
 
-/*
- * TODO: Get UX better. Right now it is a literal translation of the stop light card
- *       need to make it more conversational. Once this is working we says this
- *       as v1 and improve UX
- */
-
 const yCall = 'Take action today. Call: 123-456-7890';
 const yBloodSugarLo = 70;
 const yBloodSugarHi = 130;

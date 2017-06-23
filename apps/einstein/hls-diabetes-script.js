@@ -66,10 +66,10 @@ violet.respondTo({
 violet.defineGoal({
   goal: '{{checkInDetails}}',
   resolve: function *(response) {
-    if (!response.goalFilled('{{timeOfCheckin}}')
-        || !response.goalFilled('{{bloodSugarLvl}}')
-        || !response.goalFilled('{{feetWounds}}')
-        || !response.goalFilled('{{missedDosages}}') ) {
+    if (!response.goalFilled('timeOfCheckin')
+        || !response.goalFilled('bloodSugarLvl')
+        || !response.goalFilled('feetWounds')
+        || !response.goalFilled('missedDosages') ) {
           return false; // dependent goals not met
         }
 
@@ -95,7 +95,7 @@ violet.defineGoal({
     //   // 2hrs-after-my-meal
     // }
 
-    if (response.get('{{feetWounds}}') == 'yes') {
+    if (response.get('{{feetWounds}}') == true) {
       var diabetesLog = yield response.load('<<diabetesLog>>', '<<diabetesLog.user>>', response.get('[[userId]]'), 'CreatedDate = LAST_N_DAYS:14')
       //console.log('load-results', diabetesLog);
 

@@ -61,10 +61,11 @@ violet.respondTo('How old am I?',
 
 violet.respondTo('I recieved a bill from [[company]] today for [[amount]]',
   (response) => {
-    response.set('<<bills.user>>', response.get('[[userId]]') );
-    response.set('<<bills.from>>', response.get('[[company]]') );
-    response.set('<<bills.amount>>', response.get('[[amount]]') );
-    response.store('<<bills>>'); // <-- also automatically store after 5 minutes of inactivity?
+    response.store('bills',
+        'user': response.get('[[userId]]'),
+        'from': response.get('[[company]]'),
+        'amount': response.get('[[amount]]')
+      });
     response.say('xxxx');
 });
 
@@ -76,7 +77,7 @@ violet.respondTo('I recieved a bill from [[company]] today for [[amount]]',
 violet.respondTo(
   expecting: 'Who did I receive my bill from most recently?',
   resolve: (response) => {
-    return response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') )
+    return response.load('bills', 'bills.user', response.get('[[userId]]') )
       .then(()=>{
         response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
       });
@@ -85,7 +86,7 @@ violet.respondTo(
 violet.respondTo(
   expecting: 'Who did I receive my bill from most recently?',
   resolve: function *(response) {
-    yield response.load('<<bills>>', '<<bills.user>>', response.get('[[userId]]') )
+    yield response.load('bills', 'bills.user', response.get('[[userId]]') )
     response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
 });
 

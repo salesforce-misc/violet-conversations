@@ -96,7 +96,7 @@ violet.defineGoal({
     // }
 
     if (response.get('{{feetWounds}}') == true) {
-      var diabetesLog = yield response.load('<<diabetesLog>>', '<<diabetesLog.user>>', response.get('[[userId]]'), 'CreatedDate = LAST_N_DAYS:14')
+      var diabetesLog = yield response.load('diabetesLog', 'user', response.get('[[userId]]'), 'CreatedDate = LAST_N_DAYS:14')
       //console.log('load-results', diabetesLog);
 
       var sevenDaysAgo = new Date();
@@ -125,7 +125,7 @@ violet.defineGoal({
       // TODO: implement rCall for dosages
     }
 
-    response.store('<<diabetesLog>>', {
+    response.store('diabetesLog', {
       'user': response.get('[[userId]]'),
       'timeOfCheckin': response.get('{{timeOfCheckin}}'),
       'bloodSugarLvl': response.get('{{bloodSugarLvl}}'),

@@ -1,8 +1,6 @@
 'use strict';
 
-var alexa = require('alexa-app');
-var app = new alexa.app('einstein');
-var violet = require('../../lib/violet.js')(app);
+var violet = require('../../lib/violet.js')('einstein');
 var violetUtils = require('../../lib/violetUtils.js')(violet);
 
 var violetSFStore = require('../../lib/violetSFStore.js');
@@ -220,4 +218,4 @@ violet.registerIntents();
 
 violetUtils.repeat(48*60, ()=>{ violet.addGoal('{{checkIn}}'); });
 
-module.exports = app;
+module.exports = violet.app;

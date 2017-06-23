@@ -1,8 +1,6 @@
 'use strict';
 
-var alexa = require( 'alexa-app' );
-var app = new alexa.app( 'einstein' );
-var violet = require('../../lib/violet.js')(app);
+var violet = require('../../lib/violet.js')('einstein');
 
 
 violet.addKeyTypes({
@@ -121,4 +119,4 @@ violet.respondTo([
     response.out("A random number that you asked for is " + getRandomInt(0,100));
 });
 
-module.exports = app;
+module.exports = violet.app;

@@ -1,8 +1,6 @@
 'use strict';
 
-var alexa = require( 'alexa-app' );
-var app = new alexa.app( 'einstein' );
-var violet = require('../../lib/violet.js')(app);
+var violet = require('../../lib/violet.js')('einstein');
 var request = require('request');
 
 
@@ -67,4 +65,4 @@ violet.respondTo([
     response.out("I have known that for some time.");
 });
 
-module.exports = app;
+module.exports = violet.app;

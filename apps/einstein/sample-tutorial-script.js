@@ -1,9 +1,7 @@
 'use strict';
 
-var alexa = require('alexa-app');
-var app = new alexa.app('einstein');
-var violet = require('../../lib/violet.js')(app);
-module.exports = app;
+var violet = require('../../lib/violet.js')('einstein');
+module.exports = violet.app;
 
 ////////////////
 // 101 - basics

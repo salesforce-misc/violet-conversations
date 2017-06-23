@@ -1,8 +1,6 @@
 'use strict';
 
-var alexa = require('alexa-app');
-var app = new alexa.app('einstein');
-var violet = require('../../lib/violet.js')(app);
+var violet = require('../../lib/violet.js')('einstein');
 
 // Implementing https://docs.api.ai/docs/dialogs
 

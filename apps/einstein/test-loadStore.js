@@ -4,9 +4,7 @@
 // module.exports = require('./sample-tutorial-script.js');
 // module.exports = require('./hls-diabetes-script.js');
 
-var alexa = require('alexa-app');
-var app = new alexa.app('einstein');
-var violet = require('../../lib/violet.js')(app);
+var violet = require('../../lib/violet.js')('einstein');
 var violetUtils = require('../../lib/violetUtils.js')(violet);
 
 var violetSFStore = require('../../lib/violetSFStore.js');

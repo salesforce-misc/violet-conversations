@@ -65,4 +65,4 @@ violet.respondTo([
     response.out("I have known that for some time.");
 });
 
-module.exports = violet.app;
+module.exports = violet;

@@ -1,7 +1,7 @@
 'use strict';
 
 var violet = require('../../lib/violet.js')('einstein');
-module.exports = violet.app;
+module.exports = violet;
 
 ////////////////
 // 101 - basics

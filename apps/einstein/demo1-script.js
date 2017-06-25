@@ -119,4 +119,4 @@ violet.respondTo([
     response.out("A random number that you asked for is " + getRandomInt(0,100));
 });
 
-module.exports = violet.app;
+module.exports = violet;

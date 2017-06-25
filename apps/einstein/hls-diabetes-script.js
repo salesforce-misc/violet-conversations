@@ -218,4 +218,4 @@ violet.registerIntents();
 
 violetUtils.repeat(48*60, ()=>{ violet.addGoal('{{checkIn}}'); });
 
-module.exports = violet.app;
+module.exports = violet;

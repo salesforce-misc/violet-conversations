@@ -22,6 +22,7 @@ violet.addKeyTypes({
   "bloodSugarLvl": "NUMBER",
 });
 
+//common across multiple goals
 violet.addPhraseEquivalents([
 ]);
 

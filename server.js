@@ -3,11 +3,13 @@
 var path = require('path');
 var express = require('express');
 var http = require('http');
+var ws = require('ws');
+
 var expressApp = express();
+var alexaRouter = express.Router();
 expressApp.set('view engine', 'ejs');
 expressApp.set('views', path.join(__dirname, 'tester-views'));
 expressApp.use(express.static(path.join(__dirname, 'tester-views')));
-var alexaRouter = express.Router();
 expressApp.use('/alexa', alexaRouter);
 
 var srvrInstance = http.createServer(expressApp);
@@ -19,9 +21,7 @@ srvrInstance.listen(process.env.PORT || 8080);
 var script = require("./scripts/hls-diabetes.js");
 script.setServerApp(express, alexaRouter);
 
-var SocketServer = require('ws').Server;
-
-var wss = new SocketServer({ server: srvrInstance  });
+var wss = new ws.Server({ server: srvrInstance  });
 
 console.log('Waiting for requests...');
 

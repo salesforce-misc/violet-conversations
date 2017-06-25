@@ -1,9 +1,9 @@
 'use strict';
 
-var violet = require('../../lib/violet.js')('einstein');
-var violetUtils = require('../../lib/violetUtils.js')(violet);
+var violet = require('../lib/violet.js')('einstein');
+var violetUtils = require('../lib/violetUtils.js')(violet);
 
-var violetSFStore = require('../../lib/violetSFStore.js');
+var violetSFStore = require('../lib/violetSFStore.js');
 violet.setPersistentStore(violetSFStore.store);
 violetSFStore.store.propOfInterest = {
   'diabetesLog': ['user', 'timeOfCheckin', 'bloodSugarLvl', 'feetWounds', 'missedDosages']

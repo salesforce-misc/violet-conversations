@@ -13,7 +13,7 @@ expressApp.use('/alexa', alexaRouter);
 var srvrInstance = http.createServer(expressApp);
 srvrInstance.listen(process.env.PORT || 8080);
 
-var script = require("./apps/einstein/index.js");
+var script = require("./scripts/index.js");
 script.setServerApp(express, alexaRouter);
 
 var SocketServer = require('ws').Server;

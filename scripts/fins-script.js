@@ -1,6 +1,6 @@
 'use strict';
 
-var violet = require('../../lib/violet.js')('einstein');
+var violet = require('../lib/violet.js')('einstein');
 var request = require('request');
 
 

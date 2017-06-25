@@ -13,7 +13,10 @@ expressApp.use('/alexa', alexaRouter);
 var srvrInstance = http.createServer(expressApp);
 srvrInstance.listen(process.env.PORT || 8080);
 
-var script = require("./scripts/index.js");
+// var script = require('./examples/demo1.js');
+// var script = require('./examples/tutorial.js');
+// var script = require('./scripts/fins.js');
+var script = require("./scripts/hls-diabetes-script.js");
 script.setServerApp(express, alexaRouter);
 
 var SocketServer = require('ws').Server;

@@ -1,23 +1,25 @@
 'use strict';
 
-var AlexaAppServer = require( 'alexa-app-server' );
+var path = require('path');
+var express = require('express');
+var http = require('http');
+var expressApp = express();
+expressApp.set('view engine', 'ejs');
+expressApp.set('views', path.join(__dirname, 'tester-views'));
+expressApp.use(express.static(path.join(__dirname, 'tester-views')));
+var alexaRouter = express.Router();
+expressApp.use('/alexa', alexaRouter);
 
-var server = new AlexaAppServer( {
-  app_dir: "apps",            // Location of alexa-app modules
-  app_root: "alexa",        // Service root
-  httpsEnabled: false,
-	port: process.env.PORT || 8080
-} );
+var srvrInstance = http.createServer(expressApp);
+srvrInstance.listen(process.env.PORT || 8080);
 
-var alexaSrvrInstance = server.start();
+var script = require("./apps/einstein/index.js");
+script.setServerApp(express, alexaRouter);
 
 var SocketServer = require('ws').Server;
 
-var srvrInstance = alexaSrvrInstance.instance; // should check httpsInstance if this is not set
 var wss = new SocketServer({ server: srvrInstance  });
 
-// console.log('alexaSrvrInstance.apps: ', alexaSrvrInstance.apps);
-Object.keys(alexaSrvrInstance.apps).forEach((appName) => {alexaSrvrInstance.apps[appName].exports.setBroadcaster(broadcast);});
 console.log('Waiting for requests...');
 
 wss.on('connection', (ws) => {
@@ -31,3 +33,5 @@ function broadcast(jsonObj) {
     client.send(JSON.stringify(jsonObj));
   });
 }
+
+script.setBroadcaster(broadcast);

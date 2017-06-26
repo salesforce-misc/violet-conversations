@@ -1,8 +1,10 @@
-# violet-poc-alexa
+# Sophisticated conversational bots
 
-A proof-of-concept building Amazon Skills. Skills are built as apps, with this
-project consisting of the `einstein` skill. Each skill has multiple intents and
-supports a set of utterances by the user.
+Support for building sophisticated conversational bots on Amazon's Alexa. Skills
+are built as scripts, with this project demonstrating an the `einstein` skill.
+Each skill has multiple intents and supports a set of utterances by the user.
+
+See `examples/tutorial.js` for documentation on how to build a skill.
 
 ## Setup
 
@@ -30,7 +32,3 @@ using a `Custom Interaction Model`, will need values from the services skill
 configuration page.
 
 For step-by-step instructions - see here: https://salesforce.quip.com/I8YOAC3Q1UGC
-
-## Building from scratch
-
-There is a step-by-step set of instructions that you can use here: [Create an Alexa skill in Node.Js and host it on Heroku](https://iwritecrappycode.wordpress.com/2016/04/01/create-an-alexa-skill-in-node-js-and-hosting-it-on-heroku/)

@@ -35,8 +35,8 @@ violet.respondTo({
   resolve: function (response) {
     response.say(`
       You can ask to check for any new leads, your calendar for
-      today, the status of a specific opportunity or to create a new lead,
-      or, you can say exit... What can I help you with?`
+      today, the status of a specific opportunity or, to create a new lead...
+      What can I help you with?`
     );
 }});
 

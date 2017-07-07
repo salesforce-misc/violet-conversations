@@ -57,9 +57,10 @@ violet.respondTo({
     response.say(out);
 }});
 
-var getCaseText = (caseObj)=>{
-    return caseObj.Subject + ', and has status ' + caseObj.Status;
-};
+var getCaseResultText = (ndx, results) => {
+  var caseObj = results[ndx];
+  return 'Result ' + (ndx+1) + ' is ' + caseObj.Subject + ', and has status ' + caseObj.Status + '. ';
+}
 
 var respondWithCaseResults = (response, results)=>{
   if (results.length == 0) {
@@ -69,7 +70,7 @@ var respondWithCaseResults = (response, results)=>{
 
   var out = 'You have ' + results.length + ' cases. '
   for(var ndx=0; ndx<3 && ndx<results.length; ndx++) {
-    out += 'Result ' + (ndx+1) + ' is ' + getCaseText(results[ndx]) + '. ';
+    out += getCaseResultText(ndx, results);
   }
   response.say(out);
 
@@ -77,12 +78,11 @@ var respondWithCaseResults = (response, results)=>{
     response.addGoal('{{hearPastThreeCases}}')
   else
     response.addGoal('{{interactWithCases}}')
-  // out += 'Do you want to hear more results?';
 }
 var respondWithMoreCaseResults = (response, results, start=0)=>{
   var out = '';
   for(var ndx=3+start; ndx<10+start && ndx<results.length; ndx++) {
-    out += 'Result ' + ndx + ' is ' + getCaseText(results[ndx]);
+    out += getCaseResultText(ndx, results);
   }
   response.say(out);
 

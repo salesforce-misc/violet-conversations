@@ -11,7 +11,10 @@ violetSFStore.store.propOfInterest = {
 
 violet.addKeyTypes({
   "articleNo": "NUMBER",
-  "searchTerm": "LITERAL",
+  "searchTerm": {
+    "type": "LITERAL",
+    "sampleValues": ["security", "data"]
+  }
 });
 
 

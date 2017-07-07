@@ -1,9 +1,4 @@
 
-// module.exports = require('./demo1-script.js');
-// module.exports = require('./fins-script.js');
-// module.exports = require('./sample-tutorial-script.js');
-// module.exports = require('./hls-diabetes-script.js');
-
 var violet = require('../../lib/violet.js')('einstein');
 var violetUtils = require('../../lib/violetUtils.js')(violet);
 

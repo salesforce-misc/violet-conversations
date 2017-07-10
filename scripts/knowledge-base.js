@@ -3,8 +3,7 @@
 var violet = require('../lib/violet.js')('einstein');
 var violetUtils = require('../lib/violetUtils.js')(violet);
 
-var violetSFStore = require('../lib/violetSFStore.js');
-violet.setPersistentStore(violetSFStore.store);
+var violetSFStore = require('../lib/violetStoreSF.js')(violet);
 violetSFStore.store.propOfInterest = {
   'KnowledgeArticleVersion*': ['Id*', 'Title*', 'Summary*', 'UrlName*', 'LastPublishedDate*']
 }

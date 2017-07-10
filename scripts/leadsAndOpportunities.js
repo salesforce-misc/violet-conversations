@@ -6,8 +6,7 @@ var pluralize = require('pluralize');
 var violet = require('../lib/violet.js')('einstein');
 var violetUtils = require('../lib/violetUtils.js')(violet);
 
-var violetSFStore = require('../lib/violetSFStore.js');
-violet.setPersistentStore(violetSFStore.store);
+var violetSFStore = require('../lib/violetStoreSF.js')(violet);
 violetSFStore.store.propOfInterest = {
   'Lead*': ['Name*', 'Company*'],
   'Opportunity*': ['Name*', 'StageName*', 'Probability*', 'Amount*'],

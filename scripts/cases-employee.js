@@ -3,8 +3,7 @@
 var violet = require('../lib/violet.js')('einstein');
 var violetUtils = require('../lib/violetUtils.js')(violet);
 
-var violetSFStore = require('../lib/violetSFStore.js');
-violet.setPersistentStore(violetSFStore.store);
+var violetSFStore = require('../lib/violetStoreSF.js')(violet);
 violetSFStore.store.propOfInterest = {
   'Case*': ['Id*', 'CaseNumber*', 'Contact*.Name*', /*'Contact*.Owner*.Name*',*/ 'Subject*', 'Status*', 'Priority*']
 }

@@ -216,6 +216,4 @@ violet.respondTo({
 }});
 
 
-violet.registerIntents();
-
 module.exports = violet;

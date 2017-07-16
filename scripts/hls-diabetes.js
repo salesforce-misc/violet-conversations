@@ -2,7 +2,7 @@
 
 var violet = require('../lib/violet.js')('einstein');
 var violetClientTx = require('../lib/violetClientTx.js')(violet);
-var violetUtils = require('../lib/violetUtils.js')(violet);
+var violetTime = require('../lib/violetTime.js')(violet);
 
 var violetSFStore = require('../lib/violetStoreSF.js')(violet);
 violetSFStore.store.propOfInterest = {
@@ -215,6 +215,6 @@ violet.defineGoal({
   }}]
 });
 
-violetUtils.repeat(48*60, ()=>{ violet.addGoal('{{checkIn}}'); });
+violetTime.repeat(48*60, ()=>{ violet.addGoal('{{checkIn}}'); });
 
 module.exports = violet;

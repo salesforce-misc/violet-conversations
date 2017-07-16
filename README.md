@@ -32,3 +32,16 @@ using a `Custom Interaction Model`, will need values from the services skill
 configuration page.
 
 For step-by-step instructions - see here: https://salesforce.quip.com/I8YOAC3Q1UGC
+
+## Filing issues
+
+To help us look into any issue please create a document with the following:
+* **Record Type** - Defect or Enhancement?
+* **Date**
+* **Description**
+* **Supporting Information**
+  - If **defect**, please include steps to reproduce AND include Violet-Conversation app logs here.
+  - If **enhancement**, please include use case info here.
+* **Owner** - Who is logging the issue?
+
+Please post any such document in the Violet trailblazer chatter group.

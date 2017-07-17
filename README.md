@@ -1,8 +1,19 @@
-# Sophisticated conversational bots
+## Table Of Contents
 
-Support for building sophisticated conversational bots on Amazon's Alexa. Skills
-are built as scripts, with this project demonstrating an the `einstein` skill.
-Each skill has multiple intents and supports a set of utterances by the user.
+* [Setup](#setup)
+* [Local execution](#local-execution)
+* [Deploying a Conversation Script](#deploying-a-conversation-script)
+* [Debugging Conversation](#debugging-conversation)
+* [Contribution/Supporting](#contributionsupporting)
+* [Filing issues](#filing-issues)
+
+
+# violet-conversations: Sophisticated Conversational Applications
+
+`violet-conversations` provides support for building sophisticated
+conversational apps/bots on Amazon's Alexa. Conversations are built via scripts,
+and Violet provides a conversation engine that runs as an Alexa Skill. This
+project is configured to create a skill at the `alexa/einstein` end point.
 
 See `examples/tutorial.js` for documentation on how to build a skill.
 

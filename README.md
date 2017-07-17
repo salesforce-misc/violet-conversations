@@ -1,6 +1,7 @@
 ## Table Of Contents
 
 * [Setup](#setup)
+* [Getting Started with Voice Scripting](#getting-started-with-voice-scripting)
 * [Local execution](#local-execution)
 * [Deploying a Conversation Script](#deploying-a-conversation-script)
 * [Debugging Conversation](#debugging-conversation)
@@ -8,14 +9,12 @@
 * [Filing issues](#filing-issues)
 
 
-# violet-conversations: Sophisticated Conversational Applications
+# violet-conversations
 
 `violet-conversations` provides support for building sophisticated
 conversational apps/bots on Amazon's Alexa. Conversations are built via scripts,
 and Violet provides a conversation engine that runs as an Alexa Skill. This
 project is configured to create a skill at the `alexa/einstein` end point.
-
-See `examples/tutorial.js` for documentation on how to build a skill.
 
 ## Setup
 
@@ -24,6 +23,26 @@ then you will need to set up the following environment variables (locally and on
 any deployed platform): `V_SFDC_CLIENT_ID`, `V_SFDC_CLIENT_SECRET`,
 `V_SFDC_USERNAME` and `V_SFDC_PASSWORD`.
 
+## Getting Started with Voice Scripting
+
+See `server.js` for a typical initialization and script loading code. Every
+voice script should start will typically start with declaring `violet` for use
+throughout:
+```javascript
+var violet = require('../lib/violet.js')('einstein');
+```
+
+See `examples/tutorial.js` for documentation on how to build a skill.
+
+A simple way to respond to a user request:
+```javascript
+violet.respondTo(['Can you help me', 'What can I do'],
+ (response) => {
+   response.say(`I can help you with your current account balance, with
+                  financial planning, budgeting, investing, or taking out a
+                  loan`);
+ });
+ ```
 
 ## Local execution
 

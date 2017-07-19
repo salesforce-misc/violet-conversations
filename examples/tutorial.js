@@ -54,7 +54,7 @@ violet.respondTo('How old am I?',
 });
 
 ////////////////
-// 104 - persistence (*** not implemented yet ***)
+// 104 - persistence
 ////////////////
 
 violet.respondTo('I recieved a bill from [[company]] today for [[amount]]',

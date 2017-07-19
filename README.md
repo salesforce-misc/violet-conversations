@@ -9,7 +9,7 @@
     * [Timed delay](#timed-delay)
     * [Violet Client Integration](#violet-client-integration)
   * [Advanced](#advanced)
-    * [Custom types](#custom types)
+    * [Custom types](#custom-types)
 * [Local execution](#local-execution)
 * [Deploying a Conversation Script](#deploying-a-conversation-script)
 * [Debugging Conversation](#debugging-conversation)

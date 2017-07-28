@@ -7,12 +7,12 @@ violetSrvr = require('./lib/violetClientTx.js')(violetSrvr, srvrInstance);
 
 // violetSrvr.loadScript('../examples/demo1.js');
 // violetSrvr.loadScript('../examples/tutorial.js');
-// violetSrvr.loadScript('../scripts/fins.js');
+// violetSrvr.loadScript('../scripts/sfxi-fins.js');
 // violetSrvr.loadScript('../scripts/hls-diabetes.js');
-// violetSrvr.loadScript('../scripts/leadsAndOpportunities.js');
-// violetSrvr.loadScript('../scripts/cases-customer.js');
-// violetSrvr.loadScript('../scripts/cases-employee.js');
-violetSrvr.loadScript('../scripts/knowledge-base.js');
+violetSrvr.loadScript('../scripts/sf-leadsAndOpportunities.js');
+// violetSrvr.loadScript('../scripts/sf-cases-customer.js');
+// violetSrvr.loadScript('../scripts/sf-cases-employee.js');
+// violetSrvr.loadScript('../scripts/sf-knowledge-base.js');
 
 
 console.log('Waiting for requests...');

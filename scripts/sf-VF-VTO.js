@@ -42,7 +42,7 @@ violet.defineGoal({
   goal: '{{teamSize}}',
   prompt: ["For how many people?"],
   respondTo: [{
-    expecting: ['[[teamSize]]'],
+    expecting: ['[[teamSize]] people.'],
     resolve: (response) => {
       ack(response);
       response.say("For [[teamSize]] people.", /*quick*/true);
@@ -55,7 +55,7 @@ violet.defineGoal({
   goal: '{{activityDuration}}',
   prompt: ["How many hours would you like to volunteer for?"],
   respondTo: [{
-    expecting: ['[[activityDuration]]'],
+    expecting: ['[[activityDuration]] hours.'],
     resolve: (response) => {
       ack(response);
       response.say("[[activityDuration]] hours.", /*quick*/true);
@@ -66,8 +66,8 @@ violet.defineGoal({
 violet.defineGoal({
   goal: '{{findActivity}}',
   resolve: function *(response) {
-    if (!response.goalFilled('teamSize') || !response.goalFilled('activityDuration') ) {
-      return false; // dependent goals not met
+  if (!response.goalFilled('teamSize') || !response.goalFilled('activityDuration') ) {
+    return false; // dependent goals not met
     }
     var results = yield response.load('Activity', null, null, null);
     if (results.length == 0) {

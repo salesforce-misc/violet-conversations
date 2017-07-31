@@ -7,12 +7,12 @@ var violetTime = require('../lib/violetTime.js')(violet);
 var violetSFStore = require('../lib/violetStoreSF.js')(violet);
 
 violetSFStore.store.propOfInterest = {
-  'diabetesLog': ['user', 'timeOfCheckin', 'bloodSugarLvl', 'feetWounds', 'missedDosages']
+  'VTO_Preference': ['Id*', 'hours', 'likes', 'skills']
 }
 
-const preference = "photography";
-const skill = "sales force";
-const hours = "4";
+var likes = "photography";
+var skill = "sales force";
+var hours = "4";
 
 violet.addKeyTypes({
 });
@@ -25,14 +25,27 @@ violet.addTopLevelGoal();
 
 violet.respondTo({
   expecting: ['Can you help me find a new volunteer opportunity', 'Find a new volunteer opportunity', 'I would like to find a volunteer opportunity'],
-  resolve: (response) => {
+  resolve: function *(response) {
+   var VTOPreferenceObject = yield response.load('<<VTO_Preference>>', null, null, null, null);
    response.say('Sure.');
-   response.addGoal('{{startInterest}}');
+   console.log(VTOPreferenceObject);
+   if (VTOPreferenceObject.length > 0) {
+     likes = VTOPreferenceObject[0].likes;
+     console.log(likes);
+     response.set('{{likes}}', likes);
+     skill = VTOPreferenceObject[0].skills;
+     console.log(skill);
+     response.set('{{skill}}', skill);
+     hours = VTOPreferenceObject[0].hours;
+     console.log(hours);
+     response.set('{{hours}}', hours);
+     response.addGoal('{{startInterest}}');
+   }
 }});
 
 violet.defineGoal({
   goal: '{{startInterest}}',
-  prompt: ['I see that we have someone who is interested in ' + preference + '<break time=“500ms”/> Would you be interested in volunteer opportunities related to ' + preference],
+  prompt: ['I see that we have someone who is interested in {{likes}} <break time=“500ms”/> Would you be interested in volunteer opportunities related to {{likes}}' ],
   respondTo: [{
     expecting: ['Yes', 'Sure'],
     resolve: (response) => {
@@ -46,7 +59,7 @@ violet.defineGoal({
 
 violet.defineGoal({
   goal: '{{startSkill}}',
-  prompt: ['Okay, I see that we have someone who is good at ' + skill + '<break time=“500ms”/> Would you be interested in volunteer opportunities related to ' + skill],
+  prompt: ['Okay, I see that we have someone who is good at {{skills}} <break time=“500ms”/> Would you be interested in volunteer opportunities related to {{skills}}'],
   respondTo: [{
     expecting: ['Yes', 'Sure'],
     resolve: (response) => {
@@ -61,7 +74,7 @@ violet.defineGoal({
 
 violet.defineGoal({
   goal: '{{checkHours}}',
-  prompt: ['Okay, I see that you have ' + hours + ' hours left to meet this quarter\'s volunteeer opportunity. <break time=“500ms”/>Should I look for opportunities that meet those hours'],
+  prompt: ['Okay, I see that you have {{hours}} hours left to meet this quarter\'s volunteeer opportunity. <break time=“500ms”/>Should I look for opportunities that meet those hours'],
   respondTo: [{
     expecting: ['Yes', 'Sure'],
     resolve: (response) => {

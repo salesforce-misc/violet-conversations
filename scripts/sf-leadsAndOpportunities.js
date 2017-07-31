@@ -15,9 +15,18 @@ violetSFStore.store.propOfInterest = {
 }
 
 violet.addKeyTypes({
-  "leadName": "AMAZON.LITERAL",
-  "leadCompany": "AMAZON.LITERAL",
-  "opportunityName": "AMAZON.LITERAL",
+  "leadName": {
+      "type": "AMAZON.LITERAL",
+      "sampleValues": ["Bill Gates", "Mark Zuckerberg"]
+  },
+  "leadCompany": {
+      "type": "AMAZON.LITERAL",
+      "sampleValues": ["Microsoft", "Facebook", "Fresh Foods Packing", "ACME Corp"]
+  },
+  "opportunityName": {
+      "type": "AMAZON.LITERAL",
+      "sampleValues": ["United Oil Standby Generators", "Microsoft Add-On Business Seventeen-K", "Facebook New Business Twenty-Two-K"]
+  }
 });
 
 // help with script

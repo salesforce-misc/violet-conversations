@@ -17,10 +17,21 @@ violetSFStore.store.propOfInterest = {
 }
 
 violet.addKeyTypes({
-  "name": "AMAZON.LITERAL",
-  "company": "AMAZON.LITERAL",
-  "opportunityName": "AMAZON.LITERAL",
+  "name": {
+      "type": "AMAZON.LITERAL",
+      "sampleValues": ["Jeff Douglas", "Steve Jones", "Mike Smith", "Mary Stewart"]
+  },
+  "company": {
+      "type": "AMAZON.LITERAL",
+      "sampleValues": ["ACME Corp", "ABC Company", "Fresh Foods Packaging"]
+  },
+  "opportunityName": {
+      "type": "AMAZON.LITERAL",
+      "sampleValues": ["Jones", "Edge S L A", "United Oil Standby Generators"]
+  }
 });
+
+
 
 // help with script
 violet.respondTo({

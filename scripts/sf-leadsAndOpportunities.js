@@ -15,8 +15,8 @@ violetSFStore.store.propOfInterest = {
 }
 
 violet.addKeyTypes({
-  "name": "AMAZON.LITERAL",
-  "company": "AMAZON.LITERAL",
+  "leadName": "AMAZON.LITERAL",
+  "leadCompany": "AMAZON.LITERAL",
   "opportunityName": "AMAZON.LITERAL",
 });
 
@@ -46,34 +46,48 @@ violet.respondTo({
   expecting: ['{to|} create a {new|} lead'],
   resolve: (response) => {
     response.say("OK, let's create a new lead.");
-    response.addGoal('{{createLeadName}}');
+    response.addGoal('{{createLead}}');
 }});
 
 violet.defineGoal({
-  goal: '{{createLeadName}}',
+  goal: '{{createLead}}',
+  resolve: (response) => {
+    if (!response.goalFilled('leadName') || !response.goalFilled('leadCompany') ) {
+      return false; // dependent goals not met
+    }
+    response.say("Bingo! I created a new lead for {{leadName}} with the company name [[leadCompany]]")
+    var names = response.get('{{leadName}}').split(' ');
+    response.store('Lead*', {
+      'FirstName*': names[0],
+      'LastName*': names[1],
+      'Company*': response.get('[[leadCompany]]')
+    });
+  }
+});
+
+var ack = (response) => { response.say(['Got it.', 'Great.']); }
+
+violet.defineGoal({
+  goal: '{{leadName}}',
   prompt: ["What is the person's first and last name?"],
   respondTo: [{
-    expecting: ['[[name]]'],
+    expecting: ['persons name is [[leadName]]'],
     resolve: (response) => {
-      response.say("Got it. the name is, [[name]].")
-      response.set('{{name}}', response.get('[[name]]'));
-      response.addGoal('{{createLeadCompany}}');
+      ack(response);
+      response.say("the name is [[leadName]].", /*quick*/true);
+      response.set('{{leadName}}', response.get('[[leadName]]'));
   }}]
 });
 
 violet.defineGoal({
-  goal: '{{createLeadCompany}}',
+  goal: '{{leadCompany}}',
   prompt: ["What is the company name?"],
   respondTo: [{
-    expecting: ['[[company]]'],
+    expecting: ['company name is [[leadCompany]]'],
     resolve: (response) => {
-      response.say("Bingo! I created a new lead for {{name}} with the company name [[company]]")
-      var names = response.get('{{name}}').split(' ');
-      response.store('Lead*', {
-        'FirstName*': names[0],
-        'LastName*': names[1],
-        'Company*': response.get('[[company]]')
-      });
+      ack(response);
+      response.say("company name is, [[leadCompany]].", /*quick*/true);
+      response.set('{{leadCompany}}', response.get('[[leadCompany]]'));
   }}]
 });
 

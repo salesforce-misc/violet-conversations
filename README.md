@@ -1,6 +1,6 @@
 ## Table Of Contents
 
-* [Setup](#setup)
+* [Prerequisites & Setup](#prerequisites-etup)
 * [Getting Started with Voice Scripting](#getting-started-with-voice-scripting)
   * [Basics](#basics)
   * [Conversational Goals](#goals)
@@ -12,7 +12,7 @@
     * [Custom types](#custom-types)
 * [Local execution](#local-execution)
 * [Deploying a Conversation Script](#deploying-a-conversation-script)
-* [Debugging Conversation](#debugging-conversation)
+* [Debugging Conversations](#debugging-conversations)
 * [Contribution/Supporting](#contributionsupporting)
 * [Filing issues](#filing-issues)
 
@@ -24,11 +24,19 @@ conversational apps/bots on Amazon's Alexa. Conversations are built via scripts,
 and Violet provides a conversation engine that runs as an Alexa Skill. This
 project is configured to create a skill at the `alexa/einstein` end point.
 
-## Setup
+## Prerequisites & Setup
 
-If you are using the Salesforce integration plugin (as used by the Diabetes
+The Conversation Engine needs to run in the cloud so that Amazon's voice servers can access it. It can also be run locally via a non-voice (web-only) interface.
+
+* Install Node v6 or greater - if you need to maintain an older version of node, consider using `nvm`.
+
+* Download dependencies: `npm install`
+
+* If you are using the Salesforce integration plugin (as used by the Diabetes
 Script) you will need to set up environment variables (for more information see
 the [Persistence](#persistence) plugin section below).
+
+* To run locally: `npm start`
 
 ## Getting Started with Voice Scripting
 
@@ -255,12 +263,12 @@ configuration page.
 
 For step-by-step instructions - see here: https://salesforce.quip.com/I8YOAC3Q1UGC
 
-## Debugging Conversation
+## Debugging Conversations
 
 When developing conversational scripts - it helps to debug/test it in three phrases:
 1. Make sure the code compiles/runs by typing `npm start`. Fix any errors and keep re-starting the service until misplaced punctuations and declarations have been fixed.
 2. Test the script in the included tester view, by running the script and opening it in a browser, for example: http://localhost:8080/alexa/einstein You will likely want to submit IntentRequest's based on the Utterance's at the bottom of the page. Once you submit a request, verify that the response output SSML is per your needs. Additionally, it is helpful to walk through the script a few times to ensure that the application supports the different user scenarios.
-3. Once the script works locally, deploy it to the cloud and configure Alexa to talk to the underlying skill using Amazon's Skill Configuration site. At this stage you will likely benefit from testing by iterating rapidly with: invoking the voice-client, examining the conversational-app's logs, and tweaking the utterances in Amazon's Configuration.
+3. Once the script works locally, deploy it to the cloud and configure Alexa to talk to the underlying skill using Amazon's Skill Configuration site. At this stage you will likely benefit from testing by iterating rapidly with: invoking the voice-client, examining the conversational-app's logs, and tweaking the utterances in Amazon's Configuration. Testing a voice client is likely best done first through a PC based tool that provides additional debugging information like the [Violet Client](https://github.com/sfxi/violet-client) or a web testing tool like [Echosim.io](https://echosim.io).
 
 ## Contribution/Supporting
 

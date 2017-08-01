@@ -7,12 +7,14 @@ var violetTime = require('../lib/violetTime.js')(violet);
 var violetSFStore = require('../lib/violetStoreSF.js')(violet);
 
 violetSFStore.store.propOfInterest = {
-  'VTO_Preference': ['Id*', 'hours', 'likes', 'skills']
+  'VTO_Preference': ['Id*', 'name', 'hours', 'likes', 'skills'],
+  'Activity': ['Id*', 'Likes', 'Hours', 'Skills']
 }
 
 var likes = "photography";
 var skill = "sales force";
 var hours = "4";
+var personName = "Gina";
 
 violet.addKeyTypes({
 });
@@ -26,7 +28,7 @@ violet.addTopLevelGoal();
 violet.respondTo({
   expecting: ['Can you help me find a new volunteer opportunity', 'Find a new volunteer opportunity', 'I would like to find a volunteer opportunity'],
   resolve: function *(response) {
-   var VTOPreferenceObject = yield response.load('<<VTO_Preference>>', null, null, null, null);
+   var VTOPreferenceObject = yield response.load('<<VTO_Preference>>', '<<VTO_Preference.name>>', personName, null, null);
    response.say('Sure.');
    console.log(VTOPreferenceObject);
    if (VTOPreferenceObject.length > 0) {
@@ -77,8 +79,11 @@ violet.defineGoal({
   prompt: ['Okay, I see that you have {{hours}} hours left to meet this quarter\'s volunteeer opportunity. <break time=“500ms”/>Should I look for opportunities that meet those hours'],
   respondTo: [{
     expecting: ['Yes', 'Sure'],
-    resolve: (response) => {
-     response.addGoal('{{searchVTOMatchingHours}}');
+    resolve: function *(response) {
+      var s1 = '\'%' + response.get('{{likes}}') + '%\'';
+      console.log(s1);
+      var results = yield response.load('Activity', null, null, ' Likes__c LIKE  ' + s1﻿);
+      response.addGoal('{{searchVTOMatchingHours}}');
   }}, {
     expecting: ['No'],
     resolve: (response) => {
@@ -103,11 +108,11 @@ violet.defineGoal({
 
 violet.defineGoal({
   goal: '{{searchVTOAllHours}}',
-  prompt: ['Here are the opportunities that I found near you. Would you like me to email them to you'],
+  prompt: ['Here are the opportunities that I found near you. Would you like me to text them to you'],
   respondTo: [{
     expecting: ['Yes', 'Sure'],
     resolve: (response) => {
-     response.say('I will email to you');
+     response.say('I will text them to you');
      response.say('Have fun');
   }}, {
     expecting: ['No'],

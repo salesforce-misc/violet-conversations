@@ -36,7 +36,7 @@ See `server.js` for a typical initialization and script loading code. Every
 voice script should start will typically start with declaring `violet` for use
 throughout:
 ```javascript
-var violet = require('../lib/violet.js')('einstein');
+var violet = require('../lib/violet.js').script();
 ```
 
 In the above `einstein` is the script name and defines the end-point where the

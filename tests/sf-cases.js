@@ -1,5 +1,5 @@
 
-var violet = require('../lib/violet.js')('einstein');
+var violet = require('../lib/violet.js').script();
 var violetTime = require('../lib/violetTime.js')(violet);
 
 var violetSFStore = require('../lib/violetSFStore.js');

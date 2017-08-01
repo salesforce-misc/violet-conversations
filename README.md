@@ -1,6 +1,6 @@
 ## Table Of Contents
 
-* [Prerequisites & Setup](#prerequisites-etup)
+* [Prerequisites & Setup](#prerequisites--setup)
 * [Getting Started with Voice Scripting](#getting-started-with-voice-scripting)
   * [Basics](#basics)
   * [Conversational Goals](#goals)

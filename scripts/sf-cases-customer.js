@@ -67,7 +67,7 @@ violet.respondTo({
     // TODO: put a hook in sfdc, when we hear back, do the below (and test that it works)
     // TODO: test and implement below
     //violet.sendAlertMessage('One of your cases has changed state');
-    //... in violet implennt as `_setAlert('{{message}}')` and have callback to clear
+    //... in violet implennt as `_setAlert('[[message]]')` and have callback to clear
 
 }
 

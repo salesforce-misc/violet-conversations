@@ -75,9 +75,9 @@ var respondWithCaseResults = (response, results)=>{
   response.say(out);
 
   if (results.length>3)
-    response.addGoal('{{hearPastThreeCases}}')
+    response.addGoal('[[hearPastThreeCases]]')
   else
-    response.addGoal('{{interactWithCases}}')
+    response.addGoal('[[interactWithCases]]')
 }
 var respondWithMoreCaseResults = (response, results, start=0)=>{
   var out = '';
@@ -87,9 +87,9 @@ var respondWithMoreCaseResults = (response, results, start=0)=>{
   response.say(out);
 
   if (results.length>10 && start==0) // we dont speak past 17 cases
-    response.addGoal('{{hearPastTenCases}}')
+    response.addGoal('[[hearPastTenCases]]')
   else
-    response.addGoal('{{interactWithCases}}')
+    response.addGoal('[[interactWithCases]]')
 }
 
 var getCaseFromResults = (response)=>{
@@ -103,7 +103,7 @@ var getCaseFromResults = (response)=>{
   if (caseNo == undefined || caseNo == null || caseNo<0 || caseNo>17)
     return response.say(errMgrInvalidCaseNo);
 
-  var results = response.get('{{CaseResults}}');
+  var results = response.get('[[CaseResults]]');
   if (results == undefined || results == null || !Array.isArray(results))
     return resposne.say(errMgrNotFoundCases);
   if (results.length<caseNo)
@@ -113,40 +113,40 @@ var getCaseFromResults = (response)=>{
 }
 
 violet.defineGoal({
-  goal: '{{hearPastThreeCases}}',
+  goal: '[[hearPastThreeCases]]',
   prompt: ['Do you want to hear more cases?'],
   respondTo: [{
     expecting: ['Yes'],
     resolve: (response) => {
      response.say('Getting more cases.');
-     var results = response.get('{{CaseResults}}');
+     var results = response.get('[[CaseResults]]');
      respondWithMoreCaseResults(response, results);
   }}, {
     expecting: ['No'],
     resolve: (response) => {
-      response.addGoal('{{interactWithCases}}');
+      response.addGoal('[[interactWithCases]]');
   }}]
 });
 
 violet.defineGoal({
-  goal: '{{hearPastTenCases}}',
+  goal: '[[hearPastTenCases]]',
   prompt: ['Do you want to hear more cases?'],
   respondTo: [{
     expecting: ['Yes'],
     resolve: (response) => {
      response.say('Getting more cases.');
-     var results = response.get('{{CaseResults}}');
+     var results = response.get('[[CaseResults]]');
      respondWithMoreCaseResults(response, results, 10);
   }}, {
     expecting: ['No'],
     resolve: (response) => {
-      response.addGoal('{{interactWithCases}}');
+      response.addGoal('[[interactWithCases]]');
   }}]
 });
 
 
 violet.defineGoal({
-  goal: '{{interactWithCases}}',
+  goal: '[[interactWithCases]]',
   prompt: ['Would you like to hear or set the priority, change status, or add a comment along with the case number'],
   respondTo: [{
     expecting: ['{hear|} priority for case [[caseNo]]'],
@@ -170,7 +170,7 @@ violet.defineGoal({
       });
       response.say('Case ' + caseObj.Subject + ' has status updated to [[caseStatus]]');
   }}, {
-    expecting: ['Add comment to case [[caseNo]] saying {{commentText}}'],
+    expecting: ['Add comment to case [[caseNo]] saying {{commentText]]'],
     resolve: function *(response) {
       var caseObj = getCaseFromResults(response);
       yield response.store('CaseComment*', {
@@ -186,7 +186,7 @@ violet.respondTo({
   expecting: ['what are my {open|} cases'],
   resolve: function *(response) {
     var results = yield response.load('Case*', 'Owner*.Alias*', ownerAlias, "Status <> 'Closed'");
-    response.set('{{CaseResults}}', results);
+    response.set('[[CaseResults]]', results);
     respondWithCaseResults(response, results);
 }});
 
@@ -194,7 +194,7 @@ violet.respondTo({
   expecting: ['what are my [[caseStatus]] cases', 'what cases of mine have status {set to|} [[caseStatus]]'],
   resolve: function *(response) {
     var results = yield response.load('Case*', 'Owner*.Alias*', ownerAlias, "Status = '" + response.get('[[caseStatus]]') + "'");
-    response.set('{{CaseResults}}', results);
+    response.set('[[CaseResults]]', results);
     respondWithCaseResults(response, results);
 }});
 
@@ -202,7 +202,7 @@ violet.respondTo({
   expecting: ['what are my [[casePriority]] priority cases', 'what cases of mine have priority {set to|} [[casePriority]]'],
   resolve: function *(response) {
     var results = yield response.load('Case*', 'Owner*.Alias*', ownerAlias, "Priority = '" + response.get('[[casePriority]]') + "'");
-    response.set('{{CaseResults}}', results);
+    response.set('[[CaseResults]]', results);
     respondWithCaseResults(response, results);
 }});
 
@@ -211,7 +211,7 @@ violet.respondTo({
               'what cases of mine have priority {set to|} [[casePriority]] and status {set to|} [[caseStatus]]'],
   resolve: function *(response) {
     var results = yield response.load('Case*', 'Owner*.Alias*', ownerAlias, "(Status = '" + response.get('[[caseStatus]]') + "' AND Priority = '" + resposne.get('[[casePriority]]') +  "')");
-    response.set('{{CaseResults}}', results);
+    response.set('[[CaseResults]]', results);
     respondWithCaseResults(response, results);
 }});
 

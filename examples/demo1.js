@@ -81,13 +81,13 @@ violet.respondTo([
 violet.respondTo("My name is [[name]] and I am [[age]] {years old|}",
   (response) => {
     response.out("Welcome [[name]] I heard that you are [[age]]. I will remember you.");
-    response.set('{{name}}', response.get('[[name]]') );
-    response.set('{{age}}', response.get('[[age]]') );
+    response.set('[[name]]', response.get('[[name]]') );
+    response.set('[[age]]', response.get('[[age]]') );
 });
 
 violet.respondTo(["how old am I", "do you know my age"],
   (response) => {
-    if (response.get('{{age}}'))
+    if (response.get('[[age]]'))
       response.out("I remember you telling me that you are {{age}}");
     else
       response.out("I do not know your age.");
@@ -95,7 +95,7 @@ violet.respondTo(["how old am I", "do you know my age"],
 
 violet.respondTo(["what do I call myself", "do you know my name"],
   (response) => {
-    if (response.get('{{name}}'))
+    if (response.get('[[name]]'))
       response.out("I remember you telling me that you are {{name}}");
     else
       response.out("I do not know your name.");

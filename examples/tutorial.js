@@ -42,12 +42,12 @@ violet.respondTo({
   optionalPostfix: 'years old',
   resolve: (response) => {
    response.say('I will remember the you are [[age]]')
-   response.set('{{age}}', response.get('[[age]]') );
+   response.set('[[age]]', response.get('[[age]]') );
 }});
 
 violet.respondTo('How old am I?',
   (response) => {
-    if (response.get('{{age}}'))
+    if (response.get('[[age]]'))
       response.say('You are [[age]] years old');
     else
       response.say('I do not know how old you are');
@@ -106,25 +106,25 @@ violet.addKeyTypes({
 
 violet.respondTo('What time does the [[airline]] flight arrive', 'from [[city]]',
   (response) => {
-    response.addGoal('{{flightArrivalTime}}');
+    response.addGoal('[[flightArrivalTime]]');
 });
 
 violet.respondTo('What time does the flight arrive from [[city]]',
   (response) => {
-    response.addGoal('{{flightArrivalTime}}');
+    response.addGoal('[[flightArrivalTime]]');
 });
 
 violet.defineGoal({
-  goal: '{{flightArrivalTime}}',
+  goal: '[[flightArrivalTime]]',
   resolve: (response) => {
     if (!response.goalFilled('airline')
         || !response.goalFilled('city')
         || !response.goalFilled('flightDay') ) {
           return false; // dependent goals not met
         }
-    var airline = response.get('{{airline}}');
-    var city = response.get('{{city}}');
-    var flightDay = response.get('{{flightDay}}');
+    var airline = response.get('[[airline]]');
+    var city = response.get('[[city]]');
+    var flightDay = response.get('[[flightDay]]');
     flightArrivalTimeSvc.query(airline, city, flightDay, (arrivalTime)=>{
       response.say('Flight ' + airline + ' from ' + city + ' is expected to arrive ' + flightDay + ' at ' + arrivalTime);
     });
@@ -133,44 +133,44 @@ violet.defineGoal({
 });
 
 violet.defineGoal({
-  goal: '{{airline}}',
+  goal: '[[airline]]',
   /*(resolve: func) OR (prompt and [L;respondTo)*/
   prompt: ['What airline', 'What airlines are you looking for the arrival time?'],
   respondTo: [{
     expecting: '[[airline]]',
     resolve: (response) => {
-      response.set('{{airline}}', response.get('[[airline]]') );
+      response.set('[[airline]]', response.get('[[airline]]') );
   }}]
 });
 
 violet.defineGoal({
-  goal: '{{city}}',
+  goal: '[[city]]',
   prompt: ['What city do you want the flight to be arriving from'],
   respondTo: [{
     expecting: '[[city]]',
     resolve: (response) => {
-      response.set('{{city}}', response.get('[[city]]') );
+      response.set('[[city]]', response.get('[[city]]') );
   }}]
 });
 
 violet.defineGoal({
-  goal: '{{flightDay}}',
+  goal: '[[flightDay]]',
   prompt: 'Are you looking for flights today, tomorrow, or the day after?',
   respondTo: [{
     expecting: '[[flightDay]]',
     resolve: (response) => {
-      response.set('{{flightDay}}', response.get('[[flightDay]]') );
+      response.set('[[flightDay]]', response.get('[[flightDay]]') );
   }}]
 });
 
 
 // violet.defineGoal({
-//   goal: '{{foo}}',
+//   goal: '[[foo]]',
 //   describe: '????'
 //   ask: ['x', 'y', 'z'],
 //   response: [],
 //   process: (response) => {
-//     response.addGoal('{{xxxx}}');
+//     response.addGoal('[[xxxx]]');
 //     response.say('???')
 //     response.ask('ssss')
 //   }

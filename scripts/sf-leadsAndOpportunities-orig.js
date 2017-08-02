@@ -59,29 +59,29 @@ violet.respondTo({
   expecting: ['{to|} create a {new|} lead'],
   resolve: (response) => {
     response.say("OK, let's create a new lead.");
-    response.addGoal('{{createLeadName}}');
+    response.addGoal('[[createLeadName]]');
 }});
 
 violet.defineGoal({
-  goal: '{{createLeadName}}',
+  goal: '[[createLeadName]]',
   prompt: ["What is the person's first and last name?"],
   respondTo: [{
     expecting: ['[[name]]'],
     resolve: (response) => {
       response.say("Got it. the name is, [[name]].")
-      response.set('{{name}}', response.get('[[name]]'));
-      response.addGoal('{{createLeadCompany}}');
+      response.set('[[name]]', response.get('[[name]]'));
+      response.addGoal('[[createLeadCompany]]');
   }}]
 });
 
 violet.defineGoal({
-  goal: '{{createLeadCompany}}',
+  goal: '[[createLeadCompany]]',
   prompt: ["What is the company name?"],
   respondTo: [{
     expecting: ['[[company]]'],
     resolve: (response) => {
       response.say("Bingo! I created a new lead for {{name}} with the company name [[company]]")
-      var names = response.get('{{name}}').split(' ');
+      var names = response.get('[[name]]').split(' ');
       response.store('Lead*', {
         'FirstName*': names[0],
         'LastName*': names[1],

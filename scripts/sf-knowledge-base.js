@@ -36,9 +36,9 @@ var respondWithKnowledgeSearchResults = (response, results)=>{
   response.say(out);
 
   if (results.length>3)
-    response.addGoal('{{hearPastThreeCases}}')
+    response.addGoal('[[hearPastThreeCases]]')
   else
-    response.addGoal('{{interactWithCases}}')
+    response.addGoal('[[interactWithCases]]')
 }
 var respondWithMoreKnowledgeSearchResults = (response, results, start=0)=>{
   var out = '';
@@ -48,9 +48,9 @@ var respondWithMoreKnowledgeSearchResults = (response, results, start=0)=>{
   response.say(out);
 
   if (results.length>10 && start==0) // we dont speak past 17 cases
-    response.addGoal('{{hearPastTenCases}}')
+    response.addGoal('[[hearPastTenCases]]')
   else
-    response.addGoal('{{interactWithCases}}')
+    response.addGoal('[[interactWithCases]]')
 }
 
 var getArticleFromResults = (response)=>{
@@ -64,7 +64,7 @@ var getArticleFromResults = (response)=>{
   if (articleNo == undefined || articleNo == null || articleNo<0 || articleNo>17)
     return response.say(errMgrInvalidArticleNo);
 
-  var results = response.get('{{KnowledgeSearchResults}}');
+  var results = response.get('[[KnowledgeSearchResults]]');
   if (results == undefined || results == null || !Array.isArray(results))
     return resposne.say(errMgrNotFoundArticles);
   if (results.length<articleNo)
@@ -74,40 +74,40 @@ var getArticleFromResults = (response)=>{
 }
 
 violet.defineGoal({
-  goal: '{{hearPastThreeCases}}',
+  goal: '[[hearPastThreeCases]]',
   prompt: ['Do you want to hear more cases?'],
   respondTo: [{
     expecting: ['Yes'],
     resolve: (response) => {
      response.say('Getting more cases.');
-     var results = response.get('{{KnowledgeSearchResults}}');
+     var results = response.get('[[KnowledgeSearchResults]]');
      respondWithMoreKnowledgeSearchResults(response, results);
   }}, {
     expecting: ['No'],
     resolve: (response) => {
-      response.addGoal('{{interactWithCases}}');
+      response.addGoal('[[interactWithCases]]');
   }}]
 });
 
 violet.defineGoal({
-  goal: '{{hearPastTenCases}}',
+  goal: '[[hearPastTenCases]]',
   prompt: ['Do you want to hear more cases?'],
   respondTo: [{
     expecting: ['Yes'],
     resolve: (response) => {
      response.say('Getting more cases.');
-     var results = response.get('{{KnowledgeSearchResults}}');
+     var results = response.get('[[KnowledgeSearchResults]]');
      respondWithMoreKnowledgeSearchResults(response, results, 10);
   }}, {
     expecting: ['No'],
     resolve: (response) => {
-      response.addGoal('{{interactWithCases}}');
+      response.addGoal('[[interactWithCases]]');
   }}]
 });
 
 
 violet.defineGoal({
-  goal: '{{interactWithCases}}',
+  goal: '[[interactWithCases]]',
   prompt: ['Would you like to hear more from an article or have an article sent to you.'],
   respondTo: [{
     expecting: ['{hear|} more about article [[articleNo]]'],
@@ -128,7 +128,7 @@ violet.respondTo({
   expecting: ['I am looking for {information on|} [[searchTerm]]'],
   resolve: function *(response) {
     var results = yield response._persistentStore().search('KnowledgeArticleVersion*', response.get('[[searchTerm]]'));
-    response.set('{{KnowledgeSearchResults}}', results);
+    response.set('[[KnowledgeSearchResults]]', results);
     respondWithKnowledgeSearchResults(response, results);
 }});
 

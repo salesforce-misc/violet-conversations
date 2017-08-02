@@ -97,12 +97,12 @@ flight arrival information.
 ```javascript
 violet.respondTo('What time does the [[airline]] flight arrive', 'from [[city]]',
   (response) => {
-    response.addGoal('{{flightArrivalTime}}');
+    response.addGoal('[[flightArrivalTime]]');
 });
 
 violet.respondTo('What time does the flight arrive from [[city]]',
   (response) => {
-    response.addGoal('{{flightArrivalTime}}');
+    response.addGoal('[[flightArrivalTime]]');
 });
 ```
 
@@ -111,16 +111,16 @@ in the script. Goals are one of two types. The first type of goal is when
 additional information is needed
 ```javascript
 violet.defineGoal({
-  goal: '{{flightArrivalTime}}',
+  goal: '[[flightArrivalTime]]',
   resolve: (response) => {
     if (!response.goalFilled('airline')
         || !response.goalFilled('city')
         || !response.goalFilled('flightDay') ) {
           return false; // dependent goals not met
         }
-    var airline = response.get('{{airline}}');
-    var city = response.get('{{city}}');
-    var flightDay = response.get('{{flightDay}}');
+    var airline = response.get('[[airline]]');
+    var city = response.get('[[city]]');
+    var flightDay = response.get('[[flightDay]]');
     flightArrivalTimeSvc.query(airline, city, flightDay, (arrivalTime)=>{
       response.say('Flight ' + airline + ' from ' + city + ' is expected to arrive ' + flightDay + ' at ' + arrivalTime);
     });
@@ -131,12 +131,12 @@ violet.defineGoal({
 
 ```javascript
 violet.defineGoal({
-  goal: '{{city}}',
+  goal: '[[city]]',
   prompt: ['What city do you want the flight to be arriving from'],
   respondTo: [{
     expecting: '[[city]]',
     resolve: (response) => {
-      response.set('{{city}}', response.get('[[city]]') );
+      response.set('[[city]]', response.get('[[city]]') );
   }}]
 });
 ```
@@ -208,7 +208,7 @@ Possible spoken commands:
 * Advance 5 days, hours, or minutes
 
 ```javascript
-violetTime.repeat(48*60, ()=>{ violet.addGoal('{{checkIn}}'); });
+violetTime.repeat(48*60, ()=>{ violet.addGoal('[[checkIn]]'); });
 ```
 
 

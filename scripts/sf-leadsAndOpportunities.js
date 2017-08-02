@@ -55,21 +55,21 @@ violet.respondTo({
   expecting: ['{to|} create a {new|} lead'],
   resolve: (response) => {
     response.say("OK, let's create a new lead.");
-    response.addGoal('[[createLead]]');
+    response.addGoal('createLead');
 }});
 
 violet.defineGoal({
-  goal: '[[createLead]]',
+  goal: 'createLead',
   resolve: (response) => {
     if (!response.goalFilled('leadName') || !response.goalFilled('leadCompany') ) {
       return false; // dependent goals not met
     }
     response.say("Bingo! I created a new lead for [[leadName]] with the company name [[leadCompany]]")
-    var names = response.get('[[leadName]]').split(' ');
+    var names = response.get('leadName').split(' ');
     response.store('Lead*', {
       'FirstName*': names[0],
       'LastName*': names[1],
-      'Company*': response.get('[[leadCompany]]')
+      'Company*': response.get('leadCompany')
     });
   }
 });
@@ -77,7 +77,7 @@ violet.defineGoal({
 var ack = (response) => { response.say(['Got it.', 'Great.']); }
 
 violet.defineGoal({
-  goal: '[[leadName]]',
+  goal: 'leadName',
   prompt: ["What is the person's first and last name?"],
   respondTo: [{
     expecting: ['persons name is [[leadName]]'],
@@ -88,7 +88,7 @@ violet.defineGoal({
 });
 
 violet.defineGoal({
-  goal: '[[leadCompany]]',
+  goal: 'leadCompany',
   prompt: ["What is the company name?"],
   respondTo: [{
     expecting: ['company name is [[leadCompany]]'],
@@ -122,7 +122,7 @@ violet.respondTo({
 violet.respondTo({
   expecting: ['{for|about} opportunity [[opportunityName]]'],
   resolve: function *(response) {
-    var results = yield response.load('Opportunity*', 'Name*', response.get('[[opportunityName]]'));
+    var results = yield response.load('Opportunity*', 'Name*', response.get('opportunityName'));
     if (results.length == 0) {
       response.say('Sorry, I could not find an Opportunity named, [[opportunityName]]');
       return;

@@ -34,37 +34,37 @@ violet.respondTo({
   ],
   resolve: function (response) {
     ack(response);
-    response.addGoal('[[findActivity]]');
+    response.addGoal('findActivity');
 }});
 
 //accept number of people
 violet.defineGoal({
-  goal: '[[teamSize]]',
+  goal: 'teamSize',
   prompt: ["For how many people?"],
   respondTo: [{
     expecting: ['[[teamSize]] people.'],
     resolve: (response) => {
       ack(response);
       response.say("For [[teamSize]] people.", /*quick*/true);
-      response.set('[[teamSize]]', response.get('[[teamSize]]'));
+      response.set('teamSize', response.get('teamSize'));
   }}]
 });
 
 //accept number of hours
 violet.defineGoal({
-  goal: '[[activityDuration]]',
+  goal: 'activityDuration',
   prompt: ["How many hours would you like to volunteer for?"],
   respondTo: [{
     expecting: ['[[activityDuration]] hours.'],
     resolve: (response) => {
       ack(response);
       response.say("[[activityDuration]] hours.", /*quick*/true);
-      response.set('[[activityDuration]]', response.get('[[activityDuration]]'));
+      response.set('activityDuration', response.get('activityDuration'));
   }}]
 });
 
 violet.defineGoal({
-  goal: '[[findActivity]]',
+  goal: 'findActivity',
   resolve: function *(response) {
   if (!response.goalFilled('teamSize') || !response.goalFilled('activityDuration') ) {
     return false; // dependent goals not met

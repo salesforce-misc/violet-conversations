@@ -18,25 +18,25 @@ violet.addPhraseEquivalents([
 violet.respondTo({
   expecting: ['Book a hotel in [[destination]] check in [[checkinDate]] check out [[checkoutDate]]'],
   resolve: (response) => {
-    addGoal('[[bookHotel]]');
+    addGoal('bookHotel');
   }
 });
 
 violet.defineGoal({
-  goal: '[[bookHotel]]',
+  goal: 'bookHotel',
   resolve: (response) => {
-    if (!response.goalFilled('[[checkinDate]]', '[[checkinDate]]')
-        || !response.goalFilled('[[checkoutDate]]', '[[checkoutDate]]')
-        || !response.goalFilled('[[destination]]', '[[destination]]') ) {
+    if (!response.goalFilled('checkinDate')
+        || !response.goalFilled('checkoutDate')
+        || !response.goalFilled('destination') ) {
           return false; // dependent goals not met
         }
-    var checkinDate = response.get('[[checkinDate]]');
-    var checkoutDate = response.get('[[checkoutDate]]');
-    var destination = response.get('[[destination]]');
+    var checkinDate = response.get('checkinDate');
+    var checkoutDate = response.get('checkoutDate');
+    var destination = response.get('destination');
     hotelReservationService.getReservationInfo(checkinDate, checkoutDate, destination, (numNights, dailyRate)=>{
-      response.set('[[numNights]]', numNights);
-      response.set('[[dailyRate]]', dailyRate);
-      response.addGoal('[[confirmBooking]]');
+      response.set('numNights', numNights);
+      response.set('dailyRate', dailyRate);
+      response.addGoal('confirmBooking');
       response.ask('Book hotel room at ' + destination + ' checking in on ' + checkinDate + ' for ' + numNights ' at ' + dailyRate + ' dollars per night');
       // response.say('Reserved hotel room');
     });
@@ -46,43 +46,43 @@ violet.defineGoal({
 
 
 violet.defineGoal({
-  goal: '[[checkinDate]]',
+  goal: 'checkinDate',
   prompt: ['What date', 'When are you arriving?'],
 });
 violent.respondTo({
     expecting: ['[[checkinDate]]', '[[checkinDate]]'],
     resolve: (response) => {
-      response.set('[[checkinDate]]', response.get('[[checkinDate]]') );
+      response.set('checkinDate', response.get('checkinDate') );
     }
 });
 
 
 violet.defineGoal({
-  goal: '[[checkoutDate]]',
+  goal: 'checkoutDate',
   prompt: 'xxxx xxxx',
 });
 violent.respondTo({
     expecting: ['[[checkoutDate]]', '[[checkoutDate]]'],
     resolve: (response) => {
-      response.set('[[checkoutDate]]', response.get('[[checkoutDate]]') );
+      response.set('checkoutDate', response.get('checkoutDate') );
     }
 });
 
 
 violet.defineGoal({
-  goal: '[[destination]]',
+  goal: 'destination',
   prompt: 'xxxx xxxx',
 });
 violent.respondTo({
     expecting: ['[[destination]]', '[[destination]]'],
     resolve: (response) => {
-      response.set('[[destination]]', response.get('[[destination]]') );
+      response.set('destination', response.get('destination') );
     }
 });
 
 
 violet.defineGoal({
-  goal: '[[confirmBooking]]',
+  goal: 'confirmBooking',
   prompt: 'Book hotel room at {{destination}} checking in on {{checkinDate}} for {{numNights}} at {{dailyRate}} dollars per night'
 });
 
@@ -105,7 +105,7 @@ violet.respondTo({
 violet.respondTo({
   expecting: ['[[confirmBooking]]', 'Change check in date'],
   resolve: (response) => {
-    response.addGoal('[[checkinDate]]');
+    response.addGoal('checkinDate');
   }
 });
 

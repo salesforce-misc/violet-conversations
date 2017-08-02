@@ -61,7 +61,7 @@ violet.respondTo({
 violet.defineGoal({
   goal: 'createLead',
   resolve: (response) => {
-    if (!response.goalFilled('leadName') || !response.goalFilled('leadCompany') ) {
+    if (!response.ensureGoalFilled('leadName') || !response.ensureGoalFilled('leadCompany') ) {
       return false; // dependent goals not met
     }
     response.say("Bingo! I created a new lead for [[leadName]] with the company name [[leadCompany]]")

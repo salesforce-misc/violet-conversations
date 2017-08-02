@@ -66,7 +66,7 @@ violet.defineGoal({
 violet.defineGoal({
   goal: 'findActivity',
   resolve: function *(response) {
-  if (!response.goalFilled('teamSize') || !response.goalFilled('activityDuration') ) {
+  if (!response.ensureGoalFilled('teamSize') || !response.ensureGoalFilled('activityDuration') ) {
     return false; // dependent goals not met
     }
     var results = yield response.load('Activity', null, null, null);

@@ -25,9 +25,9 @@ violet.respondTo({
 violet.defineGoal({
   goal: 'bookHotel',
   resolve: (response) => {
-    if (!response.goalFilled('checkinDate')
-        || !response.goalFilled('checkoutDate')
-        || !response.goalFilled('destination') ) {
+    if (!response.ensureGoalFilled('checkinDate')
+        || !response.ensureGoalFilled('checkoutDate')
+        || !response.ensureGoalFilled('destination') ) {
           return false; // dependent goals not met
         }
     var checkinDate = response.get('checkinDate');

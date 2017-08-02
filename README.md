@@ -113,9 +113,9 @@ additional information is needed
 violet.defineGoal({
   goal: 'flightArrivalTime',
   resolve: (response) => {
-    if (!response.goalFilled('airline')
-        || !response.goalFilled('city')
-        || !response.goalFilled('flightDay') ) {
+    if (!response.ensureGoalFilled('airline')
+        || !response.ensureGoalFilled('city')
+        || !response.ensureGoalFilled('flightDay') ) {
           return false; // dependent goals not met
         }
     var airline = response.get('airline');

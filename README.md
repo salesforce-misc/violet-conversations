@@ -7,9 +7,10 @@ project is configured to create a skill at the `alexa/einstein` end point.
 
 ## Table Of Contents
 
-* [Prerequisites & Setup](#prerequisites--setup)
-* [Deploying a Conversation Script](#deploying-a-conversation-script)
-* [Getting Started with Voice Scripting](#getting-started-with-voice-scripting)
+* [Getting Started](#getting-started)
+  * [Setup](#setup)
+  * [Deploying](#deploying)
+* [Voice Scripting](#voice-scripting)
   * [Basics](#basics)
   * [Conversational Goals](#goals)
 * [Plugins](#plugins)
@@ -23,16 +24,19 @@ project is configured to create a skill at the `alexa/einstein` end point.
 * [Filing issues](#filing-issues)
 
 
-## Prerequisites & Setup
+## Getting Started
 
-The Conversation Engine needs to run in the cloud so that Amazon's voice servers can access it. It can also be run locally via a non-voice (web-only) interface.
+This project contains the Conversation Engine and a number of Scripts that we have built and can be used as the basis of your Voice Application. To use the Engine and the Scripts, they need to run in the cloud so that Amazon's voice servers can access it. These can also be run locally via a non-voice (web-only) interface.
+
+### Setup
 
 * Install Node v6 or greater - if you need to maintain an older version of node, consider using `nvm`.
 
+* Get the code: If you want the latest fixes, we would recommend to get this via git: `git clone git@github.com:sfxi/violet-conversations.git`. You can alternatively get the (latest release)[https://github.com/sfxi/violet-conversations/releases/latest].
+
 * Download dependencies: `npm install`
 
-* If you are using the Salesforce integration plugin (as used by the Diabetes
-Script) you will need to set up environment variables (for more information see
+* Environment variables: If you are using the Salesforce integration plugin (as used by the Leads & Opportunities Script) you will need to set up variables (for more information see
 the [Persistence](#persistence) plugin section below).
 
 * Run locally: `node <path_to_script>` (the script will print the path to the
@@ -47,17 +51,20 @@ intent schemas (for the interaction model) and supported utterances, as well as
 for testing the script logic.
 
 
-## Deploying a Conversation Script
+### Deploying
 
-Deploy the service (already has `Procfile` for deploying to `heroku`), and use
-those settings to create a new skill at Amazon's Skill Configuration Site:
-https://developer.amazon.com/edw/home.html#/skills/list. The skill will be
+The code already has a `Procfile` so it is easy to deploy to `heroku`). When deploying make sure to configure the environment variables on the deployed server. Heroku lets you do this by typing something similar to (you will need to use the right values for `XXX`):
+```
+heroku config:set V_SFDC_USERNAME=XXX V_SFDC_PASSWORD=XXX V_SFDC_CLIENT_ID=XXX V_SFDC_CLIENT_SECRET=XXX
+```
+
+Once deployed you will need to use your servers settings to create a new skill at [Amazon's Skill Configuration Site](https://developer.amazon.com/edw/home.html#/skills/list). The skill will be
 using a `Custom Interaction Model`, will need values from the services skill
 configuration page.
 
 For step-by-step instructions - see here: https://salesforce.quip.com/I8YOAC3Q1UGC
 
-## Getting Started with Voice Scripting
+## Voice Scripting
 
 See `server.js` for a typical initialization and script loading code. Every
 voice script should start will typically start with declaring `violet` for use
@@ -239,7 +246,7 @@ var violetClientTx = require('../lib/violetClientTx.js')(violet);
 Allows setting voice and creating alerts (the latter needs testing)
 
 
-## Advanced
+## Advanced Topics
 
 ### Custom types
 

@@ -55,6 +55,8 @@ for testing the script logic.
 
 The code already has a `Procfile` so it is easy to deploy to `heroku`). When deploying make sure to configure the environment variables on the deployed server. Heroku lets you do this by typing something similar to (you will need to use the right values for `XXX`):
 ```
+heroku create
+git push heroku master
 heroku config:set V_SFDC_USERNAME=XXX V_SFDC_PASSWORD=XXX V_SFDC_CLIENT_ID=XXX V_SFDC_CLIENT_SECRET=XXX
 ```
 
@@ -64,17 +66,17 @@ configuration page.
 
 For step-by-step instructions - see here: https://salesforce.quip.com/I8YOAC3Q1UGC
 
+If you want to share a Voice Application that you have created without publishing, you might want to consider using a shared Amazon Developer account.
+
 ## Voice Scripting
 
-See `server.js` for a typical initialization and script loading code. Every
-voice script should start will typically start with declaring `violet` for use
+Scripts are initialized and loaded in `server.js` which amongst other things allows settings up a prefix for the alexa endpoint (default is `/alexa`) and a name for the script (which is added to the endpoint).
+
+Every voice script should start will typically start with declaring `violet` for use
 throughout:
 ```javascript
 var violet = require('../lib/violet.js').script();
 ```
-
-In the above `einstein` is the script name and defines the end-point where the
-script logic is to be made available.
 
 See `examples/tutorial.js` for documentation on how to build a skill.
 

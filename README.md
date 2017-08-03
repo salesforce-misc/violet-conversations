@@ -1,28 +1,27 @@
-## Table Of Contents
-
-* [Prerequisites & Setup](#prerequisites--setup)
-* [Getting Started with Voice Scripting](#getting-started-with-voice-scripting)
-  * [Basics](#basics)
-  * [Conversational Goals](#goals)
-  * [Plugins](#plugins)
-    * [Persistence](#persistence)
-    * [Timed delay](#timed-delay)
-    * [Violet Client Integration](#violet-client-integration)
-  * [Advanced](#advanced)
-    * [Custom types](#custom-types)
-* [Local execution](#local-execution)
-* [Deploying a Conversation Script](#deploying-a-conversation-script)
-* [Debugging Conversations](#debugging-conversations)
-* [Contribution/Supporting](#contributionsupporting)
-* [Filing issues](#filing-issues)
-
-
 # violet-conversations
 
 `violet-conversations` provides support for building sophisticated
 conversational apps/bots on Amazon's Alexa. Conversations are built via scripts,
 and Violet provides a conversation engine that runs as an Alexa Skill. This
 project is configured to create a skill at the `alexa/einstein` end point.
+
+## Table Of Contents
+
+* [Prerequisites & Setup](#prerequisites--setup)
+* [Deploying a Conversation Script](#deploying-a-conversation-script)
+* [Getting Started with Voice Scripting](#getting-started-with-voice-scripting)
+  * [Basics](#basics)
+  * [Conversational Goals](#goals)
+* [Plugins](#plugins)
+  * [Persistence](#persistence)
+  * [Timed delay](#timed-delay)
+  * [Violet Client Integration](#violet-client-integration)
+* [Advanced Topics](#advanced-topics)
+  * [Custom types](#custom-types)
+* [Debugging Conversations](#debugging-conversations)
+* [Contribution/Supporting](#contributionsupporting)
+* [Filing issues](#filing-issues)
+
 
 ## Prerequisites & Setup
 
@@ -36,7 +35,27 @@ The Conversation Engine needs to run in the cloud so that Amazon's voice servers
 Script) you will need to set up environment variables (for more information see
 the [Persistence](#persistence) plugin section below).
 
-* To run locally: `npm start`
+* Run locally: `node <path_to_script>` (the script will print the path to the
+url for the web interface).
+
+    You can also run the full server by doing: `npm start` but you will need to
+setup the `SCRIPT_NAME` environment variable so that the engine knows which
+script to run.
+
+    Local execution is used to ensure that there are no syntax errors, to view
+intent schemas (for the interaction model) and supported utterances, as well as
+for testing the script logic.
+
+
+## Deploying a Conversation Script
+
+Deploy the service (already has `Procfile` for deploying to `heroku`), and use
+those settings to create a new skill at Amazon's Skill Configuration Site:
+https://developer.amazon.com/edw/home.html#/skills/list. The skill will be
+using a `Custom Interaction Model`, will need values from the services skill
+configuration page.
+
+For step-by-step instructions - see here: https://salesforce.quip.com/I8YOAC3Q1UGC
 
 ## Getting Started with Voice Scripting
 
@@ -141,11 +160,11 @@ violet.defineGoal({
 });
 ```
 
-### Plugins
+## Plugins
 There are a number of plugins that allow you to further extend the capabilities
 of Violet Skills
 
-#### Persistence
+### Persistence
 These plugins will allow you to easily store and load data from a data store.
 
 The main plugin provided currently is the Salesforce integration plugin
@@ -198,7 +217,7 @@ violet.respondTo(
 });
 ```
 
-#### Timed delay
+### Timed delay
 ```javascript
 var violetTime = require('../lib/violetTime.js')(violet);
 ```
@@ -212,7 +231,7 @@ violetTime.repeat(48*60, ()=>{ violet.addGoal('checkIn'); });
 ```
 
 
-#### Violet Client Integration
+### Violet Client Integration
 ```javascript
 var violetClientTx = require('../lib/violetClientTx.js')(violet);
 ```
@@ -220,9 +239,9 @@ var violetClientTx = require('../lib/violetClientTx.js')(violet);
 Allows setting voice and creating alerts (the latter needs testing)
 
 
-### Advanced
+## Advanced
 
-#### Custom types
+### Custom types
 
 The voice engine can recognize better what the user is saying when it knows to
 expect one of a limited set of inputs. One helpful way to do this is to use
@@ -243,25 +262,6 @@ violet.addKeyTypes({
 
 After declaring a custom type, the values and the type name need to be provided
 to Amazon's Skill Configuration Site as a custom slot type.
-
-## Local execution
-
-Can be run locally to ensure no syntax errors and to view intent schemas (for
-the interaction model) and supported utterances.
-
-To run locally `npm install` followed by `npm start`
-and view the einstein skill configuration information by going to
- http://localhost:8080/alexa/einstein
-
-## Deploying a Conversation Script
-
-Deploy the service (already has `Procfile` for deploying to `heroku`), and use
-those settings to create a new skill at Amazon's Skill Configuration Site:
-https://developer.amazon.com/edw/home.html#/skills/list. The skill will be
-using a `Custom Interaction Model`, will need values from the services skill
-configuration page.
-
-For step-by-step instructions - see here: https://salesforce.quip.com/I8YOAC3Q1UGC
 
 ## Debugging Conversations
 

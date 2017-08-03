@@ -57,7 +57,7 @@ The code already has a `Procfile` so it is easy to deploy to `heroku`). When dep
 ```
 heroku create
 git push heroku master
-heroku config:set V_SFDC_USERNAME=XXX V_SFDC_PASSWORD=XXX V_SFDC_CLIENT_ID=XXX V_SFDC_CLIENT_SECRET=XXX
+heroku config:set SCRIPT_NAME=XXX V_SFDC_USERNAME=XXX V_SFDC_PASSWORD=XXX V_SFDC_CLIENT_ID=XXX V_SFDC_CLIENT_SECRET=XXX
 ```
 
 Once deployed you will need to use your servers settings to create a new skill at [Amazon's Skill Configuration Site](https://developer.amazon.com/edw/home.html#/skills/list). The skill will be

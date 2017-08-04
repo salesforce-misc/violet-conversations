@@ -2,7 +2,6 @@
   "name": "Violet Conversation Sample",
   "description": "A Sample Voice Conversation Using Violet",
   "repository": "https://github.com/sfxi/violet-conversations",
-  "logo": "https://node-js-sample.herokuapp.com/node.png",
   "keywords": ["node", "voice", "alexa"],
   "env": {
     "SCRIPT_NAME": {

@@ -2,6 +2,23 @@
 
 var violet = require('../lib/violet.js').script();
 var violetClientTx = require('../lib/violetClientTx.js')(violet);
+var request = require('request');
+
+var postToThrive = function() {
+  var options = { method: 'POST',
+    url: 'https://dalai-lama-core.herokuapp.com/api/thrive/rebound',
+    headers: { 'content-type': 'application/json' },
+    body: {
+      "kiosktype": "message",
+      "mode" : "code"
+    },
+    json: true };
+
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+    console.log(body);
+  });
+}
 
 violet.setSpokenRate('fast');
 
@@ -30,6 +47,7 @@ violet.respondTo([
 violet.respondTo([
       "Alexa doesn't do that {though|}",
     ], (response) => {
+    postToThrive();
     response.say(["Think of Alexa and I as good buddies - we just work together to be better.  I also natively talk to Salesforce"]);
 });
 

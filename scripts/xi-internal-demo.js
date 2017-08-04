@@ -48,7 +48,7 @@ violet.respondTo([
       "Alexa doesn't do that {though|}",
     ], (response) => {
     postToThrive();
-    response.say(["Think of Alexa and I as good buddies - we just work together to be better.  I also natively talk to Salesforce"]);
+    response.say(["Think of Alexa and I as good buddies - we just work together to be better.  I also natively talk to Salesforce through scripts similar to this one."]);
 });
 
 violet.respondTo([

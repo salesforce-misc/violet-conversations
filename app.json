@@ -23,6 +23,6 @@
     "V_SFDC_CLIENT_SECRET" : {
       "description": "Violet Salesforce Plugin - Org Client Secret",
       "required": false
-    },
+    }
   }
 }

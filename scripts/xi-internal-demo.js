@@ -52,7 +52,7 @@ violet.respondTo([
 });
 
 violet.respondTo([
-      "{Perfect|} {Wow|} {That is great|} Thanks {for sharing|}",
+      "{Perfect|} {That is great|} Thanks {for sharing|}",
       "Thank you"
     ], (response) => {
     response.say(["My pleasure.  Hope everyone is enjoying the session"]);

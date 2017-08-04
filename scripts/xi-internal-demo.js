@@ -36,6 +36,7 @@ violet.respondTo([
       "Thank you"
     ], (response) => {
     response.say(["My pleasure.  Hope everyone is enjoying the session"]);
+    response.endConversation();
 });
 
 module.exports = violet;

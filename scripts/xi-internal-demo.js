@@ -15,8 +15,8 @@ violet.respondTo([
     response.say([`
       Experiences that use cutting edge tools like myself are a foundation for
       driving conversation, opening executive minds to the breadth of Salesforce
-      and the opportunity to influence change.  We love impact and results -
-      technology is just the vehicle.  Was that helpful?`]);
+      and the opportunity to influence change.  We love impact and
+      results - technology is just the vehicle.  Was that helpful?`]);
 });
 
 violet.respondTo([

@@ -1,0 +1,29 @@
+{
+  "name": "Violet Conversation Sample",
+  "description": "A Sample Voice Conversation Using Violet",
+  "repository": "https://github.com/sfxi/violet-conversations",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "voice", "alexa"],
+  "env": {
+    "SCRIPT_NAME": {
+      "description": "Violet Conversation Script to use.",
+      "value": "../scripts/sf-leadsAndOpportunities.js"
+    },
+    "V_SFDC_USERNAME" : {
+      "description": "Violet Salesforce Plugin - Org User name",
+      "required": false
+    },
+    "V_SFDC_PASSWORD" : {
+      "description": "Violet Salesforce Plugin - Org Password",
+      "required": false
+    },
+    "V_SFDC_CLIENT_ID" : {
+      "description": "Violet Salesforce Plugin - Org Client Id",
+      "required": false
+    },
+    "V_SFDC_CLIENT_SECRET" : {
+      "description": "Violet Salesforce Plugin - Org Client Secret",
+      "required": false
+    },
+  }
+}

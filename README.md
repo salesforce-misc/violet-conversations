@@ -1,3 +1,5 @@
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/sfxi/violet-conversations)
+
 # violet-conversations
 
 `violet-conversations` provides support for building sophisticated
@@ -44,7 +46,7 @@ url for the web interface).
 
     You can also run the full server by doing: `npm start` but you will need to
 setup the `SCRIPT_NAME` environment variable so that the engine knows which
-script to run.
+script to run (the default value is `../scripts/sf-leadsAndOpportunities.js`).
 
     Local execution is used to ensure that there are no syntax errors, to view
 intent schemas (for the interaction model) and supported utterances, as well as

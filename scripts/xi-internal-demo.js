@@ -3,6 +3,8 @@
 var violet = require('../lib/violet.js').script();
 var violetClientTx = require('../lib/violetClientTx.js')(violet);
 
+violet.setSpokenRate('fast');
+
 violet.respondTo([
       "{Are|} you there"
     ], (response) => {

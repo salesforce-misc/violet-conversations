@@ -21,6 +21,7 @@
     "co": "^4.6.0",
     "ejs": "~2.5.5",
     "express": "^4.14.0",
+    "ical2json": "^1.2.0",
     "moment-timezone": "^0.5.13",
     "nforce": "^1.7.0",
     "pluralize": "^5.0.0",

@@ -3,6 +3,7 @@
 var violet = require('../lib/violet.js').script();
 var violetClientTx = require('../lib/violetClientTx.js')(violet);
 var violetTime = require('../lib/violetTime.js')(violet);
+var violetCasesList = require('../lib/violetList.js')(violet, 'Cases', 'case', 'cases');
 
 var violetSFStore = require('../lib/violetStoreSF.js')(violet);
 violetSFStore.store.propOfInterest = {
@@ -57,106 +58,23 @@ violet.respondTo({
     response.say(out);
 }});
 
-var getCaseResultText = (ndx, results) => {
+violetCasesList.getItemText = (ndx, results) => {
   var caseObj = results[ndx];
   return 'Result ' + (ndx+1) + ' is ' + caseObj.Subject + ', and has status ' + caseObj.Status + '. ';
 }
 
-var respondWithCaseResults = (response, results)=>{
-  if (results.length == 0) {
-    response.say('Sorry. You have no cases.');
-    return;
-  }
 
-  var out = 'You have ' + results.length + ' cases. '
-  for(var ndx=0; ndx<3 && ndx<results.length; ndx++) {
-    out += getCaseResultText(ndx, results);
-  }
-  response.say(out);
-
-  if (results.length>3)
-    response.addGoal('hearPastThreeCases')
-  else
-    response.addGoal('interactWithCases')
-}
-var respondWithMoreCaseResults = (response, results, start=0)=>{
-  var out = '';
-  for(var ndx=3+start; ndx<10+start && ndx<results.length; ndx++) {
-    out += getCaseResultText(ndx, results);
-  }
-  response.say(out);
-
-  if (results.length>10 && start==0) // we dont speak past 17 cases
-    response.addGoal('hearPastTenCases')
-  else
-    response.addGoal('interactWithCases')
-}
-
-var getCaseFromResults = (response)=>{
-  var caseNo = response.get('caseNo');
-  const errMgrNotFoundCases = 'Could not find cases';
-  const errMgrNotFoundTgtCase = 'Could not find case ' + caseNo;
-  const errMgrInvalidCaseNo = 'Invalid Case Number';
-  if (caseNo) {
-    caseNo = parseInt(caseNo)-1;
-  }
-  if (caseNo == undefined || caseNo == null || caseNo<0 || caseNo>17)
-    return response.say(errMgrInvalidCaseNo);
-
-  var results = response.get('CaseResults');
-  if (results == undefined || results == null || !Array.isArray(results))
-    return resposne.say(errMgrNotFoundCases);
-  if (results.length<caseNo)
-    return resposne.say(errMgrNotFoundCases);
-
-  return results[caseNo];
-}
-
-violet.defineGoal({
-  goal: 'hearPastThreeCases',
-  prompt: ['Do you want to hear more cases?'],
-  respondTo: [{
-    expecting: ['Yes'],
-    resolve: (response) => {
-     response.say('Getting more cases.');
-     var results = response.get('CaseResults');
-     respondWithMoreCaseResults(response, results);
-  }}, {
-    expecting: ['No'],
-    resolve: (response) => {
-      response.addGoal('interactWithCases');
-  }}]
-});
-
-violet.defineGoal({
-  goal: 'hearPastTenCases',
-  prompt: ['Do you want to hear more cases?'],
-  respondTo: [{
-    expecting: ['Yes'],
-    resolve: (response) => {
-     response.say('Getting more cases.');
-     var results = response.get('CaseResults');
-     respondWithMoreCaseResults(response, results, 10);
-  }}, {
-    expecting: ['No'],
-    resolve: (response) => {
-      response.addGoal('interactWithCases');
-  }}]
-});
-
-
-violet.defineGoal({
-  goal: 'interactWithCases',
+violetCasesList.defineItemInteraction({
   prompt: ['Would you like to hear or set the priority, change status, or add a comment along with the case number'],
   respondTo: [{
     expecting: ['{hear|} priority for case [[caseNo]]'],
     resolve: (response) => {
-      var caseObj = getCaseFromResults(response);
+      var caseObj = violetCasesList.getItemFromResults(response, response.get('caseNo'));
       response.say('Case ' + caseObj.Subject + ' has priority ' + caseObj.Priority);
   }}, {
     expecting: ['Set priority for case [[caseNo]] to [[casePriority]]'],
     resolve: function *(response) {
-      var caseObj = getCaseFromResults(response);
+      var caseObj = violetCasesList.getItemFromResults(response, response.get('caseNo'));
       yield response.update('Case*', 'CaseNumber*', caseObj.CaseNumber, {
           'Priority*': response.get('casePriority')
       });
@@ -164,7 +82,7 @@ violet.defineGoal({
   }}, {
     expecting: ['Change status for case [[caseNo]] to [[caseStatus]]'],
     resolve: function *(response) {
-      var caseObj = getCaseFromResults(response);
+      var caseObj = violetCasesList.getItemFromResults(response, response.get('caseNo'));
       yield response.update('Case*', 'CaseNumber*', caseObj.CaseNumber, {
           Status: response.get('caseStatus')
       });
@@ -172,7 +90,7 @@ violet.defineGoal({
   }}, {
     expecting: ['Add comment to case [[caseNo]] saying {{commentText]]'],
     resolve: function *(response) {
-      var caseObj = getCaseFromResults(response);
+      var caseObj = violetCasesList.getItemFromResults(response, response.get('caseNo'));
       yield response.store('CaseComment*', {
         'CommentBody*': 'Text String',
         'ParentId*': caseObj.Id
@@ -187,7 +105,7 @@ violet.respondTo({
   resolve: function *(response) {
     var results = yield response.load('Case*', 'Owner*.Alias*', ownerAlias, "Status <> 'Closed'");
     response.set('CaseResults', results);
-    respondWithCaseResults(response, results);
+    violetCasesList.respondWithItems(response, results);
 }});
 
 violet.respondTo({
@@ -195,7 +113,11 @@ violet.respondTo({
   resolve: function *(response) {
     var results = yield response.load('Case*', 'Owner*.Alias*', ownerAlias, "Status = '" + response.get('caseStatus') + "'");
     response.set('CaseResults', results);
-    respondWithCaseResults(response, results);
+    if (results.length == 0) {
+      response.say('Sorry. You have no cases.');
+      return;
+    }
+    violetCasesList.respondWithItems(response, results);
 }});
 
 violet.respondTo({
@@ -203,7 +125,11 @@ violet.respondTo({
   resolve: function *(response) {
     var results = yield response.load('Case*', 'Owner*.Alias*', ownerAlias, "Priority = '" + response.get('casePriority') + "'");
     response.set('CaseResults', results);
-    respondWithCaseResults(response, results);
+    if (results.length == 0) {
+      response.say('Sorry. You have no cases.');
+      return;
+    }
+    violetCasesList.respondWithItems(response, results);
 }});
 
 violet.respondTo({
@@ -212,7 +138,11 @@ violet.respondTo({
   resolve: function *(response) {
     var results = yield response.load('Case*', 'Owner*.Alias*', ownerAlias, "(Status = '" + response.get('caseStatus') + "' AND Priority = '" + resposne.get('casePriority') +  "')");
     response.set('CaseResults', results);
-    respondWithCaseResults(response, results);
+    if (results.length == 0) {
+      response.say('Sorry. You have no cases.');
+      return;
+    }
+    violetCasesList.respondWithItems(response, results);
 }});
 
 

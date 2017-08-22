@@ -11,7 +11,6 @@ Known challenges:
 */
 
 var moment = require('moment-timezone');
-var pluralize = require('pluralize');
 var request = require('request');
 var ical2json = require("ical2json");
 

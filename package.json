@@ -1,5 +1,5 @@
 {
-  "name": "violet-poc-alexa",
+  "name": "violet-conversations",
   "version": "0.0.1",
   "description": "alexa skill",
   "main": "server.js",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vineet-sinha/violet-poc-alexa.git"
+    "url": "git+https://github.com/vineet-sinha/violet-conversations.git"
   },
   "bugs": {
-    "url": "https://github.com/vineet-sinha/violet-poc-alexa/issues"
+    "url": "https://github.com/vineet-sinha/violet-conversations/issues"
   },
-  "homepage": "https://github.com/vineet-sinha/violet-poc-alexa#readme",
+  "homepage": "https://github.com/vineet-sinha/violet-conversations#readme",
   "dependencies": {
     "alexa-app": "^4.1.0",
     "bluebird": "^3.5.0",

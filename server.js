@@ -1,7 +1,7 @@
 'use strict';
 
 var violetSrvr = require('./lib/violetSrvr.js')('/alexa');
-violetSrvr.listAppsAt('/');
+violetSrvr.listScriptsAt('/');
 var srvrInstance = violetSrvr.createAndListen(process.env.PORT || 8080);
 
 violetSrvr = require('./lib/violetClientTx.js')(violetSrvr, srvrInstance);

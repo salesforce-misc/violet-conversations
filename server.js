@@ -14,7 +14,7 @@ violetSrvr = require('./lib/violetClientTx.js')(violetSrvr, srvrInstance);
 // violetSrvr.loadScript('../scripts/sf-cases-employee.js', 'einstein');
 // violetSrvr.loadScript('../scripts/sf-knowledge-base.js', 'einstein');
 // violetSrvr.loadScript('../scripts/sf-VF-VTO.js', 'einstein');
-violetSrvr.loadScript(process.env.SCRIPT_NAME || '../scripts/sf-leadsAndOpportunities.js', 'einstein');
+violetSrvr.loadScript(process.env.SCRIPT_NAME || 'scripts/sf-leadsAndOpportunities.js', 'einstein');
 
 
 console.log('Waiting for requests...');

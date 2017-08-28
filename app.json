@@ -6,7 +6,7 @@
   "env": {
     "SCRIPT_NAME": {
       "description": "Violet Conversation Script to use.",
-      "value": "../scripts/sf-leadsAndOpportunities.js"
+      "value": "scripts/sf-leadsAndOpportunities.js"
     },
     "V_SFDC_USERNAME" : {
       "description": "Violet Salesforce Plugin - Org User name",

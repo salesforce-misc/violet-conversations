@@ -3,6 +3,7 @@
 var violet = require('../lib/violet.js').script();
 var violetClientTx = require('../lib/violetClientTx.js')(violet);
 var request = require('request');
+var requestP = require('request-promise');
 
 var showCodeBlock = function() {
   var options = { method: 'POST',
@@ -23,12 +24,15 @@ var showCodeBlock = function() {
 violet.setSpokenRate('fast');
 
 violet.respondTo([
-      "Whats up"
+      "Whats up",
       "{Are|} you there",
       "{Do you|} have a moment"
     ], (response) => {
-    // XXX - Query First Record - http://haiku-core-parker.herokuapp.com/api/records/Forcebit_Order__c
-    response.say(["Absolutely.  How can I help?", "Yep.  How can I help?", "I am"]);
+    var queryForcebitOrderUrl = 'http://haiku-core-parker.herokuapp.com/api/records/Forcebit_Order__c';
+    return requestP({uri: queryForcebitOrderUrl, json:true}).then((forcebitOrder)=>{
+        console.log(forcebitOrder[0]);
+        response.say(`I have a trail map for your ${forcebitOrder[0].expedition_name__c} trip with ${forcebitOrder[0].leader_name__c}. Do you mind if I show you?`);
+    });
 });
 
 violet.respondTo([

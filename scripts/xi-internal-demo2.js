@@ -24,9 +24,9 @@ var showCodeBlock = function() {
 violet.setSpokenRate('fast');
 
 violet.respondTo([
-      "Whats up",
-      "{Are|} you there",
-      "{Do you|} have a moment"
+      "Whats up"//,
+      // "{Are|} you there",
+      // "{Do you|} have a moment"
     ], (response) => {
     var queryForcebitOrderUrl = 'http://haiku-core-parker.herokuapp.com/api/records/Forcebit_Order__c';
     return requestP({uri: queryForcebitOrderUrl, json:true}).then((forcebitOrder)=>{
@@ -39,9 +39,7 @@ violet.respondTo([
       "Definitely, that would be great"
     ], (response) => {
     showCodeBlock();
-    response.say([`
-      Great - here it is.
-      `]);
+    response.say(['Great - here it is.']);
 });
 
 violet.respondTo([
@@ -53,13 +51,11 @@ violet.respondTo([
 violet.respondTo([
       "But Alexa doesn't do that {though|}",
     ], (response) => {
-    postToThrive();
     response.say(["Alexa and I as good buddies, but successful conversations are all about knowing the customer.  This is an example of us working together."]);
 });
 
 violet.respondTo([
-      "{Perfect|Wow} {That is great|} Thanks {for sharing|}",
-      "Thank you"
+      "{Wow|} That is great Thanks {for sharing|}"
     ], (response) => {
     response.say(["My pleasure.  Hope everyone is enjoying the session"]);
     response.endConversation();

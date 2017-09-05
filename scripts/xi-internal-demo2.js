@@ -51,7 +51,7 @@ violet.respondTo([
 violet.respondTo([
       "But Alexa doesn't do that {though|}",
     ], (response) => {
-    response.say(["Alexa and I as good buddies, but successful conversations are all about knowing the customer.  This is an example of us working together."]);
+    response.say(["Alexa and I are good buddies, but successful conversations are all about knowing the customer.  This is an example of us working together."]);
 });
 
 violet.respondTo([

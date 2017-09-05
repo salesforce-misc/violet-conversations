@@ -4,7 +4,7 @@ var violet = require('../lib/violet.js').script();
 var violetClientTx = require('../lib/violetClientTx.js')(violet);
 var request = require('request');
 
-var postToThrive = function() {
+var showCodeBlock = function() {
   var options = { method: 'POST',
     url: 'https://dalai-lama-core.herokuapp.com/api/thrive/rebound',
     headers: { 'content-type': 'application/json' },
@@ -34,7 +34,7 @@ violet.respondTo([
 violet.respondTo([
       "Definitely, that would be great"
     ], (response) => {
-    postToThrive();
+    showCodeBlock();
     response.say([`
       Great - here it is.
       `]);

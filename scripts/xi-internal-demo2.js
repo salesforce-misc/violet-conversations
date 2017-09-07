@@ -21,7 +21,7 @@ var showCodeBlock = function() {
   });
 }
 
-violet.setSpokenRate('fast');
+// violet.setSpokenRate('fast');
 
 violet.respondTo([
       "Whats up"//,
@@ -31,7 +31,8 @@ violet.respondTo([
     var queryForcebitOrderUrl = 'http://haiku-core-parker.herokuapp.com/api/records/Forcebit_Order__c';
     return requestP({uri: queryForcebitOrderUrl, json:true}).then((forcebitOrder)=>{
         console.log(forcebitOrder[0]);
-        response.say(`I have a trail map for your ${forcebitOrder[0].expedition_name__c} trip with ${forcebitOrder[0].leader_name__c}. Do you mind if I show you?`);
+        var latestPhoto = 'one-two-three-four';
+        response.say(`Just wanted to say hello and hope that your trip to ${forcebitOrder[0].expedition_name__c} with ${forcebitOrder[0].leader_name__c} was fun. Also, the photo you took of ${latestPhoto} was also really cool.`);
     });
 });
 
@@ -57,7 +58,7 @@ violet.respondTo([
 violet.respondTo([
       "{Wow|} That is great Thanks {for sharing|}"
     ], (response) => {
-    response.say(["My pleasure.  Hope everyone is enjoying the session"]);
+    response.say(["My pleasure.  I must run now, but it was great seeing everyone."]);
     response.endConversation();
 });
 

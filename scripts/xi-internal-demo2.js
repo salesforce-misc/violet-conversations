@@ -23,7 +23,7 @@ var showCodeBlock = function() {
 }
 
 // violet.setSpokenRate('fast');
-violet.setSpokenRate('slow');
+// violet.setSpokenRate('slow');
 
 violet.respondTo([
       "What are you doing"

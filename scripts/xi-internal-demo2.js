@@ -25,7 +25,8 @@ var showCodeBlock = function() {
 violet.setSpokenRate('slow');
 
 violet.respondTo([
-      "Whats up"//,
+      "What are you doing"
+      //"Whats up",
       // "{Are|} you there",
       // "{Do you|} have a moment"
     ], (response) => {
@@ -41,7 +42,7 @@ violet.respondTo([
       "Definitely, that would be great"
     ], (response) => {
     showCodeBlock();
-    response.say(['Great - here it is.']);
+    response.say(['Great.. here it is.']);
 });
 
 violet.respondTo([

@@ -45,13 +45,19 @@ violet.defineGoal({
       }
 
       var sugar = 0;
+      var cnt = 0;
 
       results.forEach((rec, i)=>{
         console.log(rec.FieldValue);
         sugar += parseInt(rec.FieldValue);
+        cnt = cnt + 1;
       });
 
-      var speechOutput = 'Your sugar is ' + sugar;
+      console.log(sugar);
+      console.log(cnt);
+      console.log(sugar/cnt);
+
+      var speechOutput = 'Your average blood sugar has been ' + Math.floor(sugar/cnt);
 
       response.say(speechOutput);
       response.say('We think you should connect to your care team now.');

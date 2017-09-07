@@ -22,6 +22,7 @@ var showCodeBlock = function() {
 }
 
 // violet.setSpokenRate('fast');
+violet.setSpokenRate('slow');
 
 violet.respondTo([
       "Whats up"//,

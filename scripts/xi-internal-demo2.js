@@ -4,6 +4,7 @@ var violet = require('../lib/violet.js').script();
 var violetClientTx = require('../lib/violetClientTx.js')(violet);
 var request = require('request');
 var requestP = require('request-promise');
+var Promise = require('bluebird');
 
 var showCodeBlock = function() {
   var options = { method: 'POST',
@@ -30,12 +31,16 @@ violet.respondTo([
       // "{Are|} you there",
       // "{Do you|} have a moment"
     ], (response) => {
-    var queryForcebitOrderUrl = 'http://haiku-core-parker.herokuapp.com/api/records/Forcebit_Order__c';
-    return requestP({uri: queryForcebitOrderUrl, json:true}).then((forcebitOrder)=>{
-        console.log(forcebitOrder[0]);
-        var latestPhoto = 'one-two-three-four';
-        response.say(`Just wanted to say hello and hope that your trip to ${forcebitOrder[0].expedition_name__c} with ${forcebitOrder[0].leader_name__c} was fun. Also, the photo you took of ${latestPhoto} was also really cool.`);
-    });
+      var queryForcebitOrderUrl = 'http://haiku-core-parker.herokuapp.com/api/records/Forcebit_Order__c';
+      var recentPhotoUrl = 'http://haiku-core-parker.herokuapp.com/api/memory/recentphoto';
+      return Promise.all([
+        requestP({uri: queryForcebitOrderUrl, json:true}),
+        requestP({uri: recentPhotoUrl, json:true})
+      ]).spread((forcebitOrder, recentPhoto)=>{
+        console.log('forcebitOrder: ', forcebitOrder);
+        console.log('recentPhoto: ', recentPhoto);
+        response.say(`Just wanted to say hello and hope that your trip to ${forcebitOrder[0].expedition_name__c} with ${forcebitOrder[0].leader_name__c} was fun. Also, the photo you took of ${recentPhoto.predictions[0].class_name} was also really cool.`);
+      });
 });
 
 violet.respondTo([

@@ -21,21 +21,17 @@ violet.addPhraseEquivalents([
 violet.addTopLevelGoal('checkIn');
 
 violet.respondTo({
-  expecting: ['Check in', 'Can I check in', 'I would like to check in'],
+  expecting: ['Hi', 'Are you there', 'Check in', 'Can I check in', 'I would like to check in'],
   resolve: (response) => {
-   response.say('Sure.');
+   response.say('It has been a while.');
    response.addGoal('checkIn');
 }});
 
 violet.defineGoal({
   goal: 'checkIn',
-  prompt: ['Did you check your blood sugar level today?'],
+  prompt: ['Where have you been?'],
   respondTo: [{
-    expecting: ['Yes', 'I tested my blood sugar level'],
-    resolve: (response) => {
-     response.say('Great.');
-  }}, {
-    expecting: ['No', 'I cannot test my blood sugar level'],
+    expecting: ['Busy', 'I cannot test my blood sugar level', 'Not feeling good'],
     resolve: function *(response) {
       var results = yield response.load('Patient_Generated_Data', 'defaultEmail', 'default@haiku.dev', 'FieldName__c = \'bloodSugar\'', 'ORDER BY LoggedTime__c');
       if (results.length == 0) {
@@ -44,25 +40,53 @@ violet.defineGoal({
         return;
       }
 
-      var sugar = 0;
-      var cnt = 0;
+      var reallyHigh = 0;
+      var reallyLow = 0;
+      var high = 0;
+      var low = 0;
 
       results.forEach((rec, i)=>{
         console.log(rec.FieldValue);
-        sugar += parseInt(rec.FieldValue);
-        cnt = cnt + 1;
+        if (parseInt(rec.FieldValue) >= 150) {
+          if (parseInt(rec.FieldValue) >= 200) {
+            reallyHigh += 1;
+          } else {
+            high += 1;
+          }
+        }
+
+        if (parseInt(rec.FieldValue) <= 90) {
+          if (parseInt(rec.FieldValue) <= 65) {
+            reallyLow += 1;
+          } else {
+            low += 1;
+          }
+        }
       });
 
-      console.log(sugar);
-      console.log(cnt);
-      console.log(sugar/cnt);
+      response.say("We are concerned that you have missed " + (7 - results.length) + " checkins");
 
-      var speechOutput = 'Your average blood sugar has been ' + Math.floor(sugar/cnt);
+      if (reallyHigh >= 1 && reallyLow >= 1) {
+        response.say("Your sugars have been both high and low. This is a sign that you are not managing your blood sugars well.");
+      }
 
-      response.say(speechOutput);
-      response.say('We think you should connect to your care team now.');
+      if (high >= 1 && low >= 1) {
+        response.say("Your sugars have been both high and low. This is a sign that you are not managing your blood sugars well.");
+      }
+
+      if ((high==0 && reallyHigh==0)&&(low>=1 || reallyLow>=1)) {
+        response.say("Your sugars have been consistently low. Consistently low blood sugar can result in you being more lethargic. This is a sign that we may need to change your medication to better manage your sugars");
+      }
+
+      if ((low==0 && reallyLow==0)&&(high>=1 || reallyHigh>=1)) {
+        response.say("Your sugars have been consistently high. We may need to revisit your medication and / or diet.");
+      }
+
+      response.say('We are connecting you to your care team now');
+
       sendSOS();
-  }}]
+    }
+  }]
 });
 
 

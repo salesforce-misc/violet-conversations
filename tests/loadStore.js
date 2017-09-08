@@ -17,31 +17,32 @@ var response = violet._getResponseForDebugging({
 
 // test methods
 var storeTest = () => {
-  response.set('<<diabetesLog.user>>', 'blah:blah:blah2' );
-  response.set('<<diabetesLog.timeOfCheckin>>', 'after-meal' );
-  response.set('<<diabetesLog.bloodSugarLvl>>', 125 );
-  response.set('<<diabetesLog.feetWounds>>', true );
-  response.set('<<diabetesLog.missedDosages>>', false );
   setTimeout(()=>{
-    response.store('<<diabetesLog>>');
+    response.store('diabetesLog', {
+      user: 'blah:blah:blah2',
+      timeOfCheckin: 'after-meal',
+      bloodSugarLvl: 125,
+      feetWounds: true,
+      missedDosages: false
+    });
   }, 2*1000);
 };
 
 var loadTest = () => {
   setTimeout(()=>{
-    response.load('<<diabetesLog>>', '<<diabetesLog.user>>', 'blah:blah:blah2');
+    response.load({objName: 'diabetesLog', keyName: 'diabetesLog.user', keyVal: 'blah:blah:blah2'});
   }, 2*1000);
 };
 
 var loadTest2 = () => {
   setTimeout(()=>{
-    response.load('<<diabetesLog>>', null, null, 'CreatedDate < TODAY');
+    response.load({objName: 'diabetesLog', 'CreatedDate < TODAY');
   }, 2*1000);
 };
 
 var loadTest3 = () => {
   setTimeout(()=>{
-    response.load('<<diabetesLog>>', '<<diabetesLog.user>>', 'blah:blah:blah2', 'CreatedDate < TODAY');
+    response.load({objName: 'diabetesLog', keyName: 'diabetesLog.user', keyVal: 'blah:blah:blah2', filter: 'CreatedDate < TODAY'});
   }, 2*1000);
 };
 

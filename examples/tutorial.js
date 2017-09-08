@@ -76,16 +76,16 @@ violet.respondTo(
   expecting: 'Who did I receive my bill from most recently?',
   resolve: (response) => {
     return response.load('bills', 'bills.user', response.get('userId') )
-      .then(()=>{
-        response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
+      .then((bills)=>{
+        response.say(`You received a bill from ${bills[0].from} for ${bills[0].amount}`);
       });
 });
 // example b: (note the 'function *' and the 'yield' below)
 violet.respondTo(
   expecting: 'Who did I receive my bill from most recently?',
   resolve: function *(response) {
-    yield response.load('bills', 'bills.user', response.get('userId') )
-    response.say('You received a bill from <<bills.from>> for <<bills.amount>>');
+    var bills = yield response.load('bills', 'bills.user', response.get('userId') )
+    response.say(`You received a bill from ${bills[0].from} for ${bills[0].amount}`);
 });
 
 

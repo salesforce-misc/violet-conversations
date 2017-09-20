@@ -16,13 +16,24 @@ violet.respondTo([
 });
 
 violet.respondTo({
-  name: 'MajorIntent',
+  name: 'FirstEncIntent',
   expecting: [
-      "I am [[patient]] What are you doing"
+      "I am [[patient]] I see you for the first time"
     ],
   resolve: (response) => {
-    response.say('Major thing happened, [[patient]]');
+    response.say('[[patient]]')
+    response.say('I am concerned that it has been a long time since we last talked');
 }});
 
+violet.respondTo({
+  name: 'SecondEncIntent',
+  expecting: [
+      "This is [[patient]] We meet again"
+    ],
+  resolve: (response) => {
+    response.say('[[patient]]')
+    response.say('Did you try to sneak away')
+    response.say('I am glad that you are back')
+}});
 
 module.exports = violet;

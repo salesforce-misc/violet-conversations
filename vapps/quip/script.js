@@ -27,11 +27,16 @@ violet.addKeyTypes({
  *  b) One hardcoded list
  */
 
+var makePretty=(str)=>{
+ str = str.trim();
+ return str.charAt(0).toUpperCase() + str.slice(1); // first letter uppercase
+};
+
 // u: Make dinner reservations
 var tgtDoc = 'Acme Company EBC'
 var tgtSec = 'To Do'
-violet.respondTo(['add [[itemName]] to the todo'],
+violet.respondTo(['add [[itemName]] to the list'],
   (response) => {
     response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
-    quipSvc.appendItemsToList('TddAAATIqbb', [response.get('itemName')]);
+    quipSvc.appendItemsToList('TddAAATIqbb', [makePretty(response.get('itemName'))]);
 });

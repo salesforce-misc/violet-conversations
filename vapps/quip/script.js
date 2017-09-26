@@ -3,6 +3,8 @@
 var violet = require('../../lib/violet').script();
 var violetTime = require('../../lib/violetTime')(violet);
 var quipSvc = require('./quipSvc.js');
+var Promise = require('bluebird');
+
 module.exports = violet;
 
 violet.addKeyTypes({
@@ -39,4 +41,21 @@ violet.respondTo(['add [[itemName]] to the list'],
   (response) => {
     response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
     quipSvc.appendItemsToList('TddAAATIqbb', [makePretty(response.get('itemName'))]);
+});
+
+violet.respondTo(['whats next on my to do'],
+  (response) => {
+    return new Promise((resolve, reject)=>{
+      quipSvc.getListItem('TddAAATIqbb', (items)=>{
+        for (var i of items) {
+          if (i.done == false) {
+            response.say(`The next item is ${i.item}`);
+            resolve();
+            return;
+          }
+        }
+        response.say(`There are no items that need to be done on your list`);
+        resolve();
+      });
+    });
 });

@@ -115,3 +115,21 @@ module.exports.modifyListItem = (tid, sid, items)=>{
       if (err) console.log(err);
   });
 };
+
+
+module.exports.getListItem = (tid, cb)=>{
+  client.getThread(tid, function(err, thread) {
+    var cheerio = require('cheerio');
+    var doc = cheerio.load(thread.html);
+
+    // all list items
+    var items = [];
+    doc('div[data-section-style=7] li').each((ndx, el)=>{
+      items.push({
+        done: cheerio(el).attr('class')==='checked',
+        item: cheerio(el).text().trim()
+      });
+    });
+    cb(items)
+  });
+};

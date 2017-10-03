@@ -1,4 +1,4 @@
-var quipSvc = new require('./quipSvc.js');
+var quipSvc = new require('./svc.js');
 
 var spaces = function(cnt) {
   if (cnt == 0) return '';

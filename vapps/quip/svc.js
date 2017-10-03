@@ -1,4 +1,4 @@
-var quip = new require('./quipApi.js');
+var quip = new require('./api.js');
 var utils = new require('./utils.js');
 var Promise = require('bluebird');
 

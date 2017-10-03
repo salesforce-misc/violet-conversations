@@ -2,7 +2,7 @@
 
 var violet = require('../../lib/violet').script();
 var violetTime = require('../../lib/violetTime')(violet);
-var quipSvc = require('./quipSvc.js');
+var quipSvc = require('./svc.js');
 var Promise = require('bluebird');
 
 module.exports = violet;

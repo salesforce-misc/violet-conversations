@@ -46,19 +46,17 @@ violet.respondTo(['add [[itemName]] to the list'],
 
 violet.respondTo(['whats next on my to do'],
   (response) => {
-    return quipSvc.getListItemP(tgtDocId)
-                  .then((items)=>{
-        for (var i of items) {
-          if (i.done == false) {
-            response.set('tgtItemId', i.id);
-            response.set('tgtItemHtml', i.html);
-            response.set('tgtItemText', i.text);
-            response.say(`The next item is ${i.text}`);
-            return;
-          }
-        }
+    return quipSvc.getListItemP(tgtDocId).then((items)=>{
+      var nxtItem = items.find(i=>{return (i.done==false);});
+      if (!nxtItem) {
         response.say(`There are no items that need to be done on your list`);
-      });
+        return;
+      }
+      response.set('tgtItemId', nxtItem.id);
+      response.set('tgtItemHtml', nxtItem.html);
+      response.set('tgtItemText', nxtItem.text);
+      response.say(`The next item is ${nxtItem.text}`);
+    });
 });
 
 violet.respondTo(['mark item as checked'],

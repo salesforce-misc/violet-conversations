@@ -49,7 +49,7 @@ violet.respondTo(['whats next on my to do'],
       quipSvc.getListItem('TddAAATIqbb', (items)=>{
         for (var i of items) {
           if (i.done == false) {
-            response.say(`The next item is ${i.item}`);
+            response.say(`The next item is ${i.text}`);
             resolve();
             return;
           }

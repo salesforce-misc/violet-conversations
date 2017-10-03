@@ -117,6 +117,7 @@ module.exports.modifyListItem = (tid, sid, items)=>{
 };
 
 
+// returns all lists inside thread (document)
 module.exports.getListItem = (tid, cb)=>{
   client.getThread(tid, function(err, thread) {
     var cheerio = require('cheerio');
@@ -125,9 +126,12 @@ module.exports.getListItem = (tid, cb)=>{
     // all list items
     var items = [];
     doc('div[data-section-style=7] li').each((ndx, el)=>{
+      var cel = cheerio(el);
       items.push({
-        done: cheerio(el).attr('class')==='checked',
-        item: cheerio(el).text().trim()
+        id:   cel.attr('id'),
+        done: cel.attr('class')==='checked',
+        text: cel.text().trim(),
+        html: cheerio(cel.children()[0]).html()
       });
     });
     cb(items)

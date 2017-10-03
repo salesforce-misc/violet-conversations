@@ -2,6 +2,8 @@
 
 var violet = require('../../lib/violet').script();
 var violetTime = require('../../lib/violetTime')(violet);
+var violetToDoList = require('../../lib/violetList.js')(violet, 'Items', 'item', 'items', 'text');
+
 var quipSvc = require('./svc.js');
 var Promise = require('bluebird');
 
@@ -44,7 +46,7 @@ violet.respondTo(['add [[itemName]] to the list'],
     quipSvc.appendItemsToList(tgtDocId, [makePretty(response.get('itemName'))]);
 });
 
-violet.respondTo(['whats next on my to do'],
+violet.respondTo(['whats next {to be done|on my to do}'],
   (response) => {
     return quipSvc.getListItemP(tgtDocId).then((items)=>{
       var nxtItem = items.find(i=>{return (i.done==false);});
@@ -54,6 +56,41 @@ violet.respondTo(['whats next on my to do'],
       }
       response.set('tgtItem', nxtItem);
       response.say(`The next item is ${nxtItem.text}`);
+    });
+});
+
+var ack = (response) => { response.say(['Got it.', 'Great.', 'Awesome']); }
+
+// define the list interactions
+violetToDoList.defineItemInteraction({
+  prompt: [`Would you like to mark the item as completed or go back`],
+  respondTo: [{
+    expecting: [`mark item [[itemNo]] as {done|checked}`],
+    resolve: (response) => {
+      var item = violetToDoList.getItemFromResults(response, response.get('itemNo'));
+      response.say(`Marking ${item.text} as done`);
+      return quipSvc.modifyListItem(tgtDocId, item.id, [`<del>${item.html}</del>`]);
+  }}, {
+    expecting: ['go back'],
+    resolve: function (response) {
+      ack(response);
+  }}]
+});
+
+violet.respondTo(['whats all needs to be done', 'what all is open on my to do'],
+  (response) => {
+    return quipSvc.getListItemP(tgtDocId).then((items)=>{
+      items = items.filter(i=>{return (i.done==false);});
+      response.set('Items', items);
+      violetToDoList.respondWithItems(response, items);
+    });
+});
+
+violet.respondTo(['whats all is on my to do list'],
+  (response) => {
+    return quipSvc.getListItemP(tgtDocId).then((items)=>{
+      response.set('Items', items);
+      violetToDoList.respondWithItems(response, items);
     });
 });
 

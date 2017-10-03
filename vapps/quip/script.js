@@ -62,6 +62,11 @@ violet.respondTo(['whats next {to be done|on my to do}'],
 
 var ack = (response) => { response.say(['Got it.', 'Great.', 'Awesome']); }
 
+var markItemChecked = (docId, itemId, itemHtml) => {
+  // waiting on Quip team to implement this correctly
+  return quipSvc.modifyListItem(docId, itemId, [`<del>${itemHtml}</del>`]);
+};
+
 // define the list interactions
 violetToDoList.defineItemInteraction({
   prompt: [`Would you like to mark an item as done`],
@@ -70,7 +75,7 @@ violetToDoList.defineItemInteraction({
     resolve: (response) => {
       var item = violetToDoList.getItemFromResults(response, response.get('itemNo'));
       response.say(`Marking ${item.text} as done`);
-      return quipSvc.modifyListItem(tgtDocId, item.id, [`<del>${item.html}</del>`]);
+      return markItemChecked(tgtDocId, item.id, item.html);
   }}, {
     expecting: ['go back'],
     resolve: function (response) {
@@ -100,8 +105,7 @@ violet.respondTo(['mark item as checked'],
     var tgtItem = response.get('tgtItem');
     if (tgtItem.id && tgtItem.html) {
       response.say(`Marking ${tgtItem.text} as done`);
-      // TODO: implement this correctly
-      return quipSvc.modifyListItem(tgtDocId, tgtItem.id, [`<del>${tgtItem.html}</del>`]);
+      return markItemChecked(tgtDocId, tgtItem.id, tgtItem.html);
     } else
       response.say(`Which item are you referring to`);
 });

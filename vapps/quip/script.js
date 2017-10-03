@@ -52,22 +52,18 @@ violet.respondTo(['whats next on my to do'],
         response.say(`There are no items that need to be done on your list`);
         return;
       }
-      response.set('tgtItemId', nxtItem.id);
-      response.set('tgtItemHtml', nxtItem.html);
-      response.set('tgtItemText', nxtItem.text);
+      response.set('tgtItem', nxtItem);
       response.say(`The next item is ${nxtItem.text}`);
     });
 });
 
 violet.respondTo(['mark item as checked'],
   (response) => {
-    var tgtItemId = response.get('tgtItemId');
-    var tgtItemHtml = response.get('tgtItemHtml');
-    var tgtItemText = response.get('tgtItemText');
-    if (tgtItemId && tgtItemHtml) {
-      response.say(`Marking ${tgtItemText} as done`);
+    var tgtItem = response.get('tgtItem');
+    if (tgtItem.id && tgtItem.html) {
+      response.say(`Marking ${tgtItem.text} as done`);
       // TODO: implement this correctly
-      return quipSvc.modifyListItem(tgtDocId, tgtItemId, [`<del>${tgtItemHtml}</del>`]);
+      return quipSvc.modifyListItem(tgtDocId, tgtItem.id, [`<del>${tgtItem.html}</del>`]);
     } else
       response.say(`Which item are you referring to`);
 });

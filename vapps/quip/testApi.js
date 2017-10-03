@@ -17,11 +17,12 @@ var mainDoc = 'TddAAATIqbb';
 // quipSvc.appendItemsToList(mainDoc, ['BBB - 10', 'BBB - 20']);
 
 // edit items
-// quipSvc.modifyListItem(mainDoc, 'badACAGuOBi', ['the future is now']);
+// quipSvc.modifyListItem(mainDoc, 'TddACAurP6C', ['the future is now']);
+// quipSvc.modifyListItem(mainDoc, 'TddACAurP6C', ['<del>The test item</del>']);
 
 // mark a checkbox as completed
 // ***need to get this working***
-// quipSvc.modifyListItem(mainDoc, 'TddACA8MjpL', ['<del>The test item</del>']);
+quipSvc.modifyListItem(mainDoc, 'TddACAurP6C', ['<del>The test item</del>']);
 
 // list items
 // quipSvc.getListItem(mainDoc, (err, items)=>{

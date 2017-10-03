@@ -64,7 +64,7 @@ var ack = (response) => { response.say(['Got it.', 'Great.', 'Awesome']); }
 
 // define the list interactions
 violetToDoList.defineItemInteraction({
-  prompt: [`Would you like to mark the item as completed or go back`],
+  prompt: [`Would you like to mark an item as done`],
   respondTo: [{
     expecting: [`mark item [[itemNo]] as {done|checked}`],
     resolve: (response) => {
@@ -78,7 +78,7 @@ violetToDoList.defineItemInteraction({
   }}]
 });
 
-violet.respondTo(['whats all needs to be done', 'what all is open on my to do'],
+violet.respondTo(['what all needs to be done', 'what all is open on my to do'],
   (response) => {
     return quipSvc.getListItemP(tgtDocId).then((items)=>{
       items = items.filter(i=>{return (i.done==false);});

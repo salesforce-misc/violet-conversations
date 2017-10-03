@@ -1,4 +1,5 @@
 var quip = new require('./quipApi.js');
+var Promise = require('bluebird');
 
 var spaces = function(cnt) {
   if (cnt == 0) return '';
@@ -118,8 +119,9 @@ module.exports.modifyListItem = (tid, sid, items)=>{
 
 
 // returns all lists inside thread (document)
-module.exports.getListItem = (tid, cb)=>{
+var getListItem = module.exports.getListItem = (tid, cb)=>{
   client.getThread(tid, function(err, thread) {
+    if (err) cb(err, null);
     var cheerio = require('cheerio');
     var doc = cheerio.load(thread.html);
 
@@ -134,6 +136,8 @@ module.exports.getListItem = (tid, cb)=>{
         html: cheerio(cel.children()[0]).html()
       });
     });
-    cb(items)
+    cb(null, items);
   });
 };
+
+module.exports.getListItemP = Promise.promisify(getListItem);

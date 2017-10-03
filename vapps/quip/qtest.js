@@ -74,6 +74,6 @@ var mainDoc = 'TddAAATIqbb';
 // quipSvc.modifyListItem(mainDoc, 'TddACA8MjpL', ['<del>The test item</del>']);
 
 // list items
-// quipSvc.getListItem(mainDoc, (items)=>{
+// quipSvc.getListItem(mainDoc, (err, items)=>{
 //   console.log(items)
 // });

@@ -46,17 +46,16 @@ violet.respondTo(['add [[itemName]] to the list'],
 
 violet.respondTo(['whats next on my to do'],
   (response) => {
-    return new Promise((resolve, reject)=>{
-      quipSvc.getListItem(tgtDocId, (items)=>{
+    return quipSvc
+            .getListItemP(tgtDocId)
+            .then((items)=>{
         for (var i of items) {
           if (i.done == false) {
+            response.set('tgtItemId', i.id);
             response.say(`The next item is ${i.text}`);
-            resolve();
             return;
           }
         }
         response.say(`There are no items that need to be done on your list`);
-        resolve();
       });
-    });
 });

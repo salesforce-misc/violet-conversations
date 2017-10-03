@@ -3,7 +3,7 @@
 var violet = require('../lib/violet.js').script();
 
 
-violet.addKeyTypes({
+violet.addInputTypes({
   "name": "AMAZON.US_FIRST_NAME",
   "age": "NUMBER",
   "number": "NUMBER"

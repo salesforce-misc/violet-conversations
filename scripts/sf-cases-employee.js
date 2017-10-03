@@ -10,7 +10,7 @@ violetSFStore.store.propOfInterest = {
   'Case*': ['Id*', 'CaseNumber*', 'Contact*.Name*', /*'Contact*.Owner*.Name*',*/ 'Subject*', 'Status*', 'Priority*']
 }
 
-violet.addKeyTypes({
+violet.addInputTypes({
   "caseNo": "NUMBER",
   "caseStatus": {
     "type": "caseStatusType",

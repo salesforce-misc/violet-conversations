@@ -3,7 +3,7 @@
 var violet = require('../lib/violet.js').script();
 var violetClientTx = require('../lib/violetClientTx.js')(violet);
 
-violet.addKeyTypes({
+violet.addInputTypes({
   "patient": {
     "type": "AMAZON.US_FIRST_NAME"
   }

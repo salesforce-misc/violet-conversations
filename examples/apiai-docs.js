@@ -4,7 +4,7 @@ var violet = require('../lib/violet.js').script();
 
 // Implementing https://docs.api.ai/docs/dialogs
 
-violet.addKeyTypes({
+violet.addInputTypes({
   '[[destination]]': 'AMAZON.US_CITY',
   '[[checkinDate]]': 'AMAZON.DATE',
   '[[checkoutDate]]': 'AMAZON.DATE',

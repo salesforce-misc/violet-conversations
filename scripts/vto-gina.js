@@ -14,7 +14,7 @@ const preference = "photography";
 const skill = "sales force";
 const hours = "4";
 
-violet.addKeyTypes({
+violet.addInputTypes({
   "bloodSugarLvl": "NUMBER",
 });
 

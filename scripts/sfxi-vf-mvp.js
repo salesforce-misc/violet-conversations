@@ -24,7 +24,7 @@ violet.addPhraseEquivalents([
   ['hear', 'tell me'],
 ]);
 
-violet.addKeyTypes({
+violet.addInputTypes({
   "eventNo": "NUMBER"
 });
 

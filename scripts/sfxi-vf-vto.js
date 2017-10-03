@@ -12,7 +12,7 @@ violetSFStore.store.propOfInterest = {
   'Activity': ['Name*', 'City']
 }
 
-violet.addKeyTypes({
+violet.addInputTypes({
   "activityName": {
       "type": "AMAZON.LITERAL",
       "sampleValues": ["Redwood State Park Clean Up", "Family House Taco Thursday", "Richmond Elementary Corridor Repaint"]

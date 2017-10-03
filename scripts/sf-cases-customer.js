@@ -9,7 +9,7 @@ violetSFStore.store.propOfInterest = {
   'Case*': ['CaseNumber*', 'Contact*.Name*', /*'Contact*.Owner*.Name*',*/ 'Subject*', 'Status*', 'Priority*']
 }
 
-violet.addKeyTypes({
+violet.addInputTypes({
   "name": "AMAZON.LITERAL",
   "company": "AMAZON.LITERAL",
   "opportunityName": "AMAZON.LITERAL",

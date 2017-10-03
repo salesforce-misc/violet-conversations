@@ -14,7 +14,7 @@ violetSFStore.store.propOfInterest = {
   'Event*': ['StartDateTime*', 'Subject*', 'Who*.Name*']
 }
 
-violet.addKeyTypes({
+violet.addInputTypes({
   "leadName": {
       "type": "AMAZON.LITERAL",
       "sampleValues": ["Bill Gates", "Mark Zuckerberg"]

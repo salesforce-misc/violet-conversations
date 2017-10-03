@@ -5,7 +5,7 @@ var violetClientTx = require('../lib/violetClientTx.js')(violet);
 var request = require('request');
 
 
-violet.addKeyTypes({
+violet.addInputTypes({
 });
 
 violet.addPhraseEquivalents([

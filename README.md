@@ -97,7 +97,7 @@ violet.respondTo(['Can you help me', 'What can I do'],
 If you want to accept data from a user, you will need to declare it with its
 type and then tell the script engine where to expect it:
 ```javascript
-violet.addKeyTypes({
+violet.addInputTypes({
   'name': 'AMAZON.US_FIRST_NAME',
 });
 
@@ -262,7 +262,7 @@ In the below example - from violetTime.js - a custom type called `timeUnit` is
 declared.
 
 ```javascript
-violet.addKeyTypes({
+violet.addInputTypes({
   "time": "NUMBER",
   "timeUnit": {
     "type": "timeUnitType",

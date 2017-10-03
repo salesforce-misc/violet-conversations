@@ -6,7 +6,7 @@ module.exports = violet;
 ////////////////
 // 101 - basics
 ////////////////
-violet.addKeyTypes({
+violet.addInputTypes({
   'name': 'AMAZON.US_FIRST_NAME',
 });
 
@@ -26,7 +26,7 @@ violet.addPhraseEquivalents([
 ////////////////
 // 103 - a few bells and whistles: allowing complexity, optional input commands, setting and using conversational variables
 ////////////////
-violet.addKeyTypes({
+violet.addInputTypes({
   'city': 'AMAZON.US_CITY',
   'age': 'NUMBER',
 });
@@ -98,7 +98,7 @@ violet.respondTo(
 - do goals need to be seperate
 - ask vs say
 */
-violet.addKeyTypes({
+violet.addInputTypes({
   'airline': 'LITERAL',
   'city': 'AMAZON.US_CITY',
   'flightDay': 'LITERAL',

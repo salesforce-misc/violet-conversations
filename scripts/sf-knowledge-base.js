@@ -10,7 +10,7 @@ violetSFStore.store.propOfInterest = {
   'KnowledgeArticleVersion*': ['Id*', 'Title*', 'Summary*', 'UrlName*', 'LastPublishedDate*']
 }
 
-violet.addKeyTypes({
+violet.addInputTypes({
   "articleNo": "NUMBER",
   "searchTerm": {
     "type": "LITERAL",

@@ -39,17 +39,24 @@ module.exports.addListItems = (tid, sid, items)=>{
 };
 
 module.exports.appendItemsToList = (tid, items)=>{
-  var sid = 'TddACAllX0s'; // TODO - implement this
-  // really add to end
-  var params = {
-    threadId: tid,
-    sectionId: sid,
-    format: 'markdown',
-    content: items.join('\n\n'),
-    operation: quip.Operation.AFTER_SECTION
-  };
-  client.editDocument(params, function(err) {
-      if (err) console.log(err);
+  return quipSvc.getListItemP(tid).then((curItems)=>{
+    var sid = null;
+    if (curItems.length == 0) {
+      sid = tid;
+    } else {
+      sid = curItems[curItems.length-1].id;
+      // really add to end
+      var params = {
+        threadId: tid,
+        sectionId: sid,
+        format: 'markdown',
+        content: items.join('\n\n'),
+        operation: quip.Operation.AFTER_SECTION
+      };
+      client.editDocument(params, function(err) {
+          if (err) console.log(err);
+      });
+    }
   });
 };
 

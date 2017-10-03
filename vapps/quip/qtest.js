@@ -58,19 +58,22 @@ var prettyJSON = function(givenHdr, obj, ndent=0, internalCall=false) {
 //   quipSvc.getFolder(user['starred_folder_id']);
 // });
 
+var mainDoc = 'TddAAATIqbb';
+
 // dig into particular document with checklist (thread-id: badAAAkqM49)
-// quipSvc.getThread('TddAAATIqbb');
+// quipSvc.getThread(mainDoc);
 
 // add items to thread after section
-// quipSvc.appendItemsToList('TddAAATIqbb', ['BBB - 10', 'BBB - 20']);
+// quipSvc.appendItemsToList(mainDoc, ['BBB - 10', 'BBB - 20']);
 
 // edit items
-// quipSvc.modifyListItem('TddAAATIqbb', 'badACAGuOBi', ['the future is now']);
+// quipSvc.modifyListItem(mainDoc, 'badACAGuOBi', ['the future is now']);
 
 // mark a checkbox as completed
 // ***need to get this working***
+// quipSvc.modifyListItem(mainDoc, 'TddACA8MjpL', ['<del>The test item</del>']);
 
 // list items
-// quipSvc.getListItem('TddAAATIqbb', (items)=>{
+// quipSvc.getListItem(mainDoc, (items)=>{
 //   console.log(items)
 // });

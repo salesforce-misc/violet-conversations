@@ -10,6 +10,7 @@ var Promise = require('bluebird');
 module.exports = violet;
 
 violet.addInputTypes({
+  "itemNo": "NUMBER",
   'itemName': {
       type: 'AMAZON.LITERAL',
       sampleValues: ['Review with Gina', 'Make Presentation', 'Make Poster']

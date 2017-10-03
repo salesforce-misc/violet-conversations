@@ -46,9 +46,8 @@ violet.respondTo(['add [[itemName]] to the list'],
 
 violet.respondTo(['whats next on my to do'],
   (response) => {
-    return quipSvc
-            .getListItemP(tgtDocId)
-            .then((items)=>{
+    return quipSvc.getListItemP(tgtDocId)
+                  .then((items)=>{
         for (var i of items) {
           if (i.done == false) {
             response.set('tgtItemId', i.id);

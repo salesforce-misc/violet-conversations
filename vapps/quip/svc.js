@@ -39,7 +39,7 @@ module.exports.addListItems = (tid, sid, items)=>{
 };
 
 module.exports.appendItemsToList = (tid, items)=>{
-  return quipSvc.getListItemP(tid).then((curItems)=>{
+  return getListItemP(tid).then((curItems)=>{
     var sid = null;
     if (curItems.length == 0) {
       sid = tid;
@@ -97,4 +97,4 @@ var getListItem = module.exports.getListItem = (tid, cb)=>{
   });
 };
 
-module.exports.getListItemP = Promise.promisify(getListItem);
+var getListItemP = module.exports.getListItemP = Promise.promisify(getListItem);

@@ -22,7 +22,7 @@ var mainDoc = 'TddAAATIqbb';
 
 // mark a checkbox as completed
 // ***need to get this working***
-quipSvc.modifyListItem(mainDoc, 'TddACAurP6C', ['<del>The test item</del>']);
+// quipSvc.modifyListItem(mainDoc, 'TddACAurP6C', ['<del>The test item</del>']);
 
 // list items
 // quipSvc.getListItem(mainDoc, (err, items)=>{

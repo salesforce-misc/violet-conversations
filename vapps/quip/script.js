@@ -34,19 +34,20 @@ var makePretty=(str)=>{
  return str.charAt(0).toUpperCase() + str.slice(1); // first letter uppercase
 };
 
-// u: Make dinner reservations
+// ToDo - make the below configurable
 var tgtDoc = 'Acme Company EBC'
+var tgtDocId = 'TddAAATIqbb';
 var tgtSec = 'To Do'
 violet.respondTo(['add [[itemName]] to the list'],
   (response) => {
     response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
-    quipSvc.appendItemsToList('TddAAATIqbb', [makePretty(response.get('itemName'))]);
+    quipSvc.appendItemsToList(tgtDocId, [makePretty(response.get('itemName'))]);
 });
 
 violet.respondTo(['whats next on my to do'],
   (response) => {
     return new Promise((resolve, reject)=>{
-      quipSvc.getListItem('TddAAATIqbb', (items)=>{
+      quipSvc.getListItem(tgtDocId, (items)=>{
         for (var i of items) {
           if (i.done == false) {
             response.say(`The next item is ${i.text}`);

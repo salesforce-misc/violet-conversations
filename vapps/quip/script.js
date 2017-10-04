@@ -109,3 +109,60 @@ violet.respondTo(['mark item as checked'],
     } else
       response.say(`Which item are you referring to`);
 });
+
+// use soundex https://en.wikipedia.org/wiki/Soundex
+var soundex = require('soundex');
+var voiceMatchScores = (voiceInp, items) => {
+  var _getSig = (str) => {
+    return str.split(' ').map(w=>{return soundex(w);}).sort();
+  }
+  var voiceInpSig = _getSig(voiceInp);
+  // console.log('voiceInpSig: ', voiceInpSig);
+  return items.map(item=>{
+    var itemSig = _getSig(item.text);
+    // console.log('item:    ', item.text);
+    // console.log('itemSig: ', itemSig);
+    var matches = 0;
+    voiceInpSig.forEach(inpWSig=>{
+      var fMatched = itemSig.find(itemWSig=>{return inpWSig==itemWSig;});
+      if (fMatched) matches++;
+    });
+    // console.log('matchScore: ', Math.trunc(100*matches/voiceInpSig.length), matches, voiceInpSig.length);
+    return Math.trunc(100*matches/voiceInpSig.length);
+  });
+};
+
+violet.respondTo(['mark [[itemName]] as {checked|done}'],
+  (response) => {
+    return quipSvc.getListItemP(tgtDocId).then((items)=>{
+      var matchScores = voiceMatchScores(response.get('itemName'), items);
+      // console.log('matchScores: ', matchScores);
+      var hi=[], lo=[]; // indices of target items
+      matchScores.forEach((score, ndx)=>{
+        if (score>65) hi.push(ndx);
+        if (score<35) lo.push(ndx);
+      });
+      // console.log(hi, lo, matchScores.length);
+
+      // if high match with 1 item and low match with *all* other items
+      if (hi.length==1 && matchScores.length-1==lo.length) {
+        var tgtItem = items[hi[0]];
+        response.say(`Got it. Marking ${tgtItem.text} as done.`);
+        return markItemChecked(tgtDocId, tgtItem.id, tgtItem.html);
+      }
+
+      // if high/mid match with 2-3 items and low match with *all* other items (length-3)
+      if (matchScores.length-3>=lo.length) {
+        var matchItems = matchScores
+              .map((score, ndx)=>{return (score>=35) ? items[ndx] : null;})
+              .filter(i=>{return i!=null;});
+
+        response.set('Items', matchItems);
+        violetToDoList.respondWithItems(response, matchItems);
+        return;
+      }
+
+      // not sure we can do better
+      response.say('Sorry. I could not find a match for [[itemName]]. Please try again or use a web interface.')
+    });
+});

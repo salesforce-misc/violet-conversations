@@ -6,7 +6,11 @@ var Promise = require('bluebird');
 
 var client = new quip.Client({accessToken: process.env.QUIP_TOKEN});
 
-module.exports.getThread = (tid, wdoc=true, ndx=0)=>{
+module.exports.getAuthenticatedUser = function(cb) {
+  client.getAuthenticatedUser(cb);
+};
+
+var getThread = module.exports.getThread = (tid, wdoc=true, ndx=0)=>{
   client.getThread(tid, function(err, thread) {
     if (!wdoc)
       delete thread.html;
@@ -14,7 +18,7 @@ module.exports.getThread = (tid, wdoc=true, ndx=0)=>{
   });
 };
 
-module.exports.getFolder = (fid, ndx=0)=>{
+var getFolder = module.exports.getFolder = (fid, ndx=0)=>{
   client.getFolder(fid, function(err, folders) {
       console.log(utils.prettyJSON(utils.spaces(2*ndx) + 'child: ', folders));
       folders.children.forEach((child)=>{

@@ -3,14 +3,14 @@ var utils = new require('./utils.js');
 
 
 // dig into starred folders
-// client.getAuthenticatedUser(function(err, user) {
+// quipSvc.getAuthenticatedUser(function(err, user) {
 //   console.log(utils.prettyJSON('user: ', user));
 //   quipSvc.getFolder(user['starred_folder_id']);
 // });
 
 var mainDoc = 'TddAAATIqbb';
 
-// dig into particular document with checklist (thread-id: badAAAkqM49)
+// dig into particular document with checklist
 // quipSvc.getThread(mainDoc);
 
 // add items to thread after section

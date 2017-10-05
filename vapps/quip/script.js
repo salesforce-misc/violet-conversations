@@ -33,9 +33,19 @@ violet.addInputTypes({
  */
 
 var makePretty=(str)=>{
+  if (!str) return 'Error in Input';
  str = str.trim();
  return str.charAt(0).toUpperCase() + str.slice(1); // first letter uppercase
 };
+
+var ack = (response) => { response.say(['Got it.', 'Great.', 'Awesome']); }
+var err = (response) => { response.say(['Sorry', 'Whoops']); }
+var retry = (response) => { response.say(['Please try again', 'Would you mind repeating']); }
+var apologize = (response, msg) => {
+  err(response);
+  response.say(msg);
+  retry(response);
+}
 
 // ToDo - make the below configurable
 var tgtDoc = 'Acme Company EBC'
@@ -43,8 +53,12 @@ var tgtDocId = 'TddAAATIqbb';
 var tgtSec = 'To Do'
 violet.respondTo(['add [[itemName]] to the list'],
   (response) => {
+    var itemName = response.get('itemName');
+    if (!itemName) {
+      return apologize(response, 'I could not understand what you asked to be added.');
+    }
     response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
-    quipSvc.appendItemsToList(tgtDocId, [makePretty(response.get('itemName'))]);
+    quipSvc.appendItemsToList(tgtDocId, [makePretty(itemName)]);
 });
 
 violet.respondTo(['whats next {to be done|on my to do}'],
@@ -59,8 +73,6 @@ violet.respondTo(['whats next {to be done|on my to do}'],
       response.say(`The next item is ${nxtItem.text}`);
     });
 });
-
-var ack = (response) => { response.say(['Got it.', 'Great.', 'Awesome']); }
 
 var markItemChecked = (docId, itemId, itemHtml) => {
   // waiting on Quip team to implement this correctly

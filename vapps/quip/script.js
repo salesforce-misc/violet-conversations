@@ -48,8 +48,8 @@ var apologize = (response, msg) => {
 }
 
 // ToDo - make the below configurable
+var tgtDocId = process.env.QUIP_TGT_DOC_ID;
 var tgtDoc = 'Acme Company EBC'
-var tgtDocId = 'TddAAATIqbb';
 var tgtSec = 'To Do'
 violet.respondTo(['add [[itemName]] to the list'],
   (response) => {

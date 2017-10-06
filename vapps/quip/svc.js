@@ -12,14 +12,22 @@ module.exports.getAuthenticatedUser = function(cb) {
 
 var getThread = module.exports.getThread = (tid, wdoc=true, ndx=0)=>{
   client.getThread(tid, function(err, thread) {
+    if (!thread) {
+      console.log(`${tid} has null thread`)
+      return;
+    }
     if (!wdoc)
-      delete thread.html;
+      if (thread.html) delete thread.html;
     console.log(utils.prettyJSON(utils.spaces(2*ndx) + 't-child: ', thread));
   });
 };
 
 var getFolder = module.exports.getFolder = (fid, ndx=0)=>{
   client.getFolder(fid, function(err, folders) {
+      if (!folders) {
+        console.log(`${fid} has null folders`)
+        return;
+      }
       console.log(utils.prettyJSON(utils.spaces(2*ndx) + 'child: ', folders));
       folders.children.forEach((child)=>{
         if (child['folder_id']) getFolder(child['folder_id'], ndx+1);

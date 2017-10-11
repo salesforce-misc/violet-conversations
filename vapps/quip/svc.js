@@ -12,6 +12,10 @@ module.exports.getAuthenticatedUser = function(cb) {
 
 var getThread = module.exports.getThread = (tid, wdoc=true, ndx=0)=>{
   client.getThread(tid, function(err, thread) {
+    if (err) {
+      console.log(err);
+      return;
+    }
     if (!thread) {
       console.log(`${tid} has null thread`)
       return;

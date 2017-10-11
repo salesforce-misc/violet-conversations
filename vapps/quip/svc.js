@@ -1,7 +1,7 @@
 var quip = new require('./api.js');
 var utils = new require('./utils.js');
 var Promise = require('bluebird');
-
+var cheerio = require('cheerio');
 
 
 var client = new quip.Client({accessToken: process.env.QUIP_TOKEN});
@@ -95,7 +95,6 @@ module.exports.modifyListItem = (tid, sid, items)=>{
 var getListItem = module.exports.getListItem = (tid, cb)=>{
   client.getThread(tid, function(err, thread) {
     if (err) cb(err, null);
-    var cheerio = require('cheerio');
     var doc = cheerio.load(thread.html);
 
     // all list items

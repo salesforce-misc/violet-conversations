@@ -9,6 +9,10 @@ var Promise = require('bluebird');
 
 module.exports = violet;
 
+violet.addPhraseEquivalents([
+  ["my to do", "my list", "my to do list"],
+]);
+
 violet.addInputTypes({
   "itemNo": "NUMBER",
   'itemName': {
@@ -61,7 +65,7 @@ violet.respondTo(['add [[itemName]] to the list'],
     quipSvc.appendItemsToList(tgtDocId, [makePretty(itemName)]);
 });
 
-violet.respondTo(['whats next {to be done|on my to do}'],
+violet.respondTo(['whats next to be done', 'whats next on my to do'],
   (response) => {
     return quipSvc.getListItemP(tgtDocId).then((items)=>{
       var nxtItem = items.find(i=>{return (i.done==false);});
@@ -104,7 +108,7 @@ violet.respondTo(['what all needs to be done', 'what all is open on my to do'],
     });
 });
 
-violet.respondTo(['whats all is on my to do list'],
+violet.respondTo(['whats all is on my to do'],
   (response) => {
     return quipSvc.getListItemP(tgtDocId).then((items)=>{
       response.set('Items', items);

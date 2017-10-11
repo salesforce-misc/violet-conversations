@@ -8,7 +8,7 @@ var utils = new require('./utils.js');
 //   quipSvc.getFolder(user['starred_folder_id']);
 // });
 
-var mainDoc = 'TddAAATIqbb';
+var mainDoc = process.env.QUIP_TGT_DOC_ID;
 
 // dig into particular document with checklist
 // quipSvc.getThread(mainDoc);

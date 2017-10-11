@@ -67,8 +67,8 @@ violet.respondTo(['add [[itemName]] to the list'],
 
 violet.respondTo(['whats next to be done', 'whats next on my to do'],
   (response) => {
-    return quipSvc.getListItemP(tgtDocId).then((items)=>{
-      var nxtItem = items.find(i=>{return (i.done==false);});
+    return quipSvc.getItemsP(tgtDocId, /*asList*/true).then((items)=>{
+      var nxtItem = items.children.find(i=>{return (i.done==false);});
       if (!nxtItem) {
         response.say(`There are no items that need to be done on your list`);
         return;
@@ -101,8 +101,8 @@ violetToDoList.defineItemInteraction({
 
 violet.respondTo(['what all needs to be done', 'what all is open on my to do'],
   (response) => {
-    return quipSvc.getListItemP(tgtDocId).then((items)=>{
-      items = items.filter(i=>{return (i.done==false);});
+    return quipSvc.getItemsP(tgtDocId, /*asList*/true).then((items)=>{
+      items = items.children.filter(i=>{return (i.done==false);});
       response.set('Items', items);
       violetToDoList.respondWithItems(response, items);
     });
@@ -110,7 +110,8 @@ violet.respondTo(['what all needs to be done', 'what all is open on my to do'],
 
 violet.respondTo(['whats all is on my to do'],
   (response) => {
-    return quipSvc.getListItemP(tgtDocId).then((items)=>{
+    return quipSvc.getItemsP(tgtDocId, /*asList*/true).then((items)=>{
+      items = items.children;
       response.set('Items', items);
       violetToDoList.respondWithItems(response, items);
     });
@@ -150,8 +151,8 @@ var voiceMatchScores = (voiceInp, items) => {
 
 violet.respondTo(['mark [[itemName]] as {checked|done}'],
   (response) => {
-    return quipSvc.getListItemP(tgtDocId).then((items)=>{
-      var matchScores = voiceMatchScores(response.get('itemName'), items);
+    return quipSvc.getItemsP(tgtDocId, /*asList*/true).then((items)=>{
+      var matchScores = voiceMatchScores(response.get('itemName'), items.children);
       // console.log('matchScores: ', matchScores);
       var hi=[], lo=[]; // indices of target items
       matchScores.forEach((score, ndx)=>{
@@ -162,7 +163,7 @@ violet.respondTo(['mark [[itemName]] as {checked|done}'],
 
       // if high match with 1 item and low match with *all* other items
       if (hi.length==1 && matchScores.length-1==lo.length) {
-        var tgtItem = items[hi[0]];
+        var tgtItem = items.children[hi[0]];
         response.say(`Got it. Marking ${tgtItem.text} as done.`);
         return markItemChecked(tgtDocId, tgtItem.id, tgtItem.html);
       }

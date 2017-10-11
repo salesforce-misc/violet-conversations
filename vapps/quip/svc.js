@@ -55,12 +55,14 @@ module.exports.addListItems = (tid, sid, items)=>{
 };
 
 module.exports.appendItemsToList = (tid, items)=>{
-  return getListItemP(tid).then((curItems)=>{
+  return getItemsP(tid, /*asList*/true).then((curItems)=>{
     var sid = null;
-    if (curItems.length == 0) {
+    if (curItems.children.length == 0) {
       sid = tid;
     } else {
-      sid = curItems[curItems.length-1].id;
+      console.log(curItems);
+      sid = curItems.children[curItems.children.length-1].id;
+      console.log(sid);
       // really add to end
       var params = {
         threadId: tid,
@@ -90,26 +92,71 @@ module.exports.modifyListItem = (tid, sid, items)=>{
   });
 };
 
+var delParentRecursively = nestedObj => {
+  delete nestedObj.parent;
+  if (nestedObj.children)
+    nestedObj.children.forEach(c=>{delParentRecursively(c);})
+}
+var isLower = (t1, t2) => {
+  if (t2 == t1) return false; // nothing is lower than itself
+  switch (t2) {
+  case undefined: return true; // everything is lower than the root/top
+  case 'h1': return true; // already returned for h1
+  case 'h2':
+    if (t1 == 'h1')
+      return false;
+    else // t1 == 'h3'
+      return true;
+  case 'h3': return false;
+  };
+}
+
 
 // returns all lists inside thread (document)
-var getListItem = module.exports.getListItem = (tid, cb)=>{
+var getItems = module.exports.getItems = (tid, asList, cb)=>{
   client.getThread(tid, function(err, thread) {
     if (err) cb(err, null);
     var doc = cheerio.load(thread.html);
 
     // all list items
-    var items = [];
-    doc('div[data-section-style=7] li').each((ndx, el)=>{
+    var items = {
+      itemCnt: 0,
+      children: []
+    };
+    var itemParent = items;
+    doc('h1, h2, h3, div[data-section-style=7] li').each((ndx, el)=>{
       var cel = cheerio(el);
-      items.push({
+      var xtract = {
+        tag:  cel.get(0).tagName, // temproary
         id:   cel.attr('id'),
         done: cel.attr('class')==='checked',
         text: cel.text().trim(),
-        html: cheerio(cel.children()[0]).html()
-      });
+      };
+      if (xtract.tag === 'li') {
+        xtract.html = cheerio(cel.children()[0]).html();
+        itemParent.children.push(xtract);
+        var ip = itemParent;
+        while (ip != null) {
+          ip.itemCnt++;
+          ip = ip.parent;
+        }
+      } else { // h1, h2, h3
+        if (asList) return; // we don't do anything with headings
+        xtract.html = cel.html();
+        xtract.children = [];
+        xtract.itemCnt = 0;
+        while (!isLower(xtract.tag, itemParent.tag)) {
+          itemParent = itemParent.parent;
+        }
+        xtract.parent = itemParent;
+        itemParent.children.push(xtract);
+        itemParent = xtract;
+      }
     });
+    delParentRecursively(items);
     cb(null, items);
   });
 };
 
-var getListItemP = module.exports.getListItemP = Promise.promisify(getListItem);
+
+var getItemsP = module.exports.getItemsP = Promise.promisify(getItems);

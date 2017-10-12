@@ -16,6 +16,7 @@ violet.addPhraseEquivalents([
 
 violet.addInputTypes({
   "itemNo": "NUMBER",
+  "categoryNo": "NUMBER",
   'itemName': {
       type: 'AMAZON.LITERAL',
       // Amazon recommends/asks "to provide several hundred samples or more to address all the variations in slot value words as noted above"
@@ -57,6 +58,32 @@ var apologize = (response, msg) => {
 var tgtDocId = process.env.QUIP_TGT_DOC_ID;
 var tgtDoc = 'Acme Company EBC'
 var tgtSec = 'To Do'
+
+var appendToCategory = (category, itemName) => {
+  console.log('appendToCategory - category', category);
+  var lastList = category.children;
+  quipSvc.appendItemsWithinSection(tgtDocId, lastList[lastList.length-1].id, [makePretty(itemName)]);
+}
+
+// define the cateogry list interactions
+violet.defineGoal({
+  goal: categoryList.interactionGoal(),
+  prompt: [`Would you like to use one of these categories`],
+  respondTo: [{
+    expecting: [`use category [[categoryNo]]`],
+    resolve: (response) => {
+      var category = categoryList.getItemFromResults(response, response.get('categoryNo'));
+      var itemName = response.get('itemName');
+      response.say(`Got it. I added ${itemName} to the checklist. Anything else?`);
+      appendToCategory(category, response.get('itemName'));
+  }}, {
+    expecting: ['go back'],
+    resolve: function (response) {
+      ack(response);
+  }}]
+});
+
+
 violet.respondTo(['add [[itemName]] to the list'],
   (response) => {
     var itemName = response.get('itemName');
@@ -71,12 +98,13 @@ violet.respondTo(['add [[itemName]] to the list'],
           return;
         } else if (categorizedItems.length==1) {
           response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
-          var lastList = categorizedItems[0].children;
-          quipSvc.appendItemsWithinSection(tgtDocId, lastList[lastList.length-1].id, [makePretty(itemName)]);
+          appendToCategory(categorizedItems[0], itemName);
           return;
-        } else {
-          // implement
-          response.say(`Hmmm... I don't support multiple categories yet`);
+        } else { // categorizedItems.length > 1
+          response.say('Sure.');
+          console.log('categorizedItems', categorizedItems);
+          response.set('Categories', categorizedItems);
+          categoryList.respondWithItems(response, categorizedItems);
         }
       });
 });
@@ -99,7 +127,7 @@ var markItemChecked = (docId, itemId, itemHtml) => {
   return quipSvc.modifyListItem(docId, itemId, [`<del>${itemHtml}</del>`]);
 };
 
-// define the list interactions
+// define the item list interactions
 violet.defineGoal({
   goal: itemList.interactionGoal(),
   prompt: [`Would you like to mark an item as done`],

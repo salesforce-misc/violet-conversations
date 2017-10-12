@@ -114,7 +114,7 @@ var getItems = module.exports.getItems = (tid, asList, cb)=>{
       itemCnt: 0,
       children: []
     };
-    var categories = {}; // only those with children
+    var sections = {}; // only those with children
     var itemParent = items;
     doc('h1, h2, h3, div[data-section-style=7] li').each((ndx, el)=>{
       var cel = cheerio(el);
@@ -127,7 +127,7 @@ var getItems = module.exports.getItems = (tid, asList, cb)=>{
       if (xtract.tag === 'li') {
         xtract.html = cheerio(cel.children()[0]).html();
         itemParent.children.push(xtract);
-        categories[itemParent.id] = itemParent.text;
+        sections[itemParent.id] = itemParent.text;
         var ip = itemParent;
         while (ip != null) {
           ip.itemCnt++;
@@ -150,6 +150,10 @@ var getItems = module.exports.getItems = (tid, asList, cb)=>{
     if (asList)
       cb(null, items);
     else {
+      var categories = [];
+      Object.keys(sections).forEach(s=>{
+        categories.push({id:s, text:sections[s]});
+      })
       cb(null, {items, categories});
     }
   });

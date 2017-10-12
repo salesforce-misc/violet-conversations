@@ -3,6 +3,7 @@
 var violet = require('../../lib/violet').script();
 var violetTime = require('../../lib/violetTime')(violet);
 var itemList = require('../../lib/violetList.js')(violet, 'Items', 'item', 'items', 'text');
+var categoryList = require('../../lib/violetList.js')(violet, 'Categories', 'category', 'categories', 'text');
 
 var quipSvc = require('./svc.js');
 var Promise = require('bluebird');
@@ -64,13 +65,14 @@ violet.respondTo(['add [[itemName]] to the list'],
     return quipSvc
       .getItemsP(tgtDocId, /*asList*/false)
       .then(categorizedItems=>{
-        if (categorizedItems.categories==0) {
-          response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
+        console.log('categories: ', categorizedItems.categories);
+        if (categorizedItems.categories.length==0) {
+          response.say(`Got it. I added [[itemName]] to the document. Anything else?`);
           quipSvc.appendItemsWithinSection(tgtDocId, tgtDocId, [makePretty(itemName)]);
           return;
-        } else if (categorizedItems.categories==1) {
+        } else if (categorizedItems.categories.length==1) {
           response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
-          quipSvc.appendItemsWithinSection(tgtDocId, Object.keys(categorizedItems.categories)[0], [makePretty(itemName)]);
+          quipSvc.appendItemsWithinSection(tgtDocId, categorizedItems.categories[0].id, [makePretty(itemName)]);
           return;
         } else {
           // implement

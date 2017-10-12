@@ -25,6 +25,6 @@ var mainDoc = process.env.QUIP_TGT_DOC_ID;
 // quipSvc.modifyListItem(mainDoc, 'TddACAurP6C', ['<del>The test item</del>']);
 
 // list items
-quipSvc.getItems(mainDoc, /*asList*/true, (err, items)=>{
+quipSvc.getItems(mainDoc, /*asList*/false, (err, items)=>{
   console.log(JSON.stringify(items, null, 2));
 });

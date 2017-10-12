@@ -17,6 +17,7 @@ violet.addInputTypes({
   "itemNo": "NUMBER",
   'itemName': {
       type: 'AMAZON.LITERAL',
+      // Amazon recommends/asks "to provide several hundred samples or more to address all the variations in slot value words as noted above"
       sampleValues: ['Review with Gina', 'Make Presentation', 'Make Poster']
   }
 });
@@ -58,11 +59,24 @@ var tgtSec = 'To Do'
 violet.respondTo(['add [[itemName]] to the list'],
   (response) => {
     var itemName = response.get('itemName');
-    if (!itemName) {
+    if (!itemName)
       return apologize(response, 'I could not understand what you asked to be added.');
-    }
-    response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
-    quipSvc.appendItemsToList(tgtDocId, [makePretty(itemName)]);
+    return quipSvc
+      .getItemsP(tgtDocId, /*asList*/false)
+      .then(categorizedItems=>{
+        if (categorizedItems.categories==0) {
+          response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
+          quipSvc.appendItemsWithinSection(tgtDocId, tgtDocId, [makePretty(itemName)]);
+          return;
+        } else if (categorizedItems.categories==1) {
+          response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
+          quipSvc.appendItemsWithinSection(tgtDocId, Object.keys(categorizedItems.categories)[0], [makePretty(itemName)]);
+          return;
+        } else {
+          // implement
+          response.say(`Hmmm... I don't support multiple categories yet`);
+        }
+      });
 });
 
 violet.respondTo(['whats next to be done', 'whats next on my to do'],

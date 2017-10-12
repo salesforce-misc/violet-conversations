@@ -14,7 +14,7 @@ var mainDoc = process.env.QUIP_TGT_DOC_ID;
 // quipSvc.getThread(mainDoc);
 
 // add items to thread after section
-// quipSvc.appendItemsToList(mainDoc, ['BBB - 10', 'BBB - 20']);
+// quipSvc.appendItems(mainDoc, ['BBB - 10', 'BBB - 20']);
 
 // edit items
 // quipSvc.modifyListItem(mainDoc, 'TddACAurP6C', ['the future is now']);

@@ -40,8 +40,8 @@ var getFolder = module.exports.getFolder = (fid, ndx=0)=>{
   });
 };
 
-module.exports.addListItems = (tid, sid, items)=>{
-  // really add to end
+var appendItemsWithinSection = module.exports.appendItemsWithinSection = (tid, sid, items)=>{
+  if (!sid) sid = tid; //adds to end of document
   var params = {
     threadId: tid,
     sectionId: sid,
@@ -54,7 +54,7 @@ module.exports.addListItems = (tid, sid, items)=>{
   });
 };
 
-module.exports.appendItemsToList = (tid, items)=>{
+module.exports.appendItems = (tid, items)=>{
   return getItemsP(tid, /*asList*/true).then((curItems)=>{
     var sid = null;
     if (curItems.children.length == 0) {
@@ -62,19 +62,8 @@ module.exports.appendItemsToList = (tid, items)=>{
     } else {
       console.log(curItems);
       sid = curItems.children[curItems.children.length-1].id;
-      console.log(sid);
-      // really add to end
-      var params = {
-        threadId: tid,
-        sectionId: sid,
-        format: 'markdown',
-        content: items.join('\n\n'),
-        operation: quip.Operation.AFTER_SECTION
-      };
-      client.editDocument(params, function(err) {
-          if (err) console.log(err);
-      });
     }
+    appendItemsWithinSection(tid, sid, items);
   });
 };
 
@@ -112,6 +101,8 @@ var isLower = (t1, t2) => {
 }
 
 
+// if asList is true returns items as a single list
+// if asList is false returns items within the categories headings as well as a categories list (which have items within them)
 // returns all lists inside thread (document)
 var getItems = module.exports.getItems = (tid, asList, cb)=>{
   client.getThread(tid, function(err, thread) {
@@ -123,6 +114,7 @@ var getItems = module.exports.getItems = (tid, asList, cb)=>{
       itemCnt: 0,
       children: []
     };
+    var categories = {}; // only those with children
     var itemParent = items;
     doc('h1, h2, h3, div[data-section-style=7] li').each((ndx, el)=>{
       var cel = cheerio(el);
@@ -135,6 +127,7 @@ var getItems = module.exports.getItems = (tid, asList, cb)=>{
       if (xtract.tag === 'li') {
         xtract.html = cheerio(cel.children()[0]).html();
         itemParent.children.push(xtract);
+        categories[itemParent.id] = itemParent.text;
         var ip = itemParent;
         while (ip != null) {
           ip.itemCnt++;
@@ -154,7 +147,11 @@ var getItems = module.exports.getItems = (tid, asList, cb)=>{
       }
     });
     delParentRecursively(items);
-    cb(null, items);
+    if (asList)
+      cb(null, items);
+    else {
+      cb(null, {items, categories});
+    }
   });
 };
 

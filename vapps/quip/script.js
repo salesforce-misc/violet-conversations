@@ -2,7 +2,7 @@
 
 var violet = require('../../lib/violet').script();
 var violetTime = require('../../lib/violetTime')(violet);
-var violetItemList = require('../../lib/violetList.js')(violet, 'Items', 'item', 'items', 'text');
+var itemList = require('../../lib/violetList.js')(violet, 'Items', 'item', 'items', 'text');
 
 var quipSvc = require('./svc.js');
 var Promise = require('bluebird');
@@ -99,12 +99,12 @@ var markItemChecked = (docId, itemId, itemHtml) => {
 
 // define the list interactions
 violet.defineGoal({
-  goal: violetItemList.interactionGoal(),
+  goal: itemList.interactionGoal(),
   prompt: [`Would you like to mark an item as done`],
   respondTo: [{
     expecting: [`mark item [[itemNo]] as {done|checked}`],
     resolve: (response) => {
-      var item = violetItemList.getItemFromResults(response, response.get('itemNo'));
+      var item = itemList.getItemFromResults(response, response.get('itemNo'));
       response.say(`Marking ${item.text} as done`);
       return markItemChecked(tgtDocId, item.id, item.html);
   }}, {
@@ -119,7 +119,7 @@ violet.respondTo(['what all needs to be done', 'what all is open on my to do'],
     return quipSvc.getItemsP(tgtDocId, /*asList*/true).then((items)=>{
       items = items.children.filter(i=>{return (i.done==false);});
       response.set('Items', items);
-      violetItemList.respondWithItems(response, items);
+      itemList.respondWithItems(response, items);
     });
 });
 
@@ -128,7 +128,7 @@ violet.respondTo(['whats all is on my to do'],
     return quipSvc.getItemsP(tgtDocId, /*asList*/true).then((items)=>{
       items = items.children;
       response.set('Items', items);
-      violetItemList.respondWithItems(response, items);
+      itemList.respondWithItems(response, items);
     });
 });
 
@@ -190,7 +190,7 @@ violet.respondTo(['mark [[itemName]] as {checked|done}'],
               .filter(i=>{return i!=null;});
 
         response.set('Items', matchItems);
-        violetItemList.respondWithItems(response, matchItems);
+        itemList.respondWithItems(response, matchItems);
         return;
       }
 

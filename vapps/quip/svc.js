@@ -81,11 +81,6 @@ module.exports.modifyListItem = (tid, sid, items)=>{
   });
 };
 
-var delParentRecursively = nestedObj => {
-  delete nestedObj.parent;
-  if (nestedObj.children)
-    nestedObj.children.forEach(c=>{delParentRecursively(c);})
-}
 var isLower = (t1, t2) => {
   if (t2 == t1) return false; // nothing is lower than itself
   switch (t2) {
@@ -111,7 +106,6 @@ var getItems = module.exports.getItems = (tid, asList, cb)=>{
 
     // all list items
     var items = {
-      itemCnt: 0,
       children: []
     };
     var sections = {}; // only those with children
@@ -127,34 +121,20 @@ var getItems = module.exports.getItems = (tid, asList, cb)=>{
       if (xtract.tag === 'li') {
         xtract.html = cheerio(cel.children()[0]).html();
         itemParent.children.push(xtract);
-        sections[itemParent.id] = itemParent.text;
-        var ip = itemParent;
-        while (ip != null) {
-          ip.itemCnt++;
-          ip = ip.parent;
-        }
+        sections[itemParent.id] = itemParent;
       } else { // h1, h2, h3
         if (asList) return; // we don't do anything with headings
         xtract.html = cel.html();
         xtract.children = [];
-        xtract.itemCnt = 0;
-        while (!isLower(xtract.tag, itemParent.tag)) {
-          itemParent = itemParent.parent;
-        }
-        xtract.parent = itemParent;
-        itemParent.children.push(xtract);
         itemParent = xtract;
       }
     });
-    delParentRecursively(items);
     if (asList)
       cb(null, items);
     else {
-      var categories = [];
-      Object.keys(sections).forEach(s=>{
-        categories.push({id:s, text:sections[s]});
-      })
-      cb(null, {items, categories});
+      // drop the keys in sections - it is used to prevent duplicates
+      sections = Object.keys(sections).map(s=>{return sections[s];});
+      cb(null, sections);
     }
   });
 };

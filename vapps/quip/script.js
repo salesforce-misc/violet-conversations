@@ -65,14 +65,14 @@ violet.respondTo(['add [[itemName]] to the list'],
     return quipSvc
       .getItemsP(tgtDocId, /*asList*/false)
       .then(categorizedItems=>{
-        console.log('categories: ', categorizedItems.categories);
-        if (categorizedItems.categories.length==0) {
+        if (categorizedItems.length==0) {
           response.say(`Got it. I added [[itemName]] to the document. Anything else?`);
           quipSvc.appendItemsWithinSection(tgtDocId, tgtDocId, [makePretty(itemName)]);
           return;
-        } else if (categorizedItems.categories.length==1) {
+        } else if (categorizedItems.length==1) {
           response.say(`Got it. I added [[itemName]] to the checklist. Anything else?`);
-          quipSvc.appendItemsWithinSection(tgtDocId, categorizedItems.categories[0].id, [makePretty(itemName)]);
+          var lastList = categorizedItems[0].children;
+          quipSvc.appendItemsWithinSection(tgtDocId, lastList[lastList.length-1].id, [makePretty(itemName)]);
           return;
         } else {
           // implement

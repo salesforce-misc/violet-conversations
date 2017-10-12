@@ -18,7 +18,8 @@ violet.addInputTypes({
   }
 });
 
-violetKnowledgeResultsList.defineItemInteraction({
+violet.defineGoal({
+  goal: violetKnowledgeResultsList.interactionGoal(),
   prompt: [`Would you like to hear more from an article or have an article sent to you.`],
   respondTo: [{
     expecting: [`{hear|} more about article [[articleNo]]`],

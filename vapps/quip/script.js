@@ -98,7 +98,8 @@ var markItemChecked = (docId, itemId, itemHtml) => {
 };
 
 // define the list interactions
-violetToDoList.defineItemInteraction({
+violet.defineGoal({
+  goal: violetToDoList.interactionGoal(),
   prompt: [`Would you like to mark an item as done`],
   respondTo: [{
     expecting: [`mark item [[itemNo]] as {done|checked}`],

@@ -55,7 +55,8 @@ loadICS(vtoEventsICSurl, (eventsVal)=>{vtoEvents=eventsVal});
 var ack = (response) => { response.say(['Got it.', 'Great.', 'Awesome']); }
 
 // define the interactions
-violetVTOEventsList.defineItemInteraction({
+violet.defineGoal({
+  goal: violetVTOEventsList.interactionGoal(),
   prompt: [`Would you like to hear more about an event or go back`],
   respondTo: [{
     expecting: [`{hear|} more about event [[eventNo]]`],
@@ -69,7 +70,8 @@ violetVTOEventsList.defineItemInteraction({
   }}]
 });
 
-violetOhanaGroupEventsList.defineItemInteraction({
+violet.defineGoal({
+  goal: violetOhanaGroupEventsList.interactionGoal(),
   prompt: [`Would you like to hear more about an event or go back`],
   respondTo: [{
     expecting: [`{hear|} more about event [[eventNo]]`],

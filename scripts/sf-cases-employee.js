@@ -64,7 +64,8 @@ violetCasesList.getItemText = (ndx, results) => {
 }
 
 
-violetCasesList.defineItemInteraction({
+violet.defineGoal({
+  goal: violetCasesList.interactionGoal(),
   prompt: ['Would you like to hear or set the priority, change status, or add a comment along with the case number'],
   respondTo: [{
     expecting: ['{hear|} priority for case [[caseNo]]'],

@@ -1,8 +1,8 @@
 
 var yelp = require('yelp-fusion');
 
-var clientId = '0I7U0y7xX2hVjoXoTt9BoA';
-var clientSecret = 'h2ZQ9sQLKY5EObIUeVR7Vad0S8lCknJoSEtBUFqpFP6hz8u8JZKMeVAmVadsRRsF'
+var clientId = process.env.YELP_CLIENT_ID;
+var clientSecret = process.env.YELP_CLIENT_SECRET;
 
 var processBusinesses = (businesses) => {
   // console.log(businesses[0].name);

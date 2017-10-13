@@ -4,39 +4,45 @@ var yelp = require('yelp-fusion');
 var clientId = process.env.YELP_CLIENT_ID;
 var clientSecret = process.env.YELP_CLIENT_SECRET;
 
-var processBusinesses = (businesses) => {
-  // console.log(businesses[0].name);
-  // console.log(businesses[0]);
-  // console.log(businesses.length);
-  businesses.forEach(b=>{
-    console.log(b.categories);
-  })
+var lat = null;
+var lon = null;
 
+var client = null;
+
+module.exports.init = (_lat, _lon) => {
+  lat = _lat;
+  lon = _lon;
+  return yelp.accessToken(clientId, clientSecret).then(resp => {
+    var token = resp.jsonBody.access_token;
+    client = yelp.client(token);
+  });
 }
 
+var search = module.exports.search = (searchTerm, categories, processBusinessesCB, offset=0, max=100) => {
+  var params = {
+    latitude: lat,
+    longitude: lon,
+    limit: 50
+  }
+  if (offset>0) params.offset = offset;
+  if (searchTerm) params.term = searchTerm;
+  if (categories) params.categories = categories;
 
+  return client.search(params).then(response => {
+    console.log('total results: ' + response.jsonBody.total);
+    console.log('results: ' + response.jsonBody.businesses.length);
+    processBusinessesCB(response.jsonBody.businesses);
 
-var p = yelp.accessToken(clientId, clientSecret).then(resp => {
-  var token = resp.jsonBody.access_token;
-  return yelp.client(token);
-});
+    var totalProcessed = offset+response.jsonBody.businesses.length;
 
-// p = p.then(client => {
-//   return client.search({
-//     term: 'Indian',
-//     // location: 'san francisco, ca'
-//     location: '02067'
-//   }).then(response => {
-//     processBusinesses(response.jsonBody.businesses);
-//   });
-// });
+    delete response.jsonBody.businesses;
+    console.log(response.jsonBody);
 
-p = p.then(client => {
-  return client.reviews('coriander-indian-bistro-sharon').then(response => {
-    console.log(response.jsonBody.reviews);
+    if (response.jsonBody.total>totalProcessed && totalProcessed<max)
+      return search(searchTerm, categories, processBusinessesCB, totalProcessed, max);
   });
-});
+}
 
-p.catch(e => {
-  console.log(e);
-});
+// return client.reviews('coriander-indian-bistro-sharon').then(response => {
+//   console.log(response.jsonBody.reviews);
+// });

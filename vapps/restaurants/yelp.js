@@ -18,7 +18,7 @@ module.exports.init = (_lat, _lon) => {
   });
 }
 
-var search = module.exports.search = (searchTerm, categories, processBusinessesCB, offset=0, max=100) => {
+var searchScanner = module.exports.searchScanner = (searchTerm, categories, processBusinessesCB, offset=0, max=100) => {
   var params = {
     latitude: lat,
     longitude: lon,
@@ -39,8 +39,16 @@ var search = module.exports.search = (searchTerm, categories, processBusinessesC
     console.log(response.jsonBody);
 
     if (response.jsonBody.total>totalProcessed && totalProcessed<max)
-      return search(searchTerm, categories, processBusinessesCB, totalProcessed, max);
+      return searchScanner(searchTerm, categories, processBusinessesCB, totalProcessed, max);
   });
+}
+
+// an easy search implementation - assumes to try for 100 results and the return value is a promise which gives the values
+module.exports.search = (searchTerm, categories) => {
+  var results = [];
+  var collector = val => {results.push(val);};
+  var resultsCollector = results => {results.forEach(val=>{collector(val);}); };
+  return searchScanner(searchTerm, categories, resultsCollector).then(()=>{return results;});
 }
 
 // return client.reviews('coriander-indian-bistro-sharon').then(response => {

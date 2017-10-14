@@ -48,7 +48,7 @@ var extractCategories = (businesses) => {
 
 
 yelpSvc.init(lat, lon).then(()=>{
-  return yelpSvc.search(null, 'restaurants', extractCategories);
+  return yelpSvc.searchScanner(null, 'restaurants', extractCategories);
 }).then(()=>{
   var sortList = Object
         .keys(catList)

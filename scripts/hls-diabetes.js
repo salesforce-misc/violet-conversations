@@ -18,7 +18,7 @@ const rCall = 'Call your doctor now: 555-555-5555';
 const rBloodSugarLo = 70;
 const rBloodSugarHi = 130;
 
-violet.addInputTypes({
+violet.addKeyTypes({
   "bloodSugarLvl": "NUMBER",
 });
 

@@ -28,21 +28,21 @@ var _buildCacheFromSearchResults = (categories)=>{
 }
 var _updateCacheAggregates = (categories)=>{
   var catNdx = {};
-  // console.log('cache: ', cache);
   cache.search[categories].forEach(biz=>{
-    // console.log('biz: ', biz);
     biz.categories.forEach(c=>{
-      if (!catNdx[c.alias]) catNdx[c.alias]={name:c.title, cnt:0};
+      if (!catNdx[c.alias]) catNdx[c.alias]={alias:c.alias, name:c.title, cnt:0};
       catNdx[c.alias].cnt++;
     });
   });
-  cache.topCats[categories] = Object
-        .keys(catNdx)
+  // console.log('catNdx: ', catNdx);
+  var cats = Object.keys(catNdx);
+  cache.topCats[categories] = cats
         .map(k=>{return catNdx[k];})
         .sort((c1, c2) => {
           return c2.cnt - c1.cnt;
         })
-        .slice(0, Math.min(catNdx.length, 10));
+        .slice(0, Math.min(cats.length, 10));
+  // console.log('cache.topCats[categories]: ', cache.topCats[categories]);
 }
 
 var buildCache = () => {
@@ -71,7 +71,11 @@ var sayTop = (response, category) => {
   response.say(`My favorite restaurant is ${cache.search[category][0].name}`)
 }
 var saySummary = (response, category) => {
-
+  if (!cache.topCats[category]) {
+    response.say(`Sorry, I do not know anything about ${category}`)
+    return;
+  }
+  response.say(`They are mostly ${cache.topCats[category][0].name}, ${cache.topCats[category][1].name}, and ${cache.topCats[category][2].name}`)
 }
 
 violet.respondTo(['what is your top recommended restaurant'],
@@ -81,9 +85,13 @@ violet.respondTo(['what is your top recommended restaurant'],
 
 violet.respondTo(['what restaurants would you recommend'],
   (response) => {
-    response.say(`We have a number of good restaurants close by.`);
+    response.say([
+      'We have a number of restaurant that I like here.',
+      'There are a number of great restaurant here.',
+      'There are a number of popular restaurant here.',
+    ]);
     saySummary(response, 'restaurants');
-    response.addGoal('createLead');
+    // response.addGoal('categoryOrTop');
 });
 
 buildCache();

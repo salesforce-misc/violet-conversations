@@ -1,5 +1,7 @@
 'use strict';
 
+var fs = require('fs');
+
 var violet = require('../../lib/violet').script();
 var violetTime = require('../../lib/violetTime')(violet);
 var itemList = require('../../lib/violetList.js')(violet, 'Items', 'item', 'items', 'text');
@@ -20,7 +22,7 @@ violet.addInputTypes({
   'itemName': {
       type: 'AMAZON.LITERAL',
       // Amazon recommends/asks "to provide several hundred samples or more to address all the variations in slot value words as noted above"
-      sampleValues: ['Review with Gina', 'Make Presentation', 'Make Poster']
+      sampleValues: fs.readFileSync('sampleTasks.txt', 'utf8').split('\n')
   }
 });
 

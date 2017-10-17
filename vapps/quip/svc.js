@@ -80,6 +80,17 @@ module.exports.modifyListItem = (tid, sid, items)=>{
       if (err) console.log(err);
   });
 };
+module.exports.deleteListItem = (tid, sid)=>{
+  // really add to end
+  var params = {
+    threadId: tid,
+    sectionId: sid,
+    operation: quip.Operation.DELETE_SECTION
+  };
+  client.editDocument(params, function(err) {
+      if (err) console.log(err);
+  });
+};
 
 var isLower = (t1, t2) => {
   if (t2 == t1) return false; // nothing is lower than itself

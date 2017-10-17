@@ -20,6 +20,9 @@ var mainDoc = process.env.QUIP_TGT_DOC_ID;
 // quipSvc.modifyListItem(mainDoc, 'TddACAurP6C', ['the future is now']);
 // quipSvc.modifyListItem(mainDoc, 'TddACAurP6C', ['<del>The test item</del>']);
 
+// delete items
+// quipSvc.deleteListItem(mainDoc, 'bBGACAwoVVQ');
+
 // mark a checkbox as completed
 // ***need to get this working***
 // quipSvc.modifyListItem(mainDoc, 'TddACAurP6C', ['<del>The test item</del>']);

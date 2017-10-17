@@ -140,6 +140,12 @@ violet.defineGoal({
       response.say(`Marking ${item.text} as done`);
       return markItemChecked(tgtDocId, item.id, item.html);
   }}, {
+    expecting: [`delete item [[itemNo]]`],
+    resolve: (response) => {
+      var item = itemList.getItemFromResults(response, response.get('itemNo'));
+      response.say(`Deleting ${item.text}`);
+      return quipSvc.deleteListItem(tgtDocId, item.id);
+  }}, {
     expecting: ['go back'],
     resolve: function (response) {
       ack(response);

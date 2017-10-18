@@ -7,7 +7,14 @@ var yelpSvc = require('./yelp.js');
 
 module.exports = violet;
 
+var mainCats = ['korean', 'italian', 'french'];
+
 violet.addInputTypes({
+  'category': {
+      // we eventually want a custom slot type for this
+      type: 'AMAZON.LITERAL',
+      sampleValues: mainCats
+  }
 });
 
 // San Fran
@@ -45,13 +52,22 @@ var _updateCacheAggregates = (categories)=>{
   // console.log('cache.topCats[categories]: ', cache.topCats[categories]);
 }
 
+var _searchAndAggregateFn = (cat) => {
+    return ()=>{
+      return _buildCacheFromSearchResults(cat)
+        .then(()=>{
+          _updateCacheAggregates(cat);
+        });
+    }
+};
 var buildCache = () => {
-  yelpSvc.init(lat, lon)
-    .then(()=>{
-      return _buildCacheFromSearchResults('restaurants')
-    }).then(()=>{
-      _updateCacheAggregates('restaurants');
-    }).catch(e=>{
+  var p = yelpSvc.init(lat, lon)
+    .then(_searchAndAggregateFn('restaurants'));
+  mainCats.forEach(c=>{
+    p = p.then(_searchAndAggregateFn(c));
+  });
+    // .then(_searchAndAggregateFn('korean'))
+  p.catch(e=>{
       console.log(e);
     });
 };
@@ -75,12 +91,19 @@ var saySummary = (response, category) => {
     response.say(`Sorry, I do not know anything about ${category}`)
     return;
   }
-  response.say(`They are mostly ${cache.topCats[category][0].name}, ${cache.topCats[category][1].name}, and ${cache.topCats[category][2].name}`)
+  var cats = cache.topCats[category].filter(c=>{return c.alias !== category;})
+  response.say(`They are mostly ${cats[0].name}, ${cats[1].name}, and ${cats[2].name}`)
 }
 
-violet.respondTo(['what is your top recommended restaurant'],
+violet.respondTo(['what is your top {recommended|} restaurant'],
   (response) => {
     return sayTop(response, 'restaurants');
+});
+
+violet.respondTo(['what is your top {recommended|} [[category]] restaurant'],
+  (response) => {
+    var category = response.get('category')
+    return sayTop(response, category);
 });
 
 violet.respondTo(['what restaurants would you recommend'],
@@ -91,6 +114,18 @@ violet.respondTo(['what restaurants would you recommend'],
       'There are a number of popular restaurant here.',
     ]);
     saySummary(response, 'restaurants');
+    // response.addGoal('categoryOrTop');
+});
+
+violet.respondTo(['what [[category]] restaurants would you recommend'],
+  (response) => {
+    response.say([
+      'We have a number of restaurant that I like here.',
+      'There are a number of great restaurant here.',
+      'There are a number of popular restaurant here.',
+    ]);
+    var category = response.get('category')
+    saySummary(response, category);
     // response.addGoal('categoryOrTop');
 });
 

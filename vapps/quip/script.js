@@ -222,9 +222,9 @@ violet.respondTo(['mark [[itemName]] as {checked|done}'],
       }
 
       // if high/mid match with 2-3 items and low match with *all* other items (length-3)
-      if (matchScores.length-3>=lo.length) {
+      if (lo.length>=matchScores.length-3) {
         var matchItems = matchScores
-              .map((score, ndx)=>{return (score>=35) ? items[ndx] : null;})
+              .map((score, ndx)=>{return (score>=35) ? items.children[ndx] : null;})
               .filter(i=>{return i!=null;});
 
         response.set('Items', matchItems);

@@ -20,7 +20,7 @@ violetSFStore.store.propOfInterest = {
 // test methods
 var loadAllTest = () => {
   setTimeout(()=>{
-    response.load('Case*')
+    response.load({objName:'Case*'})
       .then((records)=>{
         console.log('load results:', records);
         console.log('loaded ' + records.length + ' records');

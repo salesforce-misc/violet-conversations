@@ -39,7 +39,7 @@ var loadTest = () => {
 
 var loadTest2 = () => {
   setTimeout(()=>{
-    response.load({objName: 'diabetesLog', 'CreatedDate < TODAY');
+    response.load({objName: 'diabetesLog', filter: 'CreatedDate < TODAY'});
   }, 2*1000);
 };
 

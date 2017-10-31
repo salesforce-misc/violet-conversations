@@ -1,4 +1,4 @@
-For easily deployable sample code see the `violet-samples` project.
+For easily deployable sample code see the [violet-samples](https://github.com/salesforce/violet-samples) project.
 
 # violet-conversations
 
@@ -34,7 +34,7 @@ This project contains the Conversation Engine and a number of Scripts that we ha
 
 * Install Node v6 or greater - if you need to maintain an older version of node, consider using `nvm`.
 
-* Get the code: If you want the latest fixes, we would recommend to get this via git: `git clone git@github.com:sfxi/violet-conversations.git`. You can alternatively get the (latest release)[https://github.com/sfxi/violet-conversations/releases/latest].
+* Get the code: If you want the latest fixes, we would recommend to get this via git: `git clone git@github.com:salesforce/violet-conversations.git`. You can alternatively get the [latest release](https://github.com/salesforce/violet-conversations/releases/latest).
 
 * Download dependencies: `npm install`
 

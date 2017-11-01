@@ -3,6 +3,9 @@
   <head>
     <title>Alexa Tester</title>
 
+    <link rel="stylesheet" href="../bootstrap-yeti.min.css">
+    <script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../bootstrap.min.js"></script>
     <script type="text/javascript" src="../angular.min.js"></script>
     <script type="text/javascript" src="../templates.json"></script>
 
@@ -91,6 +94,9 @@
     </script>
 
     <style>
+    body {
+      padding-top: 50px;
+    }
     .code {
       white-space:pre;
       font-family:monospace;
@@ -104,6 +110,36 @@
   </head>
 
   <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Violet</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#test" data-toggle="tab">Test</a></li>
+            <li><a href="#register" data-toggle="tab">Register</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="test">
+          <p>Use the below to test your script.</p>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="register">
+          <p>Register your script with Amazon.</p>
+        </div>
+      </div>
+
+
+    </div><!-- /.container -->
+
+
     This is a simple testing utility to POST to your endpoint and simulate an Alexa request
 
     <h2>Request</h2>

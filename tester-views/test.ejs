@@ -130,82 +130,82 @@
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="test">
           <p>Use the below to test your script.</p>
+          This is a simple testing utility to POST to your endpoint and simulate an Alexa request
+
+          <h2>Request</h2>
+          <div>
+            Type:
+            <select id="template" ng-model="requestType" ng-change="changetype()">
+              <option value=""></option>
+              <option value="launch">LaunchRequest</option>
+              <option value="intent">IntentRequest</option>
+              <option value="session_end">SessionEndedRequest</option>
+            </select>
+
+            <div id="intent" ng-show="requestType=='intent'">
+              Intent:
+              <select id="intent_select" ng-change="changeintent()" ng-model="intent">
+                <option value="">
+                  <% for (name in app.intents) { %>
+                    <option value="<%=name%>"><%=name%>: <%=app.intents[name].utterances%>
+                  <% } %>
+              </select>
+            </div>
+
+            <div id="locale">
+              Locale:
+              <select id="locale" ng-model="locale" ng-change="changelocale()">
+                <option value="en-US">en-US</option>
+                <option value="en-GB">en-GB</option>
+                <option value="de-DE">de-DE</option>
+              </select>
+            </div>
+
+            <div id="slots" ng-show="getIntent().slots.length">
+              Slot Values: <br>
+              <div id="slotvalues" style="margin:5px;border:1px solid #ccc;display:inline-block;">
+                <div ng-repeat="slot in getIntent().slots">
+                  {{slot.name}} : <input ng-change="request.request.intent.slots[slot.name].name=slot.name" ng-model="request.request.intent.slots[slot.name].value" style="width:100px;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div id="request" class="code" contenteditable="true">{{request|json}}</div>
+          </div>
+          <div>
+            <input type="button" value="Send Request" ng-click="post()">
+          </div>
+
+          <h2>Session</h2>
+          <div ng-show="session">
+            <div id="session" class="code">{{session|json}}</div>
+          </div>
+
+          <h2>Response</h2>
+          <div ng-show="response">
+            <div id="response" class="code">{{response|json}}</div>
+          </div>
+
         </div>
         <div role="tabpanel" class="tab-pane" id="register">
           <p>Register your script with Amazon.</p>
+
+          <h2>Schema</h2>
+          <div>
+            <div id="schema" class="code">{{schema|json}}</div>
+          </div>
+
+          <h2>Utterances</h2>
+          <div>
+            <div id="utterances" class="code" style="max-height:500px;overflow:auto;"><%=utterances%></div>
+          </div>
         </div>
       </div>
 
 
     </div><!-- /.container -->
 
-
-    This is a simple testing utility to POST to your endpoint and simulate an Alexa request
-
-    <h2>Request</h2>
-    <div>
-      Type:
-      <select id="template" ng-model="requestType" ng-change="changetype()">
-        <option value=""></option>
-        <option value="launch">LaunchRequest</option>
-        <option value="intent">IntentRequest</option>
-        <option value="session_end">SessionEndedRequest</option>
-      </select>
-
-      <div id="intent" ng-show="requestType=='intent'">
-        Intent:
-        <select id="intent_select" ng-change="changeintent()" ng-model="intent">
-          <option value="">
-          <% for (name in app.intents) { %>
-            <option value="<%=name%>"><%=name%>
-          <% } %>
-        </select>
-      </div>
-
-      <div id="locale">
-        Locale:
-        <select id="locale" ng-model="locale" ng-change="changelocale()">
-          <option value="en-US">en-US</option>
-          <option value="en-GB">en-GB</option>
-          <option value="de-DE">de-DE</option>
-        </select>
-      </div>
-
-      <div id="slots" ng-show="getIntent().slots.length">
-        Slot Values: <br>
-        <div id="slotvalues" style="margin:5px;border:1px solid #ccc;display:inline-block;">
-          <div ng-repeat="slot in getIntent().slots">
-            {{slot.name}} : <input ng-change="request.request.intent.slots[slot.name].name=slot.name" ng-model="request.request.intent.slots[slot.name].value" style="width:100px;">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <div id="request" class="code" contenteditable="true">{{request|json}}</div>
-    </div>
-    <div>
-      <input type="button" value="Send Request" ng-click="post()">
-    </div>
-
-    <h2>Session</h2>
-    <div ng-show="session">
-      <div id="session" class="code">{{session|json}}</div>
-    </div>
-
-    <h2>Response</h2>
-    <div ng-show="response">
-      <div id="response" class="code">{{response|json}}</div>
-    </div>
-
-    <h2>Schema</h2>
-    <div>
-      <div id="schema" class="code">{{schema|json}}</div>
-    </div>
-
-    <h2>Utterances</h2>
-    <div>
-      <div id="utterances" class="code" style="max-height:500px;overflow:auto;"><%=utterances%></div>
-    </div>
   </body>
 </html>

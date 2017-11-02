@@ -6,6 +6,21 @@
     <link rel="stylesheet" href="../bootstrap-yeti.min.css">
     <script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="../bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+      // Add minus icon for collapse element which is open by default
+      $(".collapse.in").each(function() {
+        $(this).siblings(".panel-heading").find(".glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus");
+      });
+
+      // Toggle plus minus icon on show hide of collapse element
+      $(".collapse").on('show.bs.collapse', function() {
+        $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+      }).on('hide.bs.collapse', function() {
+        $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+      });
+    });
+    </script>
     <script type="text/javascript" src="../angular.min.js"></script>
     <script type="text/javascript" src="../templates.json"></script>
 
@@ -105,10 +120,11 @@
       white-space:pre;
       font-family:monospace;
       border:1px solid #666;
-      display:inline-block;
+      /*display:inline-block;*/
       padding:5px;
       min-width:400px;
       min-height:25px;
+      overflow: scroll;
     }
     </style>
   </head>
@@ -169,8 +185,19 @@
             </div>
           </div>
 
-          <div>
-            <div id="request" class="code" contenteditable="true">{{request|json}}</div>
+          <div id="accordion" class="panel-group">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#rawRequestData"><span class="glyphicon glyphicon-plus"></span>Raw</a>
+                </h4>
+              </div>
+              <div id="rawRequestData" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div id="request" class="code" contenteditable="true">{{request|json}}</div>
+                </div>
+              </div>
+            </div>
           </div>
           <div>
             <input type="button" value="Send Request" ng-click="post()">

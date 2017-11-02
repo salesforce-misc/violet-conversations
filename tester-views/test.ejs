@@ -20,32 +20,36 @@
         $scope.schema = <%-schema%>;
         $scope.request = {};
         $scope.response = null;
-        $scope.requestType = null;
+        $scope.requestAndIntent = null;
         $scope.session = {};
         $scope.intent = null;
         $scope.locale = 'en-US';
-
-        $scope.changetype = function() {
-          if ($scope.requestType !== '') {
-            $scope.request = clone($scope.templates[$scope.requestType]);
-            $scope.request.session.attributes = $scope.session;
-            $scope.request.request.locale = $scope.locale;
-          } else {
-            $scope.request = {};
-          }
-
-          $scope.intent = null;
-        };
 
         $scope.changelocale = function() {
           $scope.request.request.locale = $scope.locale;
         };
 
-        $scope.changeintent = function() {
-          $scope.request = clone($scope.templates['intent']);
+        $scope.changeRequestAndIntent = function() {
+          var requestType = '';
+          if ($scope.requestAndIntent === '') {
+            $scope.request = {};
+            return;
+          }
+          var intentNdx = $scope.requestAndIntent.indexOf(':');
+          if (intentNdx == -1) {
+            // not an intentRequest
+            requestType = $scope.requestAndIntent;
+            $scope.request = clone($scope.templates[requestType]);
+            $scope.request.session.attributes = $scope.session;
+            $scope.request.request.locale = $scope.locale;
+            return;
+          }
+          requestType = $scope.requestAndIntent.substr(0, intentNdx);
+          var intent = $scope.requestAndIntent.substr(intentNdx+1);
+          $scope.request = clone($scope.templates[requestType]);
           $scope.request.session.attributes = $scope.session;
           $scope.request.request.intent.slots = {};
-          $scope.request.request.intent.name = $scope.intent;
+          $scope.request.request.intent.name = intent;
           $scope.request.request.locale = $scope.locale;
         }
 
@@ -134,30 +138,24 @@
 
           <h2>Request</h2>
           <div>
-            Type:
-            <select id="template" ng-model="requestType" ng-change="changetype()">
-              <option value=""></option>
-              <option value="launch">LaunchRequest</option>
-              <option value="intent">IntentRequest</option>
-              <option value="session_end">SessionEndedRequest</option>
-            </select>
-
-            <div id="intent" ng-show="requestType=='intent'">
-              Intent:
-              <select id="intent_select" ng-change="changeintent()" ng-model="intent">
-                <option value="">
-                  <% for (name in app.intents) { %>
-                    <option value="<%=name%>"><%=name%>: <%=app.intents[name].utterances%>
-                  <% } %>
-              </select>
-            </div>
-
             <div id="locale">
               Locale:
               <select id="locale" ng-model="locale" ng-change="changelocale()">
                 <option value="en-US">en-US</option>
                 <option value="en-GB">en-GB</option>
                 <option value="de-DE">de-DE</option>
+              </select>
+            </div>
+
+            <div id="requestAndIntent">
+              Intent:
+              <select id="requestIntent_select" ng-change="changeRequestAndIntent()" ng-model="requestAndIntent">
+                <option value=""></option>
+                <option value="LaunchRequest">&lt;&lt;Launch&gt;&gt;</option>
+                <% for (name in app.intents) { %>
+                  <option value="IntentRequest:<%=name%>"><%=name%>: <%=app.intents[name].utterances%></option>
+                <% } %>
+                <option value="SessionEndedRequest">&lt;&lt;End&gt;&gt;</option>
               </select>
             </div>
 

@@ -1,5 +1,5 @@
 templates = {
-	"launch": {
+	"LaunchRequest": {
 		"version": "1.0",
 		"session": {
 			"new": true,
@@ -38,7 +38,7 @@ templates = {
 			"locale": "en-US"
 		}
 	},
-	"intent": {
+	"IntentRequest": {
 		"version": "1.0",
 		"session": {
 			"new": false,
@@ -81,7 +81,7 @@ templates = {
 			}
 		}
 	},
-	"session_end": {
+	"SessionEndedRequest": {
 		"version": "1.0",
 		"session": {
 			"new": false,

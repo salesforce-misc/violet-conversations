@@ -168,7 +168,7 @@
                 <option value=""></option>
                 <option value="LaunchRequest">&lt;&lt;Launch&gt;&gt;</option>
                 <% for (name in app.intents) { %>
-                  <option value="IntentRequest:<%=name%>"><%=name%>: <%=app.intents[name].utterances%></option>
+                  <option value="IntentRequest:<%=name%>"><%=name%>: <%=app.intents[name].utterances.toString().substr(0,80)%></option>
                 <% } %>
                 <option value="SessionEndedRequest">&lt;&lt;End&gt;&gt;</option>
               </select>

@@ -35,6 +35,7 @@
         $scope.schema = <%-schema%>;
         $scope.request = {};
         $scope.response = null;
+        $scope.responseSpeech = null;
         $scope.requestAndIntent = null;
         $scope.session = {};
         $scope.intent = null;
@@ -74,9 +75,12 @@
               .then(function onSuccess(response) {
                 $scope.response = response.data;
                 // Copy session variables
-                if ($scope.response && $scope.response.sessionAttributes) {
-                  $scope.session = $scope.response.sessionAttributes;
-                  $scope.request.session.attributes = $scope.session;
+                if ($scope.response) {
+                  $scope.responseSpeech = $scope.response.response.outputSpeech.ssml;
+                  if ($scope.response.sessionAttributes) {
+                    $scope.session = $scope.response.sessionAttributes;
+                    $scope.request.session.attributes = $scope.session;
+                  }
                 }
               })
               .catch(function onError(error) {
@@ -204,6 +208,7 @@
 
           <h3>Response</h3>
           <div ng-show="response">
+            <p>{{responseSpeech}}</p>
             <div id="response" class="code">{{response|json}}</div>
           </div>
 

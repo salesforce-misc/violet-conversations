@@ -209,12 +209,38 @@
           <h3>Response</h3>
           <div ng-show="response">
             <p>{{responseSpeech}}</p>
-            <div id="response" class="code">{{response|json}}</div>
+            <div id="accordion" class="panel-group">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#rawResponseData"><span class="glyphicon glyphicon-plus"></span>Raw</a>
+                  </h4>
+                </div>
+                <div id="rawResponseData" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <div id="response" class="code">{{response|json}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <h3>Session</h3>
           <div ng-show="session">
-            <div id="session" class="code">{{session|json}}</div>
+            <div id="accordion" class="panel-group">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#rawSessionData"><span class="glyphicon glyphicon-plus"></span>Raw</a>
+                  </h4>
+                </div>
+                <div id="rawSessionData" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <div id="session" class="code">{{session|json}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>

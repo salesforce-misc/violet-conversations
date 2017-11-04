@@ -76,7 +76,11 @@
                 $scope.response = response.data;
                 // Copy session variables
                 if ($scope.response) {
-                  $scope.responseSpeech = $scope.response.response.outputSpeech.ssml;
+                  if ($scope.response.response && $scope.response.response.outputSpeech) {
+                    $scope.responseSpeech = $scope.response.response.outputSpeech.ssml;
+                  } else {
+                    $scope.responseSpeech = 'Error - No outputSpeech';
+                  }
                   if ($scope.response.sessionAttributes) {
                     $scope.session = $scope.response.sessionAttributes;
                     $scope.request.session.attributes = $scope.session;

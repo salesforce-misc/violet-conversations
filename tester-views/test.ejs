@@ -149,10 +149,9 @@
 
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="test">
-          <p>Use the below to test your script.</p>
-          This is a simple testing utility to POST to your endpoint and simulate an Alexa request
+          <p>Use the below to test your script. This is a simple testing utility to POST to your endpoint and simulate an Alexa request.</p>
 
-          <h2>Request</h2>
+          <h3>Request</h3>
           <div>
             <div id="locale">
               Locale:
@@ -203,14 +202,14 @@
             <input type="button" value="Send Request" ng-click="post()">
           </div>
 
-          <h2>Session</h2>
-          <div ng-show="session">
-            <div id="session" class="code">{{session|json}}</div>
-          </div>
-
-          <h2>Response</h2>
+          <h3>Response</h3>
           <div ng-show="response">
             <div id="response" class="code">{{response|json}}</div>
+          </div>
+
+          <h3>Session</h3>
+          <div ng-show="session">
+            <div id="session" class="code">{{session|json}}</div>
           </div>
 
         </div>

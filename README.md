@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/salesforce/violet-conversations.svg?branch=master)](https://travis-ci.org/salesforce/violet-conversations)
+[![codecov](https://codecov.io/gh/salesforce/violet-conversations/branch/master/graph/badge.svg)](https://codecov.io/gh/salesforce/violet-conversations)
+[![Gitter chat](https://badges.gitter.im/HelloViolet0ai/Lobby.png)](https://gitter.im/HelloViolet-ai/Lobby)
+
 For easily deployable sample code see the [violet-samples](https://github.com/salesforce/violet-samples) project.
 
 # violet-conversations

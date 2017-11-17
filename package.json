@@ -5,7 +5,8 @@
   "version": "0.5.0",
   "main": "server.js",
   "scripts": {
-    "test": "mocha"
+    "test-only": "mocha",
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && codecov"
   },
   "repository": {
     "type": "git",

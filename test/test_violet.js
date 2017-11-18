@@ -45,6 +45,7 @@ describe('violet core', function() {
     });
 
     it('should be able to accept user parameters', function() {
+      violet.addInputTypes({'firstName': 'AMAZON.US_FIRST_NAME' });
       violet.respondTo('Hello [[firstName]]', (response) => { response.say('Hi [[firstName]]'); });
       violetHelper.initialize(violet);
       return violetHelper

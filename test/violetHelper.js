@@ -14,7 +14,7 @@ module.exports.startServer = (appName) => {
 module.exports.initialize = (_violet) => {
   violet = _violet;
   violet.registerIntents();
-  violet.setServerApp(violetSrvr.getAlexaRouter());
+  violet.setServerApp(violetSrvr.getSvcRouter());
   // violetSrvr.displayScriptInitialized(srvrInstance, violet);
 };
 

@@ -57,4 +57,17 @@ describe('violet core', function() {
     });
 
   });
+
+  it('should be testing all plugins', function() {
+    // var violetClientTx = require('violet-conversations/lib/violetClientTx')(violet);
+    var violetTime = require('../lib/violetTime')(violet);
+    var violetList = require('../lib/violetList')(violet);
+    var violetSFStore = require('../lib/violetStoreSF')(violet);
+    var violetPGStore = require('../lib/violetStorePG')(violet);
+
+    assert.equal(true, true);
+
+    violetTime.clearTimers();
+    violetPGStore.client.end();
+  });
 });

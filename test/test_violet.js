@@ -1,56 +1,41 @@
 var assert = require('assert');
 
 var violetSvc = require('../lib/violet');
-var violetHelper = require('./violetHelper.js');
-/*var templates = */require('../tester-views/templates-json.js');
-var srvrInstance, violet;
-
-beforeEach(()=>{
-  srvrInstance = violetHelper.startServer('test');
-  violetSvc.clearAppInfo('test');
-  violet = violetSvc.script('test');
-})
-
-
-afterEach(()=>{
-  srvrInstance.close();
-  srvrInstance = null;
-  violet = null;
-});
+var vh = require('./violetHelper.js');
 
 describe('violet core', function() {
 
   describe('respondTo', function() {
 
     it('default usage should keep sessions going', function() {
-      violet.respondTo('Hello', (response) => { response.say('Hi'); });
-      violetHelper.initialize(violet);
-      return violetHelper
+      vh.violet.respondTo('Hello', (response) => { response.say('Hi'); });
+      vh.initialize();
+      return vh
                 .getIntent('Hello')
-                .then(intentName=>{return violetHelper.sendRequest(intentName)})
+                .then(intentName=>{return vh.sendRequest(intentName)})
                 .then(({rcvdStr, body})=>{
                   assert.equal(false, body.response.shouldEndSession);
                 });
     });
 
     it('should be able to respond to a basic user request', function() {
-      violet.respondTo('Hello', (response) => { response.say('Hi'); });
-      violetHelper.initialize(violet);
-      return violetHelper
+      vh.violet.respondTo('Hello', (response) => { response.say('Hi'); });
+      vh.initialize();
+      return vh
                 .getIntent('Hello')
-                .then(intentName=>{return violetHelper.sendRequest(intentName)})
+                .then(intentName=>{return vh.sendRequest(intentName)})
                 .then(({rcvdStr, body})=>{
                   assert.equal('Hi', rcvdStr);
                 });
     });
 
     it('should be able to accept user parameters', function() {
-      violet.addInputTypes({'firstName': 'AMAZON.US_FIRST_NAME' });
-      violet.respondTo('Hello [[firstName]]', (response) => { response.say('Hi [[firstName]]'); });
-      violetHelper.initialize(violet);
-      return violetHelper
+      vh.violet.addInputTypes({'firstName': 'AMAZON.US_FIRST_NAME' });
+      vh.violet.respondTo('Hello [[firstName]]', (response) => { response.say('Hi [[firstName]]'); });
+      vh.initialize();
+      return vh
                 .getIntent('Hello')
-                .then(intentName=>{return violetHelper.sendRequest(intentName, {firstName: 'John'})})
+                .then(intentName=>{return vh.sendRequest(intentName, {firstName: 'John'})})
                 .then(({rcvdStr, body})=>{
                   assert.equal('Hi John', rcvdStr);
                 });
@@ -59,11 +44,11 @@ describe('violet core', function() {
   });
 
   it('should be testing all plugins', function() {
-    // var violetClientTx = require('violet-conversations/lib/violetClientTx')(violet);
-    var violetTime = require('../lib/violetTime')(violet);
-    var violetList = require('../lib/violetList')(violet);
-    var violetSFStore = require('../lib/violetStoreSF')(violet);
-    var violetPGStore = require('../lib/violetStorePG')(violet);
+    // var violetClientTx = require('violet-conversations/lib/violetClientTx')(vh.violet);
+    var violetTime = require('../lib/violetTime')(vh.violet);
+    var violetList = require('../lib/violetList')(vh.violet);
+    var violetSFStore = require('../lib/violetStoreSF')(vh.violet);
+    var violetPGStore = require('../lib/violetStorePG')(vh.violet);
 
     assert.equal(true, true);
 

@@ -1,18 +1,40 @@
 
 var requestP = require('request-promise');
+var violetSvc = require('../lib/violet');
 
-const violetUrlBase = 'http://localhost:8080/alexa/'
+const serverEndpoint = '/alexa';
+const testAppName = 'test';
+const violetUrl = `http://localhost:8080${serverEndpoint}/${testAppName}`;
 
-var violetSrvr, violetUrl;
+var violetSrvr;
+var violet, srvrInstance;
 
-module.exports.startServer = (appName) => {
-  violetUrl = violetUrlBase + appName;
+/*var templates = */require('../tester-views/templates-json.js');
+
+
+beforeEach(function() {
+  srvrInstance = startServer(testAppName);
+  violetSvc.clearAppInfo(testAppName);
+  violet = violetSvc.script(testAppName);
+  module.exports.violet = violet;
+})
+
+
+afterEach(function() {
+  srvrInstance.close();
+  srvrInstance = null;
+  violet = null;
+  module.exports.violet = violet;
+});
+
+
+var startServer = (appName) => {
   violetSrvr = require('../lib/violetSrvr.js')('/alexa');
-  return violetSrvr.createAndListen(process.env.PORT || 8080);
+  var srvrInstance = violetSrvr.createAndListen(process.env.PORT || 8080);
+  return srvrInstance;
 }
 
 module.exports.initialize = (_violet) => {
-  violet = _violet;
   violet.registerIntents();
   violet.setServerApp(violetSrvr.getSvcRouter());
   // violetSrvr.displayScriptInitialized(srvrInstance, violet);

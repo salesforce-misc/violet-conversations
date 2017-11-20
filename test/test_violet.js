@@ -1,6 +1,4 @@
 var assert = require('assert');
-
-var violetSvc = require('../lib/violet');
 var vh = require('./violetHelper.js');
 
 describe('violet core', function() {
@@ -43,16 +41,4 @@ describe('violet core', function() {
 
   });
 
-  it('should be testing all plugins', function() {
-    // var violetClientTx = require('violet-conversations/lib/violetClientTx')(vh.violet);
-    var violetTime = require('../lib/violetTime')(vh.violet);
-    var violetList = require('../lib/violetList')(vh.violet);
-    var violetSFStore = require('../lib/violetStoreSF')(vh.violet);
-    var violetPGStore = require('../lib/violetStorePG')(vh.violet);
-
-    assert.equal(true, true);
-
-    violetTime.clearTimers();
-    violetPGStore.client.end();
-  });
 });

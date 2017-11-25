@@ -40,7 +40,8 @@ module.exports.initialize = (_violet) => {
   // violetSrvr.displayScriptInitialized(srvrInstance, violet);
 };
 
-module.exports.getIntent = (spokenPhrase) => {
+var getIntent = module.exports.getIntent = (spokenPhrase) => {
+  spokenPhrase = spokenPhrase.toLowerCase();
   return requestP(violetUrl + '?utterances').then(function (body) {
     var utterances = body.split('\n').map(u=>{
       var intentSep = u.indexOf(' ');
@@ -51,11 +52,13 @@ module.exports.getIntent = (spokenPhrase) => {
     });
     // console.log('>>> utterances', utterances);
     var utteranceObj = utterances.find(u=>{return u.utterance.indexOf(spokenPhrase) != -1});
-    return utteranceObj.intent;
+    if (utteranceObj) return utteranceObj.intent;
+    console.log(`ERROR: Could not find '${spokenPhrase}' in utterances: `, utterances);
+    return null;
   });
 };
 
-module.exports.sendRequest = (intentName, params) => {
+var sendRequest = module.exports.sendRequest = (intentName, params) => {
   // console.log(`Request for ${intentName}`);
   var msgBody = templates['IntentRequest'];
   msgBody.request.intent.name = intentName;
@@ -76,9 +79,20 @@ module.exports.sendRequest = (intentName, params) => {
   };
 
   return requestP(options).then(function (body) {
-    // console.log(body);
-    var rcvdStr = body.response.outputSpeech.ssml;
-    rcvdStr = rcvdStr.replace(/<\/?speak>/g,'');
+    console.log(body);
+    var rcvdStr;
+    if (body.response.outputSpeech) {
+      rcvdStr = body.response.outputSpeech.ssml;
+      rcvdStr = rcvdStr.replace(/<\/?speak>/g,'');
+    }
     return {rcvdStr, body};
   });
+
 };
+
+module.exports.sendIntent = (spokenPhrase, params) => {
+  return getIntent(spokenPhrase)
+          .then(intentName=>{
+              if (intentName) return sendRequest(intentName, params)
+            });
+}

@@ -8,35 +8,26 @@ describe('violet core', function() {
     it('default usage should keep sessions going', function() {
       vh.violet.respondTo('Hello', (response) => { response.say('Hi'); });
       vh.initialize();
-      return vh
-                .getIntent('Hello')
-                .then(intentName=>{return vh.sendRequest(intentName)})
-                .then(({rcvdStr, body})=>{
-                  assert.equal(false, body.response.shouldEndSession);
-                });
+      return vh.sendIntent('Hello').then(({rcvdStr, body})=>{
+        assert.equal(false, body.response.shouldEndSession);
+      });
     });
 
     it('should be able to respond to a basic user request', function() {
       vh.violet.respondTo('Hello', (response) => { response.say('Hi'); });
       vh.initialize();
-      return vh
-                .getIntent('Hello')
-                .then(intentName=>{return vh.sendRequest(intentName)})
-                .then(({rcvdStr, body})=>{
-                  assert.equal('Hi', rcvdStr);
-                });
+      return vh.sendIntent('Hello').then(({rcvdStr, body})=>{
+        assert.equal('Hi', rcvdStr);
+      });
     });
 
     it('should be able to accept user parameters', function() {
       vh.violet.addInputTypes({'firstName': 'AMAZON.US_FIRST_NAME' });
       vh.violet.respondTo('Hello [[firstName]]', (response) => { response.say('Hi [[firstName]]'); });
       vh.initialize();
-      return vh
-                .getIntent('Hello')
-                .then(intentName=>{return vh.sendRequest(intentName, {firstName: 'John'})})
-                .then(({rcvdStr, body})=>{
-                  assert.equal('Hi John', rcvdStr);
-                });
+      return vh.sendIntent('Hello', {firstName: 'John'}).then(({rcvdStr, body})=>{
+        assert.equal('Hi John', rcvdStr);
+      });
     });
 
   });

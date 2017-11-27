@@ -79,7 +79,7 @@ var sendRequest = module.exports.sendRequest = (intentName, params) => {
   };
 
   return requestP(options).then(function (body) {
-    console.log(body);
+    // console.log(body);
     var rcvdStr;
     if (body.response.outputSpeech) {
       rcvdStr = body.response.outputSpeech.ssml;

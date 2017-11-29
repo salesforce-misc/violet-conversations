@@ -51,7 +51,9 @@ var getIntent = module.exports.getIntent = (spokenPhrase) => {
       }
     });
     // console.log('>>> utterances', utterances);
-    var utteranceObj = utterances.find(u=>{return u.utterance.indexOf(spokenPhrase) != -1});
+    var utteranceObj = utterances.find(u=>{
+      return u.utterance.toLowerCase().indexOf(spokenPhrase) != -1
+    });
     if (utteranceObj) return utteranceObj.intent;
     console.log(`ERROR: Could not find '${spokenPhrase}' in utterances: `, utterances);
     return null;

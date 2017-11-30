@@ -1,3 +1,4 @@
+var co = require('co');
 var assert = require('assert');
 var vh = require('./violetHelper.js');
 
@@ -10,34 +11,38 @@ describe('violetStoreSF', function() {
   Passed] and Verified as a Checkbox
   */
 
+  var defineAndCallBasicStoreIntent = function(fPropOfInterest, responseCB) {
+    var violetSFStore = require('../lib/violetStoreSF')(vh.violet);
+    if (fPropOfInterest) {
+      violetSFStore.store.propOfInterest = {
+        'Automated_Tests': ['Name*', 'Status', 'Verified']
+      }
+    }
+    vh.violet.respondTo('Hello', function(response) {
+      response.say('Hi');
+      return co(responseCB(response));
+    });
+    vh.initialize();
+    return violetSFStore.connected().then(()=>{
+      return vh.sendIntent('Hello');
+    }).then(({rcvdStr, body})=>{
+      console.log('Received: ' + rcvdStr);
+      assert.equal('Hi', rcvdStr);
+    });
+  };
+
   describe('query multiple ways', function() {
 
     it('should be able to do a query using basic query parameters', function() {
-      var violetSFStore = require('../lib/violetStoreSF')(vh.violet);
-      violetSFStore.store.propOfInterest = {
-        'Automated_Tests': ['Status', 'Verified']
-      }
-      vh.violet.respondTo('Hello', function *(response) {
-        response.say('Hi');
+      return defineAndCallBasicStoreIntent(/*fPropOfInterest*/true, function *(response) {
         var results = yield response.load('Automated_Tests', 'Status', 'New');
         // console.log('results: ', results);
         assert.ok(Array.isArray(results));
       });
-      vh.initialize();
-      return violetSFStore.connected().then(()=>{
-        return vh.sendIntent('Hello');
-      }).then(({rcvdStr, body})=>{
-        assert.equal('Hi', rcvdStr);
-      });
     });
 
     it('should be able to do a query using object parameters', function() {
-      var violetSFStore = require('../lib/violetStoreSF')(vh.violet);
-      violetSFStore.store.propOfInterest = {
-        'Automated_Tests': ['Status', 'Verified']
-      }
-      vh.violet.respondTo('Hello', function *(response) {
-        response.say('Hi');
+      return defineAndCallBasicStoreIntent(/*fPropOfInterest*/true, function *(response) {
         var results = yield response.load({
           objName: 'Automated_Tests',
           keyName: 'Status',
@@ -46,29 +51,15 @@ describe('violetStoreSF', function() {
         // console.log('results: ', results);
         assert.ok(Array.isArray(results));
       });
-      vh.initialize();
-      return violetSFStore.connected().then(()=>{
-        return vh.sendIntent('Hello');
-      }).then(({rcvdStr, body})=>{
-        assert.equal('Hi', rcvdStr);
-      });
     });
 
     it('should be able to do a query using raw soql query', function() {
-      var violetSFStore = require('../lib/violetStoreSF')(vh.violet);
-      vh.violet.respondTo('Hello', function *(response) {
-        response.say('Hi');
+      return defineAndCallBasicStoreIntent(/*fPropOfInterest*/false, function *(response) {
         var results = yield response.load({
           query: "CreatedDate, Status__c, Verified__c FROM Automated_Tests__c WHERE Status__c = 'New'  limit 100"
         });
         // console.log('results: ', results);
         assert.ok(Array.isArray(results));
-      });
-      vh.initialize();
-      return violetSFStore.connected().then(()=>{
-        return vh.sendIntent('Hello');
-      }).then(({rcvdStr, body})=>{
-        assert.equal('Hi', rcvdStr);
       });
     });
 
@@ -78,12 +69,7 @@ describe('violetStoreSF', function() {
 
     it('should be able to create a record and read to verify that it has been inserted', function() {
       var recName = `Important Record: ${Math.round(Math.random()*1000*1000)}`
-      var violetSFStore = require('../lib/violetStoreSF')(vh.violet);
-      violetSFStore.store.propOfInterest = {
-        'Automated_Tests': ['Name*', 'CreatedDate*', 'Status', 'Verified']
-      }
-      vh.violet.respondTo('Hello', function *(response) {
-        response.say('Hi');
+      return defineAndCallBasicStoreIntent(/*fPropOfInterest*/true, function *(response) {
         yield response.store('Automated_Tests', {
           'Name*': recName,
           Status: 'New',
@@ -94,7 +80,7 @@ describe('violetStoreSF', function() {
           keyName: 'Name*',
           keyVal: recName
         });
-        // console.log('results: ', results);
+        console.log('results: ', results);
         assert.ok(Array.isArray(results));
         assert.ok(results.length==1);
         assert.equal(results[0].Name,recName);
@@ -111,12 +97,6 @@ describe('violetStoreSF', function() {
         assert.equal(results[0].Status,'Running');
 
         // we should ideally delete the record - but Violet does not support this right now
-      });
-      vh.initialize();
-      return violetSFStore.connected().then(()=>{
-        return vh.sendIntent('Hello');
-      }).then(({rcvdStr, body})=>{
-        assert.equal('Hi', rcvdStr);
       });
     });
 

@@ -11,16 +11,13 @@ describe('violetStoreSF', function() {
   Passed] and Verified as a Checkbox
   */
 
-  var defineAndCallBasicStoreIntent = function(fPropOfInterest, responseCB) {
+  var defineAndCallBasicStoreIntent = function(testPropOfInterest, responseCB) {
     var violetSFStore = require('../lib/violetStoreSF')(vh.violet);
-    if (fPropOfInterest) {
-      violetSFStore.store.propOfInterest = {
-        'Automated_Tests': ['Name*', 'Status', 'Verified']
-      }
-    }
+    if (testPropOfInterest)
+      violetSFStore.store.propOfInterest = testPropOfInterest;
     vh.violet.respondTo('Hello', function(response) {
       response.say('Hi');
-      return co(responseCB(response));
+      return co(responseCB(response, violetSFStore));
     });
     vh.initialize();
     return violetSFStore.connected().then(()=>{
@@ -31,10 +28,17 @@ describe('violetStoreSF', function() {
     });
   };
 
+  var defineAndCallAutomatedTestsStoreIntent = function(responseCB) {
+    var automatedTestsPropOfInterest = {
+      'Automated_Tests': ['Name*', 'Status', 'Verified']
+    };
+    return defineAndCallBasicStoreIntent(automatedTestsPropOfInterest, responseCB);
+  };
+
   describe('query multiple ways', function() {
 
     it('should be able to do a query using basic query parameters', function() {
-      return defineAndCallBasicStoreIntent(/*fPropOfInterest*/true, function *(response) {
+      return defineAndCallAutomatedTestsStoreIntent(function *(response) {
         var results = yield response.load('Automated_Tests', 'Status', 'New');
         // console.log('results: ', results);
         assert.ok(Array.isArray(results));
@@ -42,7 +46,7 @@ describe('violetStoreSF', function() {
     });
 
     it('should be able to do a query using object parameters', function() {
-      return defineAndCallBasicStoreIntent(/*fPropOfInterest*/true, function *(response) {
+      return defineAndCallAutomatedTestsStoreIntent(function *(response) {
         var results = yield response.load({
           objName: 'Automated_Tests',
           keyName: 'Status',
@@ -54,7 +58,7 @@ describe('violetStoreSF', function() {
     });
 
     it('should be able to do a query using raw soql query', function() {
-      return defineAndCallBasicStoreIntent(/*fPropOfInterest*/false, function *(response) {
+      return defineAndCallBasicStoreIntent(null, function *(response) {
         var results = yield response.load({
           query: "CreatedDate, Status__c, Verified__c FROM Automated_Tests__c WHERE Status__c = 'New'  limit 100"
         });
@@ -69,7 +73,7 @@ describe('violetStoreSF', function() {
 
     it('should be able to create a record and read to verify that it has been inserted', function() {
       var recName = `Important Record: ${Math.round(Math.random()*1000*1000)}`
-      return defineAndCallBasicStoreIntent(/*fPropOfInterest*/true, function *(response) {
+      return defineAndCallAutomatedTestsStoreIntent(function *(response) {
         yield response.store('Automated_Tests', {
           'Name*': recName,
           Status: 'New',
@@ -80,7 +84,7 @@ describe('violetStoreSF', function() {
           keyName: 'Name*',
           keyVal: recName
         });
-        console.log('results: ', results);
+        // console.log('results: ', results);
         assert.ok(Array.isArray(results));
         assert.ok(results.length==1);
         assert.equal(results[0].Name,recName);
@@ -105,22 +109,14 @@ describe('violetStoreSF', function() {
   describe('basic search support', function() {
 
     it('should be able to create a record and read to verify that it has been inserted', function() {
-      var violetSFStore = require('../lib/violetStoreSF')(vh.violet);
-      violetSFStore.store.propOfInterest = {
+      var kavPropOfInterest = {
         'KnowledgeArticleVersion*': ['Id*', 'Title*', 'Summary*', 'UrlName*', 'LastPublishedDate*']
       }
-      vh.violet.respondTo('Hello', function *(response) {
-        response.say('Hi');
-        var results = yield violetSFStore.store.search('KnowledgeArticleVersion*', 'security');
+      return defineAndCallBasicStoreIntent(kavPropOfInterest, function *(response, sfStore) {
+        var results = yield sfStore.store.search('KnowledgeArticleVersion*', 'security');
         // console.log('search results:', results);
         // console.log('found ' + results.length + ' results');
         assert.ok(Array.isArray(results));
-      });
-      vh.initialize();
-      return violetSFStore.connected().then(()=>{
-        return vh.sendIntent('Hello');
-      }).then(({rcvdStr, body})=>{
-        assert.equal('Hi', rcvdStr);
       });
     });
 

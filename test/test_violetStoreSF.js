@@ -3,7 +3,7 @@ var assert = require('assert');
 var vh = require('./violetHelper.js');
 
 describe('violetStoreSF', function() {
-  this.timeout(5*1000);
+  this.timeout(10*1000);
 
   /*
   Assumes that there is a Automated_Tests object created in the
@@ -69,7 +69,7 @@ describe('violetStoreSF', function() {
 
   });
 
-  describe('basic crud support (minus the delete)', function() {
+  describe('basic crud support', function() {
 
     it('should be able to create a record and read to verify that it has been inserted', function() {
       var recName = `Important Record: ${Math.round(Math.random()*1000*1000)}`
@@ -104,7 +104,7 @@ describe('violetStoreSF', function() {
         assert.equal(results[0].Status,'Running');
 
         // Delete
-        yield response.delete('Automated_Tests', 'Name*', recName, {'Status': 'Running'});
+        yield response.delete('Automated_Tests', 'Name*', recName);
         results = yield response.load({
           objName: 'Automated_Tests',
           keyName: 'Name*',

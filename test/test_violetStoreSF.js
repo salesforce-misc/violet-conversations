@@ -74,11 +74,13 @@ describe('violetStoreSF', function() {
     it('should be able to create a record and read to verify that it has been inserted', function() {
       var recName = `Important Record: ${Math.round(Math.random()*1000*1000)}`
       return defineAndCallAutomatedTestsStoreIntent(function *(response) {
+        // Create
         yield response.store('Automated_Tests', {
           'Name*': recName,
           Status: 'New',
           Verified: true
         });
+        // Read
         var results = yield response.load({
           objName: 'Automated_Tests',
           keyName: 'Name*',
@@ -89,6 +91,7 @@ describe('violetStoreSF', function() {
         assert.ok(results.length==1);
         assert.equal(results[0].Name,recName);
 
+        // Update
         yield response.update('Automated_Tests', 'Name*', recName, {'Status': 'Running'});
         results = yield response.load({
           objName: 'Automated_Tests',
@@ -100,7 +103,16 @@ describe('violetStoreSF', function() {
         assert.ok(results.length==1);
         assert.equal(results[0].Status,'Running');
 
-        // we should ideally delete the record - but Violet does not support this right now
+        // Delete
+        yield response.delete('Automated_Tests', 'Name*', recName, {'Status': 'Running'});
+        results = yield response.load({
+          objName: 'Automated_Tests',
+          keyName: 'Name*',
+          keyVal: recName
+        });
+        // console.log('results: ', results);
+        assert.ok(Array.isArray(results));
+        assert.ok(results.length==0);
       });
     });
 

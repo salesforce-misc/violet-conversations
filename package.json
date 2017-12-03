@@ -6,8 +6,9 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "test-cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
-    "test-ci":    "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && codecov"
+    "test-cover":        "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
+    "test-cover-report": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "test-ci":           "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && codecov"
   },
   "repository": {
     "type": "git",

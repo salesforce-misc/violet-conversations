@@ -60,7 +60,7 @@ var getIntent = module.exports.getIntent = (spokenPhrase) => {
   });
 };
 
-var sendRequest = module.exports.sendRequest = (intentName, params) => {
+var sendRequest = module.exports.sendRequest = (intentName, params, sessionAttributes) => {
   // console.log(`Request for ${intentName}`);
   var msgBody = templates['IntentRequest'];
   msgBody.request.intent.name = intentName;
@@ -70,6 +70,9 @@ var sendRequest = module.exports.sendRequest = (intentName, params) => {
       msgBody.request.intent.slots[k] = {value: params[k], name: k};
     });
     // console.log('params: ', msgBody.request.intent.slots);
+  }
+  if (sessionAttributes) {
+    msgBody.session.attributes = sessionAttributes;
   }
 
   // console.log(msgBody);
@@ -87,14 +90,14 @@ var sendRequest = module.exports.sendRequest = (intentName, params) => {
       rcvdStr = body.response.outputSpeech.ssml;
       rcvdStr = rcvdStr.replace(/<\/?speak>/g,'');
     }
-    return {rcvdStr, body};
+    return {rcvdStr, sessionAttributes: body.sessionAttributes, body};
   });
 
 };
 
-module.exports.sendIntent = (spokenPhrase, params) => {
+module.exports.sendIntent = (spokenPhrase, params, sessionAttributes) => {
   return getIntent(spokenPhrase)
           .then(intentName=>{
-              if (intentName) return sendRequest(intentName, params)
+              if (intentName) return sendRequest(intentName, params, sessionAttributes)
             });
 }

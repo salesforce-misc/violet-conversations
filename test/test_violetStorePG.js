@@ -5,20 +5,20 @@ var vh = require('./violetHelper.js');
 describe('violetStorePG', function() {
   this.timeout(10*1000);
 
-  var initDB = (pgClient) => {
-    // check if the type has been created
-    return pgClient.query("select * from pg_type where typname = 'states'").then((results)=>{
-      // create type if needed
-      if (results.rows.length==0)
-        return violetStorePG.client.query("create type states as enum ('New', 'Waiting', 'Running', 'Failed', 'Passed')");
-      else
-        return Promise.resolve();
-    }).then(()=>{
-      // create table if needed
-      return pgClient.query(`
-        create table if not exists Automated_Tests
-          (Id serial primary key, Name text, Status States, Verified boolean)
-        `);
+  var initDB = (violetStorePG) => {
+    return violetStorePG.connect().then((pgClient)=>{
+      // check if the type has been created
+      return pgClient.query("select * from pg_type where typname = 'states'").then((results)=>{
+        // create type if needed
+        if (results.rows.length==0)
+          return pgClient.query("create type states as enum ('New', 'Waiting', 'Running', 'Failed', 'Passed')");
+      }).then(()=>{
+        // create table if needed
+        return pgClient.query(`
+          create table if not exists Automated_Tests
+            (Id serial primary key, Name text, Status States, Verified boolean)
+          `);
+      });
     });
   }
 
@@ -79,13 +79,13 @@ describe('violetStorePG', function() {
 
       });
       vh.initialize();
-      return initDB(violetStorePG.client).then(()=>{
+      return initDB(violetStorePG).then(()=>{
         return vh.sendIntent('Hello');
       }).then(({rcvdStr, body})=>{
         console.log('Received: ' + rcvdStr);
         assert.equal('Hi', rcvdStr);
 
-        violetStorePG.client.end();
+        violetStorePG.cleanup();
       }).catch(err=>{
         console.log('err', err, err.stack)
       });

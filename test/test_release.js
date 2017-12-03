@@ -12,11 +12,12 @@ describe('violet release', function() {
     var violetList = require('../lib/violetList')(vh.violet);
     var violetSFStore = require('../lib/violetStoreSF')(vh.violet);
     var violetPGStore = require('../lib/violetStorePG')(vh.violet);
+    violetPGStore.connect();
 
     assert.equal(true, true);
 
     violetTime.clearTimers();
-    violetPGStore.client.end();
+    violetPGStore.cleanup();
   });
 
 });

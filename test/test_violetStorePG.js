@@ -3,10 +3,7 @@ var assert = require('assert');
 var vh = require('./violetHelper.js');
 
 describe('violetStorePG', function() {
-  // this.timeout(5*1000);
-  // before(function(){
-  //   return
-  // })
+  this.timeout(10*1000);
 
   var initDB = (pgClient) => {
     // check if the type has been created
@@ -26,9 +23,9 @@ describe('violetStorePG', function() {
   }
 
 
-  describe('query multiple ways', function() {
+  describe('basic crud support', function() {
 
-    it('should be able to do a query using basic query parameters', function() {
+    it('should be able to create a record and read to verify that it has been inserted', function() {
       var violetStorePG = require('../lib/violetStorePG')(vh.violet);
       violetStorePG.store.propOfInterest = {
         'Automated_Tests': ['Name', 'Status', 'Verified']

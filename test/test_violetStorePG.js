@@ -43,10 +43,7 @@ describe('violetStorePG', function() {
         assert.equal('Hi', rcvdStr);
 
         violetStorePG.cleanup();
-      }).catch(err=>{
-        console.log('err', err, err.stack)
       });
-
 
     });
 

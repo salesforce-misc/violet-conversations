@@ -259,17 +259,98 @@
 
         </div>
         <div role="tabpanel" class="tab-pane" id="register">
-          <p>Register your script with Amazon. Use the below with the step-by-step <a href="https://salesforce.quip.com/I8YOAC3Q1UGC">instructions</a>.</p>
+          <p>Your Violet Conversation needs to be registered so that Alexa knows about it.</p>
 
-          <h2>Schema</h2>
+          <h1>Step by Step</h1>
+
+          <h2>1. Go to Amazon Dev url:</h2>
+
+          https://developer.amazon.com/edw/home.html#/
+
+          <p>
+            If you don't have an account, register as a new developer. Amazon
+            Developer Accounts are different from Amazon Web Services accounts,
+            and the former are around capabilities where they might need to pay
+            you while the later focus on on capabilities where they might need
+            to charge you.
+          </p>
+
+          <h2>2. Create a new Skill</h2>
+
+          <p>
+            Skills are created by going to the Alexa heading, and then to the Alexa Skills Kit:
+            <img src="../alexa-reg/create-new-skill.png"/>
+          </p>
+
+          <h2>3. Skill Information</h2>
+
+          <p>Fill in:</p>
+          <ol>
+            <li>name: [choose a name]</l1>
+            <li><b>invocation name</b>: [choose a name] <i>this is the name that you will call your script when you launch Alexa</i></li>
+          </ol>
+
+
+          <h2>4. Custom Interaction Model</h2>
+
+          <!-- Go to your deployed service page, for example: https://violet-conversations.herokuapp.com/alexa/einstein -->
+
+          <h3>A. Intent Schema</h3>
+
+          <p>1. Copy the values below:</p>
           <div>
             <div id="schema" class="code">{{schema|json}}</div>
           </div>
 
-          <h2>Utterances</h2>
+          <p>
+            2. Paste into the following Amazon Intent Schema section:
+            <img src="../alexa-reg/intent-schema.png"/>
+          </p>
+
+          <h3>B. Set Custom Slot Type</h3>
+          <i>Coming Soon</i>
+          <!--
+          TODO: Fix this
+          Enter the values below and click 'Add'
+          [Image: https://salesforce.quip.com/-/blob/FVeAAA0xwpN/dMVnm2NvXbzqXBZu59syXw]
+          -->
+
+          <h3>C. Sample Utterances</h3>
+
+          <p>1. Copy the values below:</p>
           <div>
             <div id="utterances" class="code" style="max-height:500px;overflow:auto;"><%=utterances%></div>
           </div>
+
+          <p>
+            2. Paste into the following Amazon section:
+            <img src="../alexa-reg/sample-utterances.png"/>
+          </p>
+
+          <h2>5. Configuration</h2>
+
+          <p>Select Endpoint Type: HTTPS</p>
+          <!-- TODO: Fix this -->
+          <p>Geographical Region: North America: https://violet-poc-alexa.herokuapp.com/alexa/einstein</p>
+
+          <h2>6. SSL Certificate</h2>
+
+          <p>
+            Select the second option: 'My development endpoint is a sub-domain
+            of a domain that has a wildcard certificate from a certificate
+            authority'<br/>
+            <img src="../alexa-reg/certificate.png"/>
+          </p>
+
+          <h2>7. Testing, Publishing, Privacy &amp; Compliance</h2>
+
+          <p>
+            You should be done without worrying about these tabs. You only need
+            to publish the skill when you want others to be able to discover it
+            without following the above steps.
+          </p>
+
+
         </div>
       </div>
 

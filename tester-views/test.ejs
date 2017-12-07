@@ -330,13 +330,19 @@
           <h2>5. Configuration</h2>
 
           <p>Select Endpoint Type: HTTPS</p>
-          <!-- TODO: Fix this -->
-          <p>Geographical Region: North America: https://violet-poc-alexa.herokuapp.com/alexa/einstein</p>
+          <p>Url:
+            <script>
+              var myUrl = window.location.href;
+              if (myUrl.endsWith('#')) myUrl = myUrl.substr(0, myUrl.length-1);
+              document.write(myUrl);
+            </script>
+          </p>
 
           <h2>6. SSL Certificate</h2>
 
           <p>
-            Select the second option: 'My development endpoint is a sub-domain
+            If you have deployed this service on Heroku, select the second
+            option: 'My development endpoint is a sub-domain
             of a domain that has a wildcard certificate from a certificate
             authority'<br/>
             <img src="../alexa-reg/certificate.png"/>

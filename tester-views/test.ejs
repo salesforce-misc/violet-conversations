@@ -69,6 +69,21 @@
           $scope.request.request.locale = $scope.locale;
         }
 
+        // get custom slot types
+        $scope.customSlotTypes=[];
+        $http.get(`${location.origin}${location.pathname}?schema=true&schemaType=skillBuilder`)
+          .then(function onSuccess(response) {
+            console.log('Recieved for skillBuilder: ', response.data.types);
+            response.data.types.forEach(cst=>{
+              cst.valuesStr = cst.values.map(v=>{return v.name.value}).join(', ');
+            });
+            $scope.customSlotTypes = response.data.types;
+          }).catch(function onError(error) {
+            console.log(error);
+            console.log(error.message);
+          });
+
+
         $scope.post = function() {
           if (Object.keys($scope.request).length !== 0) {
             $http.post(location.href, $scope.request)
@@ -137,10 +152,12 @@
     .code {
       white-space:pre;
       font-family:monospace;
+      font-size: 0.9em;
       border:1px solid #666;
       /*display:inline-block;*/
       padding:5px;
       min-width:400px;
+      max-height:200px;
       min-height:25px;
       overflow: scroll;
     }
@@ -308,18 +325,16 @@
           </p>
 
           <h3>B. Set Custom Slot Type</h3>
-          <i>Coming Soon</i>
-          <!--
-          TODO: Fix this
-          Enter the values below and click 'Add'
-          [Image: https://salesforce.quip.com/-/blob/FVeAAA0xwpN/dMVnm2NvXbzqXBZu59syXw]
-          -->
+          Set the followign values in the Custom Slot Types section.
+          <ul>
+            <li ng-repeat="cst in customSlotTypes"><b>Type:</b> {{cst.name}}; <b>Values:</b> {{cst.valuesStr}}</li>
+          </ul>
 
           <h3>C. Sample Utterances</h3>
 
           <p>1. Copy the values below:</p>
           <div>
-            <div id="utterances" class="code" style="max-height:500px;overflow:auto;"><%=utterances%></div>
+            <div id="utterances" class="code"><%=utterances%></div>
           </div>
 
           <p>

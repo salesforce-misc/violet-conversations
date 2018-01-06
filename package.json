@@ -2,7 +2,7 @@
   "name": "violet",
   "description": "Framework for building sophisticated voice apps",
   "license": "BSD-3-Clause",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "main": "server.js",
   "keywords": [
     "voice",
@@ -14,9 +14,9 @@
   ],
   "scripts": {
     "test": "mocha",
-    "test-cover":        "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
+    "test-cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
     "test-cover-report": "istanbul cover ./node_modules/mocha/bin/_mocha",
-    "test-ci":           "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && codecov"
+    "test-ci": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && codecov"
   },
   "repository": {
     "type": "git",

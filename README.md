@@ -253,10 +253,4 @@ When developing conversational scripts - it helps to debug/test it in three phra
 
 ## Contribution/Supporting
 
-We appreciate any help, in particular we would like to see:
-
-* Sophisticated conversational applications built on top of this project. As you build it, let us know how it went. What worked well? What was challenging?
-
-* Tests: If you want to make sure that we improve the framework that we don't break a use case that you are depending on - make sure we have an automated test.
-
-* File issues: If something is not working as expected, please file an issue on the project.
+Guidelines on contributing to Violet are available [here](http://helloviolet.ai/docs/contributing).

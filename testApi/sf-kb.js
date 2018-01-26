@@ -11,7 +11,7 @@ violet.setPersistentStore(violetSFStore.store);
 
 
 // mock objects
-var response = violet._getResponseForDebugging({
+var response = new Response(violet, {
   getSession: ()=>{}
 }, {});
 

@@ -14,7 +14,7 @@ violetSFStore.store.propOfInterest = {
 }
 
 // mock objects
-var response = violet._getResponseForDebugging({
+var response = new Response(violet, {
   getSession: ()=>{}
 }, {});
 

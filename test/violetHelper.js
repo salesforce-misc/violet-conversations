@@ -73,6 +73,8 @@ var sendRequest = module.exports.sendRequest = (intentName, params, sessionAttri
   }
   if (sessionAttributes) {
     msgBody.session.attributes = sessionAttributes;
+  } else {
+    msgBody.session.attributes = {};
   }
 
   // console.log(msgBody);

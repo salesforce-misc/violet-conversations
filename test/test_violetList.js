@@ -66,7 +66,7 @@ describe('violet list', function() {
       return vh.sendIntent('available time for day', {dayNo: 1}, sessionAttributes);
     }).then(({rcvdStr, body})=>{
       // console.log(rcvdStr);
-      assert.equal(rcvdStr, 'Monday has 6 slots available <break time="500ms"/> Do you want to hear more days?');
+      assert.equal(rcvdStr, 'Monday has 6 slots available');
     });
   });
 

@@ -3,7 +3,7 @@
   "description": "Framework for building sophisticated voice apps",
   "license": "BSD-3-Clause",
   "version": "0.7.3",
-  "main": "server.js",
+  "main": "lib/violet.js",
   "keywords": [
     "voice",
     "conversation",

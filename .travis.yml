@@ -4,8 +4,8 @@ node_js:
 script:
   - npm run test-ci
 script:
-   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash npm run test-local; fi'
-   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash npm run test-ci; fi'
+   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run test-local; fi'
+   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test-ci; fi'
 services:
   - postgresql
 before_script:

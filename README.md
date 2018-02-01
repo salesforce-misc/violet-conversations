@@ -47,7 +47,7 @@ This project contains the Violet Conversation Engine that can be used as the bas
 Every voice script should start will typically start with declaring `violet` for use
 throughout:
 ```javascript
-var violet = require('violet/lib/violet.js').script();
+var violet = require('violet').script();
 ```
 
 See `examples/tutorial.js` for documentation on how to build a skill.

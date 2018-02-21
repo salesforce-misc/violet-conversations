@@ -3,6 +3,32 @@ var vh = require('./violetHelper.js');
 
 describe('violet core', function() {
 
+  describe('lifecycle', function() {
+
+    it('should be able to launch a session', function() {
+      vh.initialize();
+      return vh.sendRequest('<<Launch>>').then(({rcvdStr, body})=>{
+        assert(vh.contains(rcvdStr, ['Yes. How can I help?', 'Hey. Need me?', 'Yup. I am here.']));
+      });
+    });
+
+    it('should be able to customize launch prompt', function() {
+      vh.violet.setLaunchPhrases(['Yo'])
+      vh.initialize();
+      return vh.sendRequest('<<Launch>>').then(({rcvdStr, body})=>{
+        assert.equal(rcvdStr, 'Yo');
+      });
+    });
+
+    it('user should be able to close a session', function() {
+      vh.initialize();
+      return vh.sendIntent('Thanks').then(({rcvdStr, body})=>{
+        assert(body.response.shouldEndSession);
+      });
+    });
+
+  });
+
   describe('respondTo', function() {
 
     it('default usage should keep sessions going', function() {

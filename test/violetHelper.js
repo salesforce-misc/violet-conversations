@@ -65,6 +65,9 @@ var sendRequest = module.exports.sendRequest = (intentName, params, sessionAttri
   var msgBody = templates['IntentRequest'];
   msgBody.request.intent.name = intentName;
   msgBody.request.intent.slots = {};
+  if (intentName == '<<Launch>>') {
+    msgBody = templates['LaunchRequest'];
+  }
   if (params) {
     Object.keys(params).forEach(k=>{
       msgBody.request.intent.slots[k] = {value: params[k], name: k};
@@ -102,4 +105,11 @@ module.exports.sendIntent = (spokenPhrase, params, sessionAttributes) => {
           .then(intentName=>{
               if (intentName) return sendRequest(intentName, params, sessionAttributes)
             });
-}
+};
+
+module.exports.contains = (strToCheck, strArr) => {
+  for (let arrItem of strArr) {
+    if (strToCheck == arrItem) return true;
+  }
+  return false;
+};

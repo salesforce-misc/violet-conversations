@@ -73,7 +73,7 @@
         $scope.customSlotTypes=[];
         $http.get(`${location.origin}${location.pathname}?schema=true&schemaType=skillBuilder`)
           .then(function onSuccess(response) {
-            console.log('Recieved for skillBuilder: ', response.data.types);
+            console.log('Received for skillBuilder: ', response.data.types);
             response.data.types.forEach(cst=>{
               cst.valuesStr = cst.values.map(v=>{return v.name.value}).join(', ');
             });

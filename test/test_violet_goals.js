@@ -5,7 +5,7 @@ describe('violet goals', function() {
 
   describe('response mechanics', function() {
 
-    it('a goals needs to be set for it to be flagged as being set', function() {
+    it('a goals needs to be set for it to be flagged', function() {
       vh.violet.respondTo('Hello', (response) => {
         assert.equal(false, response.hasGoal('welcome'));
       });
@@ -46,11 +46,11 @@ describe('violet goals', function() {
   });
 
   var basicPromptGoalDef = (violet)=>{
-    vh.violet.respondTo('Hello', (response) => {
+    violet.respondTo('Hello', (response) => {
       response.say('Hi');
       response.addGoal('welcome');
     });
-    vh.violet.defineGoal({
+    violet.defineGoal({
       goal: 'welcome',
       prompt: 'How are you doing',
       respondTo: [{
@@ -95,6 +95,47 @@ describe('violet goals', function() {
         });
       });
     });
+
+    it('when two goals have been added with a shared prompt then the more recent one is called', function() {
+      vh.violet.defineGoal({
+        goal: 'goalA',
+        prompt: 'A',
+        respondTo: [{
+          expecting: 'A One',
+          resolve: (response) => {
+            response.say('Saying A One');
+        }},{
+          expecting: 'A Two',
+          resolve: (response) => {
+            response.say('Saying A Two');
+        }}]
+      });
+      vh.violet.defineGoal({
+        goal: 'goalB',
+        prompt: 'B',
+        respondTo: [{
+          expecting: 'A One',
+          resolve: (response) => {
+            response.say('Saying B One');
+        }},{
+          expecting: 'B Two',
+          resolve: (response) => {
+            response.say('Saying B Two');
+        }}]
+      });
+      vh.violet.respondTo('Hello', (response) => {
+        response.say('Hi');
+        response.addGoal('goalA');
+        response.addGoal('goalB');
+      });
+      vh.initialize();
+      return vh.sendIntent('Hello').then(({rcvdStr, sessionAttributes, body})=>{
+        return vh.sendIntent('A One', null, sessionAttributes).then(({rcvdStr})=>{
+          assert.equal('Saying B One', rcvdStr);
+        });
+      });
+    });
+
 
     // TODO: adapt below for goals
 

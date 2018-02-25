@@ -59,12 +59,13 @@ describe('violet core', function() {
       });
     });
 
-    it('should be able to accept user parameters', function() {
+    it('should be able to accept user parameters and add it to the session', function() {
       vh.violet.addInputTypes({'firstName': 'AMAZON.US_FIRST_NAME' });
       vh.violet.respondTo('Hello [[firstName]]', (response) => { response.say('Hi [[firstName]]'); });
       vh.initialize();
       return vh.sendIntent('Hello', {firstName: 'John'}).then(({rcvdStr, body})=>{
         assert.equal('Hi John', rcvdStr);
+        assert.equal('John', body.sessionAttributes.firstName);
       });
     });
 
@@ -84,6 +85,46 @@ describe('violet core', function() {
       });
     });
 
+    it('should be able to retrieve session parameters', function() {
+      vh.violet.addInputTypes({'firstName': 'AMAZON.US_FIRST_NAME' });
+      vh.violet.respondTo('Hello [[firstName]]', (response) => {
+        if (response.get('firstName') === 'John')
+          response.say('I know you');
+        else
+          response.say('Hi [[firstName]]');
+      });
+      vh.initialize();
+      return vh.sendIntent('Hello', {firstName: 'John'}).then(({rcvdStr, body})=>{
+        assert.equal('I know you', rcvdStr);
+      });
+    });
+
+    it('should be able to set session parameters', function() {
+      vh.violet.addInputTypes({'firstName': 'AMAZON.US_FIRST_NAME' });
+      vh.violet.respondTo('Hello [[firstName]]', (response) => {
+        if (response.get('firstName') === 'John')
+          response.set('friend', true);
+        response.say('Hi [[firstName]]');
+      });
+      vh.initialize();
+      return vh.sendIntent('Hello', {firstName: 'John'}).then(({rcvdStr, body})=>{
+        assert.equal('Hi John', rcvdStr);
+        assert.equal(true, body.sessionAttributes.friend);
+      });
+    });
+
+    it('should be able to clear session parameters', function() {
+      vh.violet.addInputTypes({'firstName': 'AMAZON.US_FIRST_NAME' });
+      vh.violet.respondTo('Hello [[firstName]]', (response) => {
+        response.clear('firstName');
+        response.say('Hi');
+      });
+      vh.initialize();
+      return vh.sendIntent('Hello', {firstName: 'John'}).then(({rcvdStr, body})=>{
+        assert.equal('Hi', rcvdStr);
+        assert.notEqual('John', body.sessionAttributes.firstName);
+      });
+    });
 
 
   });

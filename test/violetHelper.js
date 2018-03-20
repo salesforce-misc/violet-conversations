@@ -36,7 +36,7 @@ var startServer = (appName) => {
 
 module.exports.initialize = (_violet) => {
   violet.registerIntents();
-  violet.setServerApp(violetSrvr.getSvcRouter());
+  violet.platform.setServerApp(violetSrvr.getSvcRouter());
   // violetSrvr.displayScriptInitialized(srvrInstance, violet);
 };
 

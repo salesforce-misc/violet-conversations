@@ -2,9 +2,10 @@
 var requestP = require('request-promise');
 var violetSvc = require('../lib/violet');
 
+const portToUse = process.env.PORT || 8080
 const serverEndpoint = '/alexa';
 const testAppName = 'test';
-const violetUrl = `http://localhost:8080${serverEndpoint}/${testAppName}`;
+const violetUrl = `http://localhost:${portToUse}${serverEndpoint}/${testAppName}`;
 
 var violetSrvr;
 var violet, srvrInstance;
@@ -30,7 +31,7 @@ afterEach(function() {
 
 var startServer = (appName) => {
   violetSrvr = require('../lib/violetSrvr.js')('/alexa');
-  var srvrInstance = violetSrvr.createAndListen(process.env.PORT || 8080);
+  var srvrInstance = violetSrvr.createAndListen(portToUse);
   return srvrInstance;
 }
 

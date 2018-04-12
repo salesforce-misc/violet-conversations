@@ -2,8 +2,8 @@
  * Calculator Test Script - targeting testing of Platforms
  */
 
-var violet = require('../lib/violet').script(null, require('../lib/googlePlatform.js'));
-// var violet = require('../lib/violet').script(null, require('../lib/alexaPlatform.js'));
+var violet = require('./lib/violet').script(null, require('./lib/googlePlatform.js'));
+// var violet = require('./lib/violet').script(null, require('./lib/alexaPlatform.js'));
 
 violet.addInputTypes({
   "NumOne": "NUMBER",

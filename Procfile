@@ -1,1 +1,1 @@
-web: node test/calculatorScript.js
+web: node calculatorScript.js

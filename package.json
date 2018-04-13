@@ -34,6 +34,7 @@
     "co": "^4.6.0",
     "ejs": "~2.5.5",
     "express": "^4.14.0",
+    "express-easy-zip": "^1.1.4",
     "nforce": "^1.7.0",
     "pg": "^7.3.0",
     "request-promise": "^4.2.1",

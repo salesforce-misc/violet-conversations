@@ -29,7 +29,7 @@
   "homepage": "https://github.com/vineet-sinha/violet-conversations#readme",
   "dependencies": {
     "actions-on-google": "^1.10.0",
-    "alexa-app": "^4.1.0",
+    "alexa-app": "^4.2.3",
     "bluebird": "^3.5.0",
     "co": "^4.6.0",
     "ejs": "~2.5.5",

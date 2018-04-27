@@ -4,6 +4,11 @@
     <title>Violet</title>
 
     <link rel="stylesheet" href="../bootstrap-yeti.min.css">
+    <style type="text/css">
+    h2 { font-size: 26px; }
+    h3 { font-size: 22px; }
+    .tab-content li { margin-top: 1em; }
+    </style>
     <script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="../bootstrap.min.js"></script>
     <script type="text/javascript">
@@ -69,19 +74,21 @@
           $scope.request.request.locale = $scope.locale;
         }
 
-        // get custom slot types
-        $scope.customSlotTypes=[];
-        $http.get(`${location.origin}${location.pathname}?schema=true&schemaType=skillBuilder`)
-          .then(function onSuccess(response) {
-            console.log('Received for skillBuilder: ', response.data.types);
-            response.data.types.forEach(cst=>{
-              cst.valuesStr = cst.values.map(v=>{return v.name.value}).join(', ');
+          // get interactionModel
+          $scope.interactionModel={};
+          $http.get(`${location.origin}${location.pathname}?schema=true&schemaType=askcli`)
+            .then(function onSuccess(response) {
+              console.log('Received for askcli: ', response.data);
+              $scope.interactionModel=response.data;
+              // get custom slot types
+              response.data.interactionModel.languageModel.types.forEach(cst=>{
+                cst.valuesStr = cst.values.map(v=>{return v.name.value}).join(', ');
+              });
+              $scope.customSlotTypes = response.data.interactionModel.languageModel.types;
+            }).catch(function onError(error) {
+              console.log(error);
+              console.log(error.message);
             });
-            $scope.customSlotTypes = response.data.types;
-          }).catch(function onError(error) {
-            console.log(error);
-            console.log(error.message);
-          });
 
 
         $scope.post = function() {
@@ -281,95 +288,71 @@
 
           <h1>Step by Step</h1>
 
-          <h2>1. Go to Amazon Dev URL:</h2>
+          <h2>1. Go to Amazon Dev URL</h2>
 
-          <a href="https://developer.amazon.com/edw/home.html#/">https://developer.amazon.com/edw/home.html#/</a>
+          <p>You can find it here: <a href="https://developer.amazon.com/alexa/console/ask">https://developer.amazon.com/alexa/console/ask</a></p>
 
-          <p>
-            If you don't have an account, register as a new developer. Amazon
-            Developer Accounts are different from Amazon Web Services accounts,
-            and the former are around capabilities where they might need to pay
-            you while the later focus on on capabilities where they might need
+          <p style="font-style:italic">
+            If you don't have an account, register as a new developer.
+          </p>
+          <p style="font-style:italic">
+            Amazon Developer Accounts are different from Amazon Web Services accounts -
+            the former are around capabilities where Amazon might need to pay
+            you while the later focus on on capabilities where Amazon might need
             to charge you.
           </p>
 
           <h2>2. Create a new Skill</h2>
 
           <p>
-            Skills are created by going to the Alexa heading, and then to the Alexa Skills Kit:
-            <img src="../alexa-reg/create-new-skill.png"/>
+            Skills are created by going to the 'Your Alexa Consoles' menu
+            option, clicking on Skills, and then 'Create Skill'. After that
+            you will need to enter a name for the skill, click on next, and select
+            to create a custom skill.
           </p>
 
-          <h2>3. Skill Information</h2>
+          <h2>3. Declare the Interaction Model</h2>
+          <p>
+            On the left side of the navigation, under 'Interaction Model', click
+            on 'JSON Editor' (it is the last item). Copy the value below and
+            'Save Model'.
+          </p>
+          <div>
+            <div id="interactionModel" class="code">{{interactionModel|json}}</div>
+          </div>
 
-          <p>Fill in:</p>
+          <h2>4. Skill Information</h2>
+
+          <p>Beyond the interaction model there are a few key settings to be filled:</p>
           <ol>
-            <li>name: [choose a name]</l1>
-            <li><b>invocation name</b>: [choose a name] <i>this is the name that you will call your script when you launch Alexa</i></li>
+            <li>On the left side of the navigation, under 'Interaction Model', click
+            on 'Invocation'. Enter an invocation name click on 'Save Model' - <i>this is the name that you will call your script when you launch Alexa</i></li>
+            <li>On the left side of the navigation, click on 'Endpoint'.
+            <br><br><i>If you have deployed this service on Heroku, select 'HTTPS',
+              enter url:
+              <script>
+                var myUrl = window.location.href;
+                if (myUrl.endsWith('#')) myUrl = myUrl.substr(0, myUrl.length-1);
+                document.write(myUrl);
+              </script>
+              and certificate type: 'My development endpoint is a sub-domain
+              of a domain that has a wildcard certificate from a certificate
+              authority'.</i>
+            <br><br>Once you have filled the values out click on 'Save Model'</li>
+            <li>Build your Model by clicking on 'Custom' on the left side of the
+              navigation, and selecting 'Build Model' on the right side.</li>
           </ol>
 
 
-          <h2>4. Custom Interaction Model</h2>
-
-          <!-- Go to your deployed service page, for example: https://violet-conversations.herokuapp.com/alexa/einstein -->
-
-          <h3>A. Intent Schema</h3>
-
-          <p>1. Copy the values below:</p>
-          <div>
-            <div id="schema" class="code">{{schema|json}}</div>
-          </div>
+          <h2>5. Testing</h2>
 
           <p>
-            2. Paste into the following Amazon Intent Schema section:
-            <img src="../alexa-reg/intent-schema.png"/>
+            Once the model has been built you can now test the skill. You will
+            need to click on the 'Test' tab and enable testing.
           </p>
-
-          <h3>B. Set Custom Slot Type</h3>
-          Set the following values in the Custom Slot Types section.
-          <ul>
-            <li ng-repeat="cst in customSlotTypes"><b>Type:</b> {{cst.name}}; <b>Values:</b> {{cst.valuesStr}}</li>
-          </ul>
-
-          <h3>C. Sample Utterances</h3>
-
-          <p>1. Copy the values below:</p>
-          <div>
-            <div id="utterances" class="code"><%=utterances%></div>
-          </div>
-
           <p>
-            2. Paste into the following Amazon section:
-            <img src="../alexa-reg/sample-utterances.png"/>
-          </p>
-
-          <h2>5. Configuration</h2>
-
-          <p>Select Endpoint Type: HTTPS</p>
-          <p>Url:
-            <script>
-              var myUrl = window.location.href;
-              if (myUrl.endsWith('#')) myUrl = myUrl.substr(0, myUrl.length-1);
-              document.write(myUrl);
-            </script>
-          </p>
-
-          <h2>6. SSL Certificate</h2>
-
-          <p>
-            If you have deployed this service on Heroku, select the second
-            option: 'My development endpoint is a sub-domain
-            of a domain that has a wildcard certificate from a certificate
-            authority'<br/>
-            <img src="../alexa-reg/certificate.png"/>
-          </p>
-
-          <h2>7. Testing, Publishing, Privacy &amp; Compliance</h2>
-
-          <p>
-            You should be done without worrying about these tabs. You only need
-            to publish the skill when you want others to be able to discover it
-            without following the above steps.
+            You only need to Launch the skill when you want others to be able to
+            discover it without following the above steps.
           </p>
 
 

@@ -10,7 +10,7 @@ const violetUrl = `http://localhost:${portToUse}${serverEndpoint}/${testAppName}
 var violetSrvr;
 var violet, srvrInstance;
 
-/*var templates = */require('../tester-views/templates-json.js');
+/*var templates = */require('../web-tooling-views/templates-json.js');
 
 
 beforeEach(function() {

@@ -284,9 +284,9 @@
 
         </div>
         <div role="tabpanel" class="tab-pane" id="register-alexa">
-          <p>Your Violet Conversation needs to be registered so that Alexa knows about it.</p>
+          <p>Your Violet Voice App/Conversation needs to be registered so that Alexa knows about it.</p>
 
-          <h1>Step by Step</h1>
+          <h1>Registering</h1>
 
           <h2>1. Go to Amazon Dev URL</h2>
 
@@ -354,10 +354,88 @@
             You only need to Launch the skill when you want others to be able to
             discover it without following the above steps.
           </p>
-
-
         </div>
         <div role="tabpanel" class="tab-pane" id="register-dialogflow">
+          <p>Your Violet Voice App/Conversation needs to be registered so that
+            Dialogflow knows about it.</p>
+
+          <h1>Registering</h1>
+
+          <h2>1. Enable the Dialogflow platform in Violet</h2>
+          <p>
+            The default Voice platform used by Violet is Alexa. To use Dialogflow
+            you will need to enable it. You can do this by changing the declaration in your voice script from:
+            <br><code>var violet = require('violet').script(appName);</code>
+            <br>to:
+            <br><code>var violet = require('violet').script(appName, require('violet/lib/googlePlatform.js'), 'google');</code>
+
+          </p>
+
+          <h2>2. Go to Dialogflow Console</h2>
+
+          <p>You can find it here: <a href="https://console.dialogflow.com/">https://console.dialogflow.com/</a></p>
+
+          <h2>3. Create an Agent</h2>
+
+          <p>
+            Agents are created easily by clicking on the 'Create Agent' button
+            on the left navigation, entering a name for the agent and clicking
+            on next.
+          </p>
+          <p style="font-style:italic">
+            If the agent creation fails, please try verifying that you have a
+            Google Cloud account setup (you can access it here:
+            <a href="https://console.cloud.google.com/">https://console.cloud.google.com/</a>)
+          </p>
+
+          <h2>3. Upload the Agent Configuration</h2>
+          <p>
+            On the left side of the navigation, next to the project name, click
+            on the gear symbol to get the agent configuration information. From
+            there click on the 'Export and Import' tab and click on the 'Import
+            From Zip' button. You can access the zip file here:
+            <script>
+              var myUrl = window.location.href;
+              if (myUrl.endsWith('#')) myUrl = myUrl.substr(0, myUrl.length-1);
+              document.write(`${myUrl}/config`);
+            </script>
+          </p>
+
+          <h2>4. Test on Dialogflow</h2>
+
+          <p>You should now be ready to test the agent on Dialogflow. To do that:</p>
+          <ol>
+            <li>Verify that the Violet endpoint has been configured correctly. To
+              do this, go to 'Fulfilment' on the left side of the navigation, and
+              make sure that the Webhook is enabled and that the Url is:
+              <script>
+                var myUrl = window.location.href;
+                if (myUrl.endsWith('#')) myUrl = myUrl.substr(0, myUrl.length-1);
+                document.write(`${myUrl}/google`);
+              </script>
+            </li>
+            <li>Test the agent on the right side in Dialogflow.</li>
+          </ol>
+
+
+          <h2>5. Testing for Google Home / Actions on Google</h2>
+
+          <p>Dialogflow Agents are used to have Voice Apps running in Google Home.
+            These are done by creating Actions on the Google Assistant. To do
+            this:</p>
+          <ol>
+            <li>Click on 'Integrations' on the left side of the navigation, and
+              then click on 'Google Assistant'. Once there, click the 'Manage
+              Assistant App'.
+            </li>
+            <li>Once the 'Actions on Google' console is open, you can click
+              on 'Simulator' on the left navigation to test the Voice App there.</li>
+            <li>Test on your Google Home or Google's Mobile app, by going
+              in the 'Actions on Google' console and onto the 'Simulator' page,
+              then make sure to click on the button the top-right that enables
+              'Testing on Device'.</li>
+          </ol>
+
         </div>
       </div>
 

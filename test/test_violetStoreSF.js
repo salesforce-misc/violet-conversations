@@ -67,6 +67,28 @@ describe('violetStoreSF', function() {
         assert.ok(Array.isArray(results));
       });
     });
+    
+    it('should be able to do an aggregate query using raw soql query', function() {
+      return defineAndCallBasicStoreIntent(null, function *(response) {
+        var results = yield response.load({
+          query: "Count(Id) from Automated_Tests__c",
+          queryXtra: false
+        });
+        // console.log('results: ', results);
+        assert.ok(Array.isArray(results));
+      });
+    });
+    
+    it('should be able to do an aggregate group by query using raw soql query', function() {
+      return defineAndCallBasicStoreIntent(null, function *(response) {
+        var results = yield response.load({
+          query: "Count(Id), Status__c from Automated_Tests__c",
+          queryXtra: "group by Status__c limit 2"
+        });
+        // console.log('results: ', results);
+        assert.ok(Array.isArray(results));
+      });
+    });
 
   });
 

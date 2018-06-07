@@ -31,6 +31,7 @@
     "actions-on-google": "^1.10.0",
     "alexa-app": "^4.2.2",
     "bluebird": "^3.5.0",
+    "cheerio": "^1.0.0-rc.2",
     "co": "^4.6.0",
     "ejs": "~2.5.5",
     "express": "^4.14.0",
@@ -38,6 +39,7 @@
     "nforce": "^1.7.0",
     "pg": "^7.3.0",
     "request-promise": "^4.2.1",
+    "safe-eval": "^0.3.0",
     "ws": "^2.3.1"
   },
   "devDependencies": {

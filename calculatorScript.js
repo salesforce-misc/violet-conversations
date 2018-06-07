@@ -2,80 +2,85 @@
  * Calculator Test Script - targeting testing of Platforms
  */
 
- // var violet = require('./lib/violet').script(null); // <-- alexa is the default platform
-var violet = require('./lib/violet').script(null, require('./lib/googlePlatform.js'), 'google');
+ var violet = require('./lib/violet').script(null); // <-- alexa is the default platform
+// var violet = require('./lib/violet').script(null, require('./lib/googlePlatform.js'), 'google');
 
 violet.addInputTypes({
   "NumOne": "NUMBER",
   "NumTwo": "NUMBER",
 });
 
-violet.respondTo('What can you do', (response) => {
-  response.say('I can add, subtract, multiply, or divide two numbers');
-});
-
-violet.respondTo('I want to add', (response) => {
-  response.say('Sure'); response.addGoal('add')
-});
-violet.respondTo('I want to subtract', (response) => {
-  response.say('Sure'); response.addGoal('subtract')
-});
-violet.respondTo('I want to multiply', (response) => {
-  response.say('Sure'); response.addGoal('multiply')
-});
-violet.respondTo('I want to divide', (response) => {
-  response.say('Sure'); response.addGoal('divide')
-});
-
-violet.defineGoal({
-  goal: 'add',
-  prompt: 'What two numbers would you like me to add',
-  respondTo: [{
-    expecting: '[[NumOne]] and [[NumTwo]]',
-    resolve: (response) => {
-      response.say(`The sum of ${response.get('NumOne')} and ${response.get('NumTwo')} is ${parseInt(response.get('NumOne'))+parseInt(response.get('NumTwo'))}`);
-  }},{
-    expecting: 'cancel',
-    resolve: (response) => {
-      response.say('Canceling Addition');
-  }}]
-});
-violet.defineGoal({
-  goal: 'subtract',
-  prompt: 'What two numbers would you like me to subtract',
-  respondTo: [{
-    expecting: '[[NumOne]] and [[NumTwo]]',
-    resolve: (response) => {
-      response.say(`Subtracting ${response.get('NumTwo')} from ${response.get('NumOne')} gives ${parseInt(response.get('NumOne'))-parseInt(response.get('NumTwo'))}`);
-  }},{
-    expecting: 'cancel',
-    resolve: (response) => {
-      response.say('Canceling Subtraction');
-  }}]
-});
-violet.defineGoal({
-  goal: 'multiply',
-  prompt: 'What two numbers would you like me to multiply',
-  respondTo: [{
-    expecting: '[[NumOne]] and [[NumTwo]]',
-    resolve: (response) => {
-      response.say(`Multiplying ${response.get('NumOne')} and ${response.get('NumTwo')} gives ${parseInt(response.get('NumOne'))*parseInt(response.get('NumTwo'))}`);
-  }},{
-    expecting: 'cancel',
-    resolve: (response) => {
-      response.say('Canceling Multiplication');
-  }}]
-});
-violet.defineGoal({
-  goal: 'divide',
-  prompt: 'What two numbers would you like me to divide',
-  respondTo: [{
-    expecting: '[[NumOne]] and [[NumTwo]]',
-    resolve: (response) => {
-      response.say(`Dividing ${response.get('NumOne')} by ${response.get('NumTwo')} gives ${parseInt(response.get('NumOne'))/parseInt(response.get('NumTwo'))}`);
-  }},{
-    expecting: 'cancel',
-    resolve: (response) => {
-      response.say('Canceling Division');
-  }}]
-});
+var app = {
+  add: (a, b)=>{return parseInt(a)+parseInt(b); },
+  subtract: (a, b)=>{return parseInt(a)-parseInt(b); },
+  multiply: (a, b)=>{return parseInt(a)*parseInt(b); },
+  divide: (a, b)=>{return parseInt(a)/parseInt(b); }
+}
+violet.addFlowScript(`
+<app>
+  <choice>
+    <expecting>What can you do</expecting>
+    <say>I can add, subtract, multiply, or divide two numbers</say>
+  </choice>
+  <choice id="add">
+    <expecting>I want to add</expecting>
+    <say>Sure</say>
+    <decision>
+      <prompt>What two numbers would you like me to add</prompt>
+      <prompt>What would you like me to add</prompt>
+      <choice>
+        <expecting>[[NumOne]] and [[NumTwo]]</expecting>
+        <say>The sum of [[NumOne]] and [[NumTwo]] is [[app.add(NumOne, NumTwo)]]</say>
+      </choice>
+      <choice>
+        <expecting>Cancel</expecting>
+        <say>Canceling Addition</say>
+      </choice>
+    </decision>
+  </choice>
+  <choice>
+    <expecting>I want to subtract</expecting>
+    <say>Sure</say>
+    <decision>
+      <prompt>What two numbers would you like me to subtract</prompt>
+      <choice>
+        <expecting>[[NumOne]] and [[NumTwo]]</expecting>
+        <say>Subtracting [[NumTwo]] from [[NumOne]] gives [[app.subtract(NumOne, NumTwo)]]</say>
+      </choice>
+      <choice>
+        <expecting>Cancel</expecting>
+        <say>Canceling Subtraction</say>
+      </choice>
+    </decision>
+  </choice>
+  <choice>
+    <expecting>I want to multiply</expecting>
+    <say>Sure</say>
+    <decision>
+      <prompt>What two numbers would you like me to multiply</prompt>
+      <choice>
+        <expecting>[[NumOne]] and [[NumTwo]]</expecting>
+        <say>Multiplying [[NumOne]] and [[NumTwo]] gives [[app.multiply(NumOne, NumTwo)]]</say>
+      </choice>
+      <choice>
+        <expecting>Cancel</expecting>
+        <say>Canceling Multiplication</say>
+      </choice>
+    </decision>
+  </choice>
+  <choice>
+    <expecting>I want to divide</expecting>
+    <say>Sure</say>
+    <decision>
+      <prompt>What two numbers would you like me to divide</prompt>
+      <choice>
+        <expecting>[[NumOne]] and [[NumTwo]]</expecting>
+        <say>Dividing [[NumOne]] by [[NumTwo]] gives [[app.divide(NumOne, NumTwo)]]</say>
+      </choice>
+      <choice>
+        <expecting>Cancel</expecting>
+        <say>Canceling Division</say>
+      </choice>
+    </decision>
+  </choice>
+</app>`, {app});

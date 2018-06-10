@@ -6,8 +6,8 @@
 // var violet = require('./lib/violet').script(null, require('./lib/googlePlatform.js'), 'google');
 
 violet.addInputTypes({
-  "NumOne": "NUMBER",
-  "NumTwo": "NUMBER",
+  "NumOne": "number",
+  "NumTwo": "number",
 });
 
 var app = {

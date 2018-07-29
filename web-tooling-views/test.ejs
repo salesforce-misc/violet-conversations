@@ -77,8 +77,8 @@
           $scope.interactionModel={};
           $http.get(`${location.origin}${location.pathname}/alexa?schema=true&schemaType=askcli`)
             .then(function onSuccess(response) {
-              console.log(`URL Request: ${location.origin}${location.pathname}/alexa?schema=true&schemaType=askcli`);
-              console.log('Received for askcli: ', response.data);
+              // console.log(`URL Request: ${location.origin}${location.pathname}/alexa?schema=true&schemaType=askcli`);
+              console.log('Received from askcli: ', response.data);
               $scope.interactionModel=response.data.interactionModel;
               // get custom slot types
               response.data.interactionModel.languageModel.types.forEach(cst=>{

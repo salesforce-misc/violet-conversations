@@ -75,8 +75,9 @@
 
           // get interactionModel
           $scope.interactionModel={};
-          $http.get(`${location.origin}${location.pathname}?schema=true&schemaType=askcli`)
+          $http.get(`${location.origin}${location.pathname}/alexa?schema=true&schemaType=askcli`)
             .then(function onSuccess(response) {
+              console.log(`URL Request: ${location.origin}${location.pathname}/alexa?schema=true&schemaType=askcli`);
               console.log('Received for askcli: ', response.data);
               $scope.interactionModel=response.data.interactionModel;
               // get custom slot types
@@ -92,7 +93,7 @@
 
         $scope.post = function() {
           if (Object.keys($scope.request).length !== 0) {
-            $http.post(location.href, $scope.request)
+            $http.post(location.href + '/alexa', $scope.request)
               .then(function onSuccess(response) {
                 $scope.response = response.data;
                 // Copy session variables

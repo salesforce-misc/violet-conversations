@@ -118,15 +118,16 @@
         }
 
         $scope.getIntents = function() {
-          if ($scope.interactionModel.languageModel)
-            return $scope.interactionModel.languageModel.intents;
+          if (!$scope.interactionModel.languageModel) return null;
+          return $scope.interactionModel.languageModel.intents;
         }
         $scope.getIntent = function() {
+          if (!$scope.interactionModel.languageModel) return null;
           try {
-            var intents = $scope.schema.intents;
+            var intents = $scope.interactionModel.languageModel.intents;
             for (var i = 0; i < intents.length; i++) {
               var intent = intents[i];
-              if (intent.intent == $scope.request.request.intent.name) {
+              if (intent.name == $scope.request.request.intent.name) {
                 return intent;
               }
             };

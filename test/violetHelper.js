@@ -3,9 +3,9 @@ var requestP = require('request-promise');
 var violetSvc = require('../lib/violet');
 
 const portToUse = process.env.PORT || 8080
-const serverEndpoint = '/alexa';
+const serverEndpoint = 'alexa';
 const testAppName = 'test';
-const violetUrl = `http://localhost:${portToUse}${serverEndpoint}/${testAppName}`;
+const violetUrl = `http://localhost:${portToUse}/${testAppName}/${serverEndpoint}`;
 
 var violetSrvr;
 var violet, srvrInstance;
@@ -30,15 +30,14 @@ afterEach(function() {
 
 
 var startServer = (appName) => {
-  violetSrvr = require('../lib/violetSrvr.js')('/alexa');
+  violetSrvr = require('../lib/violetSrvr.js')(`/${appName}`);
   var srvrInstance = violetSrvr.createAndListen(portToUse);
   return srvrInstance;
 }
 
 module.exports.initialize = (_violet) => {
   violet.registerIntents();
-  violet.platform.setServerApp(violetSrvr.getSvcRouter());
-  // violetSrvr.displayScriptInitialized(srvrInstance, violet);
+  violet.platforms.setServerApp(violetSrvr.getSvcRouter());
 };
 
 var getIntent = module.exports.getIntent = (spokenPhrase) => {

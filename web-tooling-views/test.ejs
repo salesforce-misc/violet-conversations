@@ -79,7 +79,7 @@
           $http.get(`${location.origin}${location.pathname}?schema=true&schemaType=askcli`)
             .then(function onSuccess(response) {
               console.log('Received for askcli: ', response.data);
-              $scope.interactionModel=response.data;
+              $scope.interactionModel=response.data.interactionModel;
               // get custom slot types
               response.data.interactionModel.languageModel.types.forEach(cst=>{
                 cst.valuesStr = cst.values.map(v=>{return v.name.value}).join(', ');
@@ -117,6 +117,10 @@
             }
         }
 
+        $scope.getIntents = function() {
+          if ($scope.interactionModel.languageModel)
+            return $scope.interactionModel.languageModel.intents;
+        }
         $scope.getIntent = function() {
           try {
             var intents = $scope.schema.intents;
@@ -202,9 +206,7 @@
               <select id="requestIntent_select" ng-change="changeRequestAndIntent()" ng-model="requestAndIntent">
                 <option value=""></option>
                 <option value="LaunchRequest">&lt;&lt;Launch&gt;&gt;</option>
-                <% for (name in app.intents) { %>
-                  <option value="IntentRequest:<%=name%>"><%=name%>: <%=app.intents[name].utterances.toString().substr(0,80)%></option>
-                <% } %>
+                <option ng-repeat="intent in getIntents()" value="IntentRequest:{{intent.name}}">{{intent.name}}: {{intent.samples.toString().substr(0,80)}}</option>
                 <option value="SessionEndedRequest">&lt;&lt;End&gt;&gt;</option>
               </select>
             </div>

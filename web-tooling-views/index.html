@@ -43,11 +43,6 @@
         $scope.requestAndIntent = null;
         $scope.session = {};
         $scope.intent = null;
-        $scope.locale = 'en-US';
-
-        $scope.changelocale = function() {
-          $scope.request.request.locale = $scope.locale;
-        };
 
         $scope.changeRequestAndIntent = function() {
           var requestType = '';
@@ -61,7 +56,6 @@
             requestType = $scope.requestAndIntent;
             $scope.request = clone($scope.templates[requestType]);
             $scope.request.session.attributes = $scope.session;
-            $scope.request.request.locale = $scope.locale;
             return;
           }
           requestType = $scope.requestAndIntent.substr(0, intentNdx);
@@ -70,7 +64,6 @@
           $scope.request.session.attributes = $scope.session;
           $scope.request.request.intent.slots = {};
           $scope.request.request.intent.name = intent;
-          $scope.request.request.locale = $scope.locale;
         }
 
           // get interactionModel
@@ -193,15 +186,6 @@
 
           <h3>Request</h3>
           <div>
-            <div id="locale">
-              Locale:
-              <select id="locale" ng-model="locale" ng-change="changelocale()">
-                <option value="en-US">en-US</option>
-                <option value="en-GB">en-GB</option>
-                <option value="de-DE">de-DE</option>
-              </select>
-            </div>
-
             <div id="requestAndIntent">
               Intent:
               <select id="requestIntent_select" ng-change="changeRequestAndIntent()" ng-model="requestAndIntent">

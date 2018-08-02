@@ -2,8 +2,7 @@
  * Calculator Test Script - targeting testing of Platforms
  */
 
-var violet = require('./lib/violet').script(null); // <-- alexa is the default platform
-// var violet = require('./lib/violet').script(null, require('./lib/googlePlatform.js'), 'google');
+var violet = require('./lib/violet').script();
 
 violet.addInputTypes({
   "NumOne": "number",

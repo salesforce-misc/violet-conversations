@@ -2,7 +2,7 @@
   "name": "violet",
   "description": "Framework for building sophisticated voice apps",
   "license": "BSD-3-Clause",
-  "version": "0.12.6",
+  "version": "0.12.7",
   "main": "lib/violet.js",
   "keywords": [
     "voice",

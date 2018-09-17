@@ -13,7 +13,13 @@ var app = {
   add: (a, b)=>{return parseInt(a)+parseInt(b); },
   subtract: (a, b)=>{return parseInt(a)-parseInt(b); },
   multiply: (a, b)=>{return parseInt(a)*parseInt(b); },
-  divide: (a, b)=>{return parseInt(a)/parseInt(b); }
+  divide: (a, b)=>{return parseInt(a)/parseInt(b); },
+  greetingForAdd: (response)=>{
+    var dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var today = new Date().getDay();
+    response.say('Great');
+    response.say(`${dayOfWeek[today]} is my favorite day to add.`);
+  }
 }
 violet.addFlowScript(`
 <app>
@@ -23,7 +29,7 @@ violet.addFlowScript(`
   </choice>
   <choice id="add">
     <expecting>I want to add</expecting>
-    <say>Sure</say>
+    <resolve value="app.greetingForAdd(response)"/>
     <decision>
       <prompt>What two numbers would you like me to add</prompt>
       <prompt>What would you like me to add</prompt>

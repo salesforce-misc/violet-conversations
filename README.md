@@ -212,13 +212,6 @@ violetTime.repeat(48*60, ()=>{ violet.addGoal('checkIn'); });
 ```
 
 
-### Violet Client Integration
-```javascript
-var violetClientTx = require('violet/lib/violetClientTx.js')(violet);
-```
-
-Allows setting voice and creating alerts (the latter needs testing)
-
 
 ## Advanced Topics
 

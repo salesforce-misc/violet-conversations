@@ -2,7 +2,7 @@ var assert = require('assert');
 var vh = require('./violetHelper.js');
 
 var basicListDef = (violet)=>{
-  var daysList = require('../lib/violetList')(violet, 'Days', 'day', 'days', 'dayStr');
+  var daysList = require('../lib/violetList-api')(violet, 'Days', 'day', 'days', 'dayStr');
   vh.violet.addInputTypes({
     "dayNo": "NUMBER"
   });

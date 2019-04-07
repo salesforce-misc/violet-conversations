@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<html ng-app="alexa" ng-controller="AlexaController">
+<html ng-app="violetApp" ng-controller="VioletController">
   <head>
     <title>Violet</title>
 
+    <link rel="shortcut icon" href="../images/logo.png">
     <link rel="stylesheet" href="../bootstrap-yeti.min.css">
     <style type="text/css">
     h2 { font-size: 26px; }
     h3 { font-size: 22px; }
     .tab-content li { margin-top: 1em; }
+    .mic {
+      background-image:url('../images/noun_microphone_2313_000000.svg');
+      width:25px;
+      height:25px;
+      border:none;
+    }
+    .mic.listening {
+      background-image:url('../images/noun_microphone_red_2313_000000.svg');
+    }
     </style>
     <script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="../bootstrap.min.js"></script>
@@ -28,113 +38,12 @@
     </script>
     <script type="text/javascript" src="../angular.min.js"></script>
     <script type="text/javascript" src="../templates-json.js"></script>
-
     <script>
-      function clone(o) {
-        return JSON.parse(JSON.stringify(o));
-      }
-
-      // For Angular
-      var app = angular.module('alexa', []);
-      app.controller('AlexaController', function($scope, $http) {
-        $scope.request = {};
-        $scope.response = null;
-        $scope.responseSpeech = null;
-        $scope.requestAndIntent = null;
-        $scope.session = {};
-        $scope.intent = null;
-
-        $scope.changeRequestAndIntent = function() {
-          var requestType = '';
-          if ($scope.requestAndIntent === '') {
-            $scope.request = {};
-            return;
-          }
-          var intentNdx = $scope.requestAndIntent.indexOf(':');
-          if (intentNdx == -1) {
-            // not an intentRequest
-            requestType = $scope.requestAndIntent;
-            $scope.request = clone($scope.templates[requestType]);
-            $scope.request.session.attributes = $scope.session;
-            return;
-          }
-          requestType = $scope.requestAndIntent.substr(0, intentNdx);
-          var intent = $scope.requestAndIntent.substr(intentNdx+1);
-          $scope.request = clone($scope.templates[requestType]);
-          $scope.request.session.attributes = $scope.session;
-          $scope.request.request.intent.slots = {};
-          $scope.request.request.intent.name = intent;
-        }
-
-          // get interactionModel
-          $scope.interactionModel={};
-          var svcPath = location.origin;
-          if (location.pathname !== '/') svcPath += location.pathname;
-          $http.get(`${svcPath}/alexa?schema=true&schemaType=askcli`)
-            .then(function onSuccess(response) {
-              // console.log(`URL Request: ${location.origin}${location.pathname}/alexa?schema=true&schemaType=askcli`);
-              console.log('Received from askcli: ', response.data);
-              $scope.interactionModel=response.data.interactionModel;
-              // get custom slot types
-              response.data.interactionModel.languageModel.types.forEach(cst=>{
-                cst.valuesStr = cst.values.map(v=>{return v.name.value}).join(', ');
-              });
-              $scope.customSlotTypes = response.data.interactionModel.languageModel.types;
-            }).catch(function onError(error) {
-              console.log(error);
-              console.log(error.message);
-            });
-
-
-        $scope.post = function() {
-          if (Object.keys($scope.request).length !== 0) {
-            var svcPath = location.origin;
-            if (location.pathname !== '/') svcPath += location.pathname;
-            $http.post(`${svcPath}/alexa`, $scope.request)
-              .then(function onSuccess(response) {
-                $scope.response = response.data;
-                // Copy session variables
-                if ($scope.response) {
-                  if ($scope.response.response && $scope.response.response.outputSpeech) {
-                    $scope.responseSpeech = $scope.response.response.outputSpeech.ssml;
-                  } else {
-                    $scope.responseSpeech = 'Error - No outputSpeech';
-                  }
-                  if ($scope.response.sessionAttributes) {
-                    $scope.session = $scope.response.sessionAttributes;
-                    $scope.request.session.attributes = $scope.session;
-                  }
-                }
-              })
-              .catch(function onError(error) {
-                alert(error.message);
-              });
-            } else {
-              alert("Error: Cannot send an empty request object. Please select a request type.");
-            }
-        }
-
-        $scope.getIntents = function() {
-          if (!$scope.interactionModel.languageModel) return null;
-          return $scope.interactionModel.languageModel.intents;
-        }
-        $scope.getIntent = function() {
-          if (!$scope.interactionModel.languageModel) return null;
-          try {
-            var intents = $scope.interactionModel.languageModel.intents;
-            for (var i = 0; i < intents.length; i++) {
-              var intent = intents[i];
-              if (intent.name == $scope.request.request.intent.name) {
-                return intent;
-              }
-            };
-            return null;
-          } catch(e) { return null; }
-        };
-
-        $scope.templates = templates;
-      });
+      var violetApp = angular.module('violetApp', []);
+      violetApp.value('wakeWord', 'violet');
     </script>
+    <script type="text/javascript" src="../tooling-app.js"></script>
+    <script type="text/javascript" src="../voice-svc.js"></script>
 
     <style>
     body {
@@ -174,7 +83,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#api-test" data-toggle="tab">API Testing</a></li>
+            <li class="active"><a href="#testing" data-toggle="tab">Testing</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!-- <li><a href="#">Link</a></li> -->
@@ -193,10 +102,15 @@
     <div class="container">
 
       <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="api-test">
-          <p>Use the below to test your script. This is a simple testing utility to POST to your endpoint and simulate an incoming request.</p>
+        <div role="tabpanel" class="tab-pane active" id="testing">
+          <p>You can use the below to test your script. This is a utility that POSTs to your endpoint and simulates an incoming request. Use the mic button to talk and listen to your script.</p>
+          <!-- <input type="button" value="Run Experiment" ng-click="runExperiment()"> -->
 
-          <h3>Request</h3>
+          <h3>
+            <!-- <input type="button" value="Start / Stop Listening" ng-click="toggleListening()"> -->
+            <button id="mic" tabindex="-1" class="mic" ng-class="{listening: isListening}" type="button" ng-click="toggleListening()"></button>
+            Request
+          </h3>
           <div>
             <div id="requestAndIntent">
               Intent:

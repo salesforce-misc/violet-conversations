@@ -2,7 +2,7 @@
  * Calculator Test Script - targeting testing of Platforms
  */
 
-var violet = require('./lib/violet').script();
+var violet = require('./lib/violet').script({invocationName:'calculator'});
 
 violet.addInputTypes({
   "NumOne": "number",

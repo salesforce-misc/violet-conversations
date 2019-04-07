@@ -18,7 +18,7 @@
     "test-local": "mocha -i -f violetStoreSF",
     "test-cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
     "test-cover-report": "istanbul cover ./node_modules/mocha/bin/_mocha",
-    "test-ci": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && codecov"
+    "test-ci": "istanbul cover ./node_modules/mocha/bin/_mocha -i -f violetStoreSF --report lcovonly -- -R spec && codecov"
   },
   "repository": {
     "type": "git",

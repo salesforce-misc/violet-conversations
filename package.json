@@ -16,9 +16,9 @@
     "test": "mocha",
     "test-no-db": "mocha -i -f violetStore",
     "test-local": "mocha -i -f violetStoreSF",
-    "test-cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
-    "test-cover-report": "istanbul cover ./node_modules/mocha/bin/_mocha",
-    "test-ci": "istanbul cover ./node_modules/mocha/bin/_mocha -i -f violetStoreSF --report lcovonly -- -R spec && codecov"
+    "test-cover": "nyc ./node_modules/mocha/bin/_mocha && nyc report --reporter=text-lcov > coverage.lcov",
+    "test-cover-report": "nyc ./node_modules/mocha/bin/_mocha",
+    "test-ci": "nyc ./node_modules/mocha/bin/_mocha -i -f violetStoreSF && nyc report --reporter=text-lcov > coverage.lcov"
   },
   "repository": {
     "type": "git",
@@ -51,6 +51,7 @@
   "devDependencies": {
     "codecov": "^3.0.4",
     "istanbul": "^0.4.5",
-    "mocha": "^4.0.1"
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1"
   }
 }

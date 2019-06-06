@@ -37,7 +37,7 @@
     "cheerio": "^1.0.0-rc.2",
     "co": "^4.6.0",
     "debug": "^3.1.0",
-    "dialogflow-fulfillment": "^0.4.1",
+    "dialogflow-fulfillment": "^0.6.1",
     "express": "^4.14.0",
     "express-easy-zip": "^1.1.4",
     "js-yaml": "^3.13.1",

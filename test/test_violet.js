@@ -31,11 +31,11 @@ describe('violet core', function() {
 
   describe('respondTo', function() {
 
-    it('default usage should keep sessions going', function() {
+    it('default usage should keep end session', function() {
       vh.violet.respondTo('Hello', (response) => { response.say('Hi'); });
       vh.initialize();
       return vh.sendIntent('Hello').then(({rcvdStr, body})=>{
-        assert.equal(false, body.response.shouldEndSession);
+        assert.equal(true, body.response.shouldEndSession);
       });
     });
 

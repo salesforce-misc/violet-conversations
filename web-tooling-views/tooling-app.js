@@ -49,6 +49,15 @@ violetApp.controller('VioletController', function($scope, $http, voiceSvc) {
       // console.log(`URL Request: ${location.origin}${location.pathname}/alexa?schema=true&schemaType=askcli`);
       console.log('Received from askcli: ', response.data);
       $scope.interactionModel=response.data.interactionModel;
+      // remove empty intents which might be created to map to native intents
+      for (var ndx=0; ndx<$scope.interactionModel.languageModel.intents.length; ndx++) {
+          var i = $scope.interactionModel.languageModel.intents[ndx];
+          if (i.samples.length != 0) continue;
+          if (i.name.startsWith('AMAZON')) continue;
+          $scope.interactionModel.languageModel.intents.splice(ndx,1);
+          ndx--; // because we have deleted one item from the array
+      }
+
       // get custom slot types
       response.data.interactionModel.languageModel.types.forEach(cst=>{
         cst.valuesStr = cst.values.map(v=>{return v.name.value}).join(', ');

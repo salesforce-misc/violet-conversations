@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "6"
+  - "7"
 script:
   - npm run test-ci
 script:
@@ -10,3 +10,4 @@ services:
   - postgresql
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
+  - npm install pg

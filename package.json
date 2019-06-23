@@ -44,6 +44,7 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.1",
     "safe-eval": "^0.4.1",
+    "uuid": "^3.3.2",
     "ws": "^6.0.0"
   },
   "peerDependencies": {

@@ -49,11 +49,13 @@ violetApp.controller('VioletController', function($scope, $http, voiceSvc) {
       // console.log(`URL Request: ${location.origin}${location.pathname}/alexa?schema=true&schemaType=askcli`);
       console.log('Received from askcli: ', response.data);
       $scope.interactionModel=response.data.interactionModel;
-      // remove empty intents which might be created to map to native intents
+
+      // remove intents that can't be triggered
       for (var ndx=0; ndx<$scope.interactionModel.languageModel.intents.length; ndx++) {
           var i = $scope.interactionModel.languageModel.intents[ndx];
-          if (i.samples.length != 0) continue;
-          if (i.name.startsWith('AMAZON')) continue;
+
+          if (i.samples.length != 0) continue;    // if there are no utterances
+          if (i.name.indexOf('.') != -1) continue; // external trigger (like AMAZON.HELP)
           $scope.interactionModel.languageModel.intents.splice(ndx,1);
           ndx--; // because we have deleted one item from the array
       }

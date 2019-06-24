@@ -131,7 +131,7 @@
               <select id="requestIntent_select" ng-change="changeRequestAndIntent()" ng-model="requestAndIntent">
                 <option value=""></option>
                 <option value="LaunchRequest">&lt;&lt;Launch&gt;&gt;</option>
-                <option ng-repeat="intent in getIntents()" value="IntentRequest:{{intent.name}}">{{intent.name}}: {{intent.samples.toString().substr(0,80)}}</option>
+                <option ng-repeat="intent in getIntents() | orderBy:'name'" value="IntentRequest:{{intent.name}}">{{intent.name}}: {{intent.samples.toString().substr(0,80)}}</option>
                 <option value="SessionEndedRequest">&lt;&lt;End&gt;&gt;</option>
               </select>
             </div>

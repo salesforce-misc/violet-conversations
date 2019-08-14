@@ -50,15 +50,31 @@ violetApp.controller('VioletController', function($scope, $http, voiceSvc) {
       console.log('Received from askcli: ', response.data);
       $scope.interactionModel=response.data.interactionModel;
 
-      // remove intents that can't be triggered
       for (var ndx=0; ndx<$scope.interactionModel.languageModel.intents.length; ndx++) {
-          var i = $scope.interactionModel.languageModel.intents[ndx];
+        var i = $scope.interactionModel.languageModel.intents[ndx];
 
-          if (i.samples.length != 0) continue;    // if there are no utterances
-          if (i.name.indexOf('.') != -1) continue; // external trigger (like AMAZON.HELP)
-          $scope.interactionModel.languageModel.intents.splice(ndx,1);
-          ndx--; // because we have deleted one item from the array
+        // remove utterances with just a phrase slot type, i.e. AMAZON.SearchQuery and no carriers (other platorms work with them)
+        if (i.slots) {
+          var phraseSlotNames = i.slots.filter(s=>s.type=='AMAZON.SearchQuery').map(s=>s.name);
+          phraseSlotNames.forEach(psn=>{
+            psn = `{${psn}}`;
+            // console.log(`Slot to filter: `, psn, ` in: `, i.samples);
+            for (var ndx2=0; ndx2<i.samples.length; ndx2++) {
+              if (i.samples[ndx2] === psn) {
+                i.samples.splice(ndx2,1);
+                ndx2--; // because we have deleted one item from the array
+              }
+            }
+          });
+        }
+
+        // remove intents that can't be triggered (if there are no utterances and they are not external trigger, i.e. intents with a '.' in them)
+        if (i.samples.length != 0) continue;    // if there are no utterances
+        if (i.name.indexOf('.') != -1) continue; // external trigger (like AMAZON.HELP)
+        $scope.interactionModel.languageModel.intents.splice(ndx,1);
+        ndx--; // because we have deleted one item from the array
       }
+
 
       // get custom slot types
       response.data.interactionModel.languageModel.types.forEach(cst=>{

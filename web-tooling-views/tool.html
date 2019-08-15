@@ -34,6 +34,20 @@
       }).on('hide.bs.collapse', function() {
         $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
       });
+
+      // Deactivate any tab selections in other menu
+      $("#register-dropdown-menu").children().click(function(e){
+        $("#navbar-menu").children().each(function(f){
+          $(this).removeClass("active");
+        });
+      });
+      $("#navbar-menu").children().click(function(e){
+        $("#register-dropdown-menu").children().each(function(f){
+          $(this).removeClass("active");
+        });
+        $("#register-dropdown-list").removeClass("active");
+      });
+
     });
     </script>
     <script type="text/javascript" src="../angular.min.js"></script>
@@ -82,14 +96,14 @@
           <a class="navbar-brand" href="#">Violet</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
+          <ul id="navbar-menu" class="nav navbar-nav">
             <li class="active"><a href="#testing" data-toggle="tab">Testing</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <!-- <li><a href="#">Link</a></li> -->
-            <li class="dropdown">
+            <li id="register-dropdown-list" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Register <span class="caret"></span></a>
-              <ul class="dropdown-menu">
+              <ul id="register-dropdown-menu" class="dropdown-menu">
                 <li><a href="#register-alexa" data-toggle="tab">Amazon Alexa</a></li>
                 <li><a href="#register-dialogflow" data-toggle="tab">Google Dialogflow</a></li>
               </ul>
@@ -117,7 +131,7 @@
               <select id="requestIntent_select" ng-change="changeRequestAndIntent()" ng-model="requestAndIntent">
                 <option value=""></option>
                 <option value="LaunchRequest">&lt;&lt;Launch&gt;&gt;</option>
-                <option ng-repeat="intent in getIntents()" value="IntentRequest:{{intent.name}}">{{intent.name}}: {{intent.samples.toString().substr(0,80)}}</option>
+                <option ng-repeat="intent in getIntents() | orderBy:'name'" value="IntentRequest:{{intent.name}}">{{intent.name | limitTo:20}}{{intent.name.length > 20 ? '...' : ''}}: {{intent.samples.toString().substr(0,80)}}</option>
                 <option value="SessionEndedRequest">&lt;&lt;End&gt;&gt;</option>
               </select>
             </div>

@@ -2,7 +2,7 @@
   "name": "violet",
   "description": "Framework for building sophisticated voice apps",
   "license": "BSD-3-Clause",
-  "version": "0.16.0",
+  "version": "1.0.0",
   "main": "lib/violet.js",
   "keywords": [
     "voice",
@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/salesforce/violet-conversations#readme",
   "dependencies": {
-    "actions-on-google": "^2.2.0",
+    "actions-on-google": "^2.10.0",
     "alexa-app": "^4.2.3",
     "alexa-utterances": "^0.2.1",
     "bluebird": "^3.5.0",
@@ -44,11 +44,8 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.1",
     "safe-eval": "^0.4.1",
+    "uuid": "^3.3.2",
     "ws": "^6.0.0"
-  },
-  "peerDependencies": {
-    "nforce": "~1.x",
-    "pg": "~7.x"
   },
   "devDependencies": {
     "codecov": "^3.0.4",

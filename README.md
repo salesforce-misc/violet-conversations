@@ -9,10 +9,10 @@ Amazon's Alexa and Google Home. Conversations are built via scripts,
 and Violet provides a conversation engine that runs as an Alexa Skill.
 
 Support for sophisticated voice apps is supported by allowing:
-* (a) for easily building basic logic supported conversation-flows i.e.
+* for easily building basic logic supported conversation-flows i.e.
 classically referred to as the view layer in web, mobile, and desktop apps;
-* (b) low-level primitives for automated state-management; and
-* (c) plugins for moving out significant parts of complexity that support the
+* low-level primitives for automated state-management; and
+* plugins for moving out significant parts of complexity that support the
 voice scripts.
 
 

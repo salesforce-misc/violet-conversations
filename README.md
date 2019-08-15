@@ -11,13 +11,7 @@ and Violet provides a conversation engine that runs as an Alexa Skill.
 Support for sophisticated voice apps is supported by allowing:
 * (a) for easily building basic logic supported conversation-flows i.e.
 classically referred to as the view layer in web, mobile, and desktop apps;
-* (b) primitives for grouping user/app interactions:
-  * (b-i) using goals to enable for what is classically referred to as dialog
-    in many conversation systems,
-  * (b-ii) using widgets for generating goals depending on the use-case, such
-    as for supporting lists, and
-  * (b-iii) having scripts to allow for further modularization of voice
-    functionality;
+* (b) low-level primitives for automated state-management; and
 * (c) plugins for moving out significant parts of complexity that support the
 voice scripts.
 
@@ -25,9 +19,9 @@ voice scripts.
 ## Table Of Contents
 
 * [Conversation Flows](#conversation-flows)
-  * [Basics](#conv-basics)
+  * [Basics](#basics)
   * [User Inputs](#user-inputs)
-  * [Separating Controller & Flow Logic](#separating-controller---flow-logic)
+  * [Separating Controller & Flow Logic](#separating-controller--flow-logic)
 * [Low-level](#low-level)
   * [Basic API](#basic-api)
   * [Conversational Goals](#goals)

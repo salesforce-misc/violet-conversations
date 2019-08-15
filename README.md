@@ -1,13 +1,11 @@
 [![Build Status](https://travis-ci.org/salesforce/violet-conversations.svg?branch=master)](https://travis-ci.org/salesforce/violet-conversations)
-[![codecov](https://codecov.io/gh/salesforce/violet-conversations/branch/master/graph/badge.svg)](https://codecov.io/gh/salesforce/violet-conversations)
-[![Gitter chat](https://badges.gitter.im/HelloViolet0ai/Lobby.png)](https://gitter.im/HelloViolet-ai/Lobby)
 
 For easily deployable sample code see the [violet-samples](https://github.com/salesforce/violet-samples) project.
 
 # violet-conversations
 
 Violet provides support for building sophisticated conversational apps/bots on
-Amazon's Alexa. Conversations are built via scripts,
+Amazon's Alexa and Google Home. Conversations are built via scripts,
 and Violet provides a conversation engine that runs as an Alexa Skill.
 
 Support for sophisticated voice apps is supported by allowing:
@@ -26,13 +24,16 @@ voice scripts.
 
 ## Table Of Contents
 
-* [Voice Scripting](#voice-scripting)
-  * [Basics](#basics)
+* [Conversation Flows](#conversation-flows)
+  * [Basics](#conv-basics)
+  * [User Inputs](#user-inputs)
+  * [Separating Controller & Flow Logic](#separating-controller---flow-logic)
+* [Low-level](#low-level)
+  * [Basic API](#basic-api)
   * [Conversational Goals](#goals)
 * [Plugins](#plugins)
   * [Persistence](#persistence)
   * [Timed delay](#timed-delay)
-  * [Violet Client Integration](#violet-client-integration)
 * [Advanced Topics](#advanced-topics)
   * [Custom types](#custom-types)
 * [Debugging Conversations](#debugging-conversations)
@@ -40,7 +41,7 @@ voice scripts.
 
 
 
-## Voice Scripting
+## Conversation Flows
 
 This project contains the Violet Conversation Engine that can be used as the basis of your Voice Application.
 
@@ -50,9 +51,80 @@ throughout:
 var violet = require('violet').script();
 ```
 
-See `examples/tutorial.js` for documentation on how to build a skill.
-
 ### Basics
+
+A simple way to respond to a user request (choice):
+```javascript
+violet.addFlow(`<app>
+  <choice>
+    <expecting>Can you help me</expecting>
+    <expecting>What can I do</expecting>
+    <say>
+      I can help you with your current account balance, with
+      financial planning, budgeting, investing, or taking out
+      a loan
+    </say>
+  </choice>
+</app>`)
+ ```
+
+### User Inputs
+
+If you want to accept data from a user, you will need to declare it with its
+type and then tell the script engine where to expect it:
+```javascript
+violet.addInputTypes({
+  'name': 'firstName',
+});
+
+violet.addFlow(`<app>
+  <choice>
+    <expecting>My name is [[name]]</expecting>
+    <say>I like the name [[name]]</say>
+  </choice>
+</app>`)
+```
+
+To have your script accept multiple inputs from the user, you can combine the `<choice>` elements like:
+```javascript
+// ...
+
+violet.addFlow(`<app>
+  <choice>
+    <expecting>Can you help me</expecting>
+    <expecting>What can I do</expecting>
+    <say>
+      I can help you with your current account balance, with
+      financial planning, budgeting, investing, or taking out
+      a loan
+    </say>
+  </choice>
+
+  <choice>
+    <expecting>My name is [[name]]</expecting>
+    <say>I like the name [[name]]</say>
+  </choice>
+</app>`)
+```
+
+### Separating Controller & Flow Logic
+
+Most Voice Apps will want Conversation Flows to  be loaded from external files by doing:
+```javascript
+violet.loadFlowScript('script.cfl', {app: appController});
+```
+
+The second parameter to `loadFlowScript` and `addFlow` allows for injecting in a pointer to a controller and other services. This paramater is a list of objects that can be referenced from within a flow script, using either `<resolve>` tags or within a `<say>` tag using `[[expression]]`.
+
+## Low-level
+
+Violet also has a lower level api that voice apps can use. These API's allow you to hook into an automated state management engine (using Goals) so that you don't need to account for states throughout your app.
+
+The Conversational Flow support builds on this low-level API.
+
+### Basic API
+
+Feel free to see [`tutorials/introduction.js`](https://github.com/salesforce/violet-samples/blob/master/tutorials/introduction.js) for an example on how to build a skill.
 
 A simple way to respond to a user request:
 ```javascript
@@ -68,7 +140,7 @@ If you want to accept data from a user, you will need to declare it with its
 type and then tell the script engine where to expect it:
 ```javascript
 violet.addInputTypes({
-  'name': 'AMAZON.US_FIRST_NAME',
+  'name': 'firstName',
 });
 
 violet.respondTo(['My name is [[name]]'],
@@ -242,7 +314,7 @@ to Amazon's Skill Configuration Site as a custom slot type.
 When developing conversational scripts - it helps to debug/test it in three phrases:
 1. Make sure the code compiles/runs by typing `npm start`. Fix any errors and keep re-starting the service until misplaced punctuations and declarations have been fixed.
 2. Test the script in the included tester view, by running the script and opening it in a browser, for example: http://localhost:8080/alexa/einstein You will likely want to submit IntentRequest's based on the Utterance's at the bottom of the page. Once you submit a request, verify that the response output SSML is per your needs. Additionally, it is helpful to walk through the script a few times to ensure that the application supports the different user scenarios.
-3. Once the script works locally, deploy it to the cloud and configure Alexa to talk to the underlying skill using Amazon's Skill Configuration site. At this stage you will likely benefit from testing by iterating rapidly with: invoking the voice-client, examining the conversational-app's logs, and tweaking the utterances in Amazon's Configuration. Testing a voice client is likely best done first through a PC based tool that provides additional debugging information like the [Violet Client](https://github.com/salesforce/violet-client) or a web testing tool like [Echosim.io](https://echosim.io).
+3. Once the script works locally, deploy it to the cloud and configure Alexa to talk to the underlying skill using Amazon's Skill Configuration site. At this stage you will likely benefit from testing by iterating rapidly with: invoking the voice-client, examining the conversational-app's logs, and tweaking the utterances in Amazon's Configuration. Testing a voice client is likely best done through a web testing tool like [Echosim.io](https://echosim.io).
 
 ## Contribution/Supporting
 

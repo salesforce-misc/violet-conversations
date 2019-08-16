@@ -27,7 +27,6 @@ voice scripts.
   * [Conversational Goals](#goals)
 * [Plugins](#plugins)
   * [Persistence](#persistence)
-  * [Timed delay](#timed-delay)
 * [Advanced Topics](#advanced-topics)
   * [Custom types](#custom-types)
 * [Debugging Conversations](#debugging-conversations)
@@ -214,9 +213,13 @@ of Violet Skills
 ### Persistence
 These plugins will allow you to easily store and load data from a data store.
 
-The main plugin provided currently is the Salesforce integration plugin
-`violetStoreSF`. If you are using this integration,
-then you will need to set up the following environment variables (locally and on
+There are two persistence plugins currently provided - these include the Salesforce integration plugin
+`violetStoreSF` and the Postgres integration plugin
+`violetStorePG`.
+
+If you are using the Postgres plugin then you will need to set up the `DATABASE_URL` environment variable.
+
+If you are using the Salesforce plugin then you will need to set up the following environment variables (locally and on
 any deployed platform): `V_SFDC_CLIENT_ID`, `V_SFDC_CLIENT_SECRET`,
 `V_SFDC_USERNAME` and `V_SFDC_PASSWORD`.
 
@@ -226,6 +229,7 @@ script:
 var violetStoreSF = require('violet/lib/violetStoreSF.js')(violet);
 ```
 
+Once included you can store data in the database by using the `store` method:
 
 ```javascript
 violet.respondTo('I received a bill from [[company]] today for [[amount]]',
@@ -239,11 +243,11 @@ violet.respondTo('I received a bill from [[company]] today for [[amount]]',
 });
 ```
 
-To retried data from the database you need to use the load method. **Caution**
-Load returns a promise to the db results  - if you need to use the
-values retrieved from it, you need to (a) either use a .then after it OR
-(b) you need to make you resolve method a generator and place a yield before
-the call to the load method
+To retrieve data from the database you need to use the load method. **Caution**
+Load returns a promise to the DB results  - if you need to use the
+values retrieved from it, you need to (a) either use a `.then` after it OR
+(b) you need to make your `resolve` method a generator and place a `yield` before
+the call to the `load` method.
 
 ```javascript
 // example a:
@@ -262,19 +266,6 @@ violet.respondTo(
     var results = yield response.load('bills', 'bills.user', response.get('userId') )
     response.say(`You received a bill from ${results[0].from} for ${results[0].amount}`);
 });
-```
-
-### Timed delay
-```javascript
-var violetTime = require('violet/lib/violetTime.js')(violet);
-```
-
-Possible spoken commands:
-* What is the current time
-* Advance 5 days, hours, or minutes
-
-```javascript
-violetTime.repeat(48*60, ()=>{ violet.addGoal('checkIn'); });
 ```
 
 

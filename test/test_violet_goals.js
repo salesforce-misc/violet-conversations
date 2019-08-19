@@ -96,7 +96,7 @@ describe('violet goals', function() {
       });
     });
 
-    it('when two goals have been added with a shared prompt then the first one is called', function() {
+    it('when two goals have been added with a shared prompt then the most recent one is called', function() {
       vh.violet.defineGoal({
         goal: 'goalA',
         prompt: 'A',
@@ -131,7 +131,7 @@ describe('violet goals', function() {
       vh.initialize();
       return vh.sendIntent('Hello').then(({rcvdStr, sessionAttributes, body})=>{
         return vh.sendIntent('A One', null, sessionAttributes).then(({rcvdStr})=>{
-          assert.equal('Saying A One', rcvdStr);
+          assert.equal('Saying B One', rcvdStr);
         });
       });
     });

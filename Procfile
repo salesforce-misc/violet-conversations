@@ -1,1 +1,1 @@
-web: node calculatorScript.js
+web: node server.js

@@ -22,7 +22,7 @@ var app = {
   },
   echoNow: (response)=>{
     if (app.oldEnough(response) !== 'ageValid') {
-      response.say('Sorry, I cannot do that');
+      response.say('Sorry, age is not valid - I cannot do that');
       return;
     }
     var repeatCount = response.get('repeatCount');
@@ -68,6 +68,7 @@ violet.addFlowScript(`
 
     <item name="stringToRepeat" required>
       <ask>What do you want to repeat</ask>
+      <expecting>repeat [[stringToRepeat]]</expecting>
       <expecting>[[stringToRepeat]]</expecting>
     </item>
     <item name="repeatCount" required>

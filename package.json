@@ -18,7 +18,7 @@
     "test-local": "mocha -i -f violetStoreSF",
     "test-cover": "nyc ./node_modules/mocha/bin/_mocha && nyc report --reporter=text-lcov > coverage.lcov",
     "test-cover-report": "nyc ./node_modules/mocha/bin/_mocha",
-    "test-ci": "nyc ./node_modules/mocha/bin/_mocha -i -f violetStoreSF && nyc report --reporter=text-lcov > coverage.lcov"
+    "test-ci": "nyc ./node_modules/mocha/bin/_mocha -i -f violetStore && nyc report --reporter=text-lcov > coverage.lcov"
   },
   "repository": {
     "type": "git",

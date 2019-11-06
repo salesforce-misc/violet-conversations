@@ -2,5 +2,6 @@
 npm-debug.log
 .DS_Store
 coverage/*
+coverage.lcov
 attic/*
 .nyc_output

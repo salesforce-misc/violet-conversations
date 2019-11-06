@@ -10,6 +10,8 @@ violet.addInputTypes({
   "stringToRepeat": "phrase",
 });
 
+violet.setCloseRequests(['Close Session']);
+
 var app = {
   oldEnough: (response)=>{
     var age = response.get('age');
@@ -34,10 +36,10 @@ var app = {
 violet.addFlowScript(`
 <app>
   <choice id="launch">
-    <say>Please provide your age for verification</say>
+    <say keepConversationRunning>Please provide your age for verification</say>
     <decision>
       <choice>
-        <expecting>I am [[age]] {years|} old</expecting>
+        <expecting>I am [[age]] {years old|}</expecting>
         <expecting>[[age]]</expecting>
         <check value="app.oldEnough(response)">
           <case value="ageValid">

@@ -36,11 +36,6 @@ module.exports = (violet) => {
     <choice id="cancel">
       <say>Cancelling</say>
     </choice>
-    <!--
-    <choice id="cancel">
-      <say>Cancelling Again</say>
-    </choice>
-    -->
     <choice id="add">
       <expecting>I want to add</expecting>
       <resolve value="app.greetingForAdd(response)"/>
@@ -51,7 +46,7 @@ module.exports = (violet) => {
           <expecting>[[NumOne]] and [[NumTwo]]</expecting>
           <say>The sum of [[NumOne]] and [[NumTwo]] is [[app.add(NumOne, NumTwo)]]</say>
         </choice>
-        <choice expectingId="cancel">
+        <choice inheritExpectings="cancel">
           <say>Canceling Addition</say>
         </choice>
       </decision>
@@ -65,7 +60,7 @@ module.exports = (violet) => {
           <expecting>[[NumOne]] and [[NumTwo]]</expecting>
           <say>Subtracting [[NumTwo]] from [[NumOne]] gives [[app.subtract(NumOne, NumTwo)]]</say>
         </choice>
-        <choice expectingId="cancel">
+        <choice inheritExpectings="cancel">
           <say>Canceling Subtraction</say>
         </choice>
       </decision>
@@ -79,7 +74,7 @@ module.exports = (violet) => {
           <expecting>[[NumOne]] and [[NumTwo]]</expecting>
           <say>Multiplying [[NumOne]] and [[NumTwo]] gives [[app.multiply(NumOne, NumTwo)]]</say>
         </choice>
-        <choice expectingId="cancel">
+        <choice inheritExpectings="cancel">
           <say>Canceling Multiplication</say>
         </choice>
       </decision>
@@ -93,7 +88,7 @@ module.exports = (violet) => {
           <expecting>[[NumOne]] and [[NumTwo]]</expecting>
           <say>Dividing [[NumOne]] by [[NumTwo]] gives [[app.divide(NumOne, NumTwo)]]</say>
         </choice>
-        <choice expectingId="cancel">
+        <choice inheritExpectings="cancel">
           <say>Canceling Division</say>
         </choice>
       </decision>

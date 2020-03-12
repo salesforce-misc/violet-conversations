@@ -48,9 +48,8 @@
     "ws": "^6.0.0"
   },
   "devDependencies": {
-    "codecov": "^3.0.4",
-    "istanbul": "^0.4.5",
+    "codecov": "^3.6.5",
     "mocha": "^6.1.4",
-    "nyc": "^14.1.1"
+    "nyc": "^15.0.0"
   }
 }

@@ -1,7 +1,3 @@
-function clone(o) {
-  return JSON.parse(JSON.stringify(o));
-}
-
 function getSvcPath() {
   var svcPath = location.origin;
   if (location.pathname !== '/') svcPath += location.pathname;
@@ -17,6 +13,22 @@ violetApp.controller('VioletController', function($scope, $http, voiceSvc) {
   $scope.requestAndIntent = null;
   $scope.session = {};
   $scope.intent = null;
+  $scope.locale = 'en-US';
+
+  function createNewRequest(requestType, intentName = null, intentSlots = null) {
+    var tmpl = $scope.templates[requestType];
+    var req = JSON.parse(JSON.stringify(tmpl));
+    req.session.attributes = $scope.session;
+    if (intentName) {
+      req.request.intent.name = intentName;
+      if (!intentSlots)
+        req.request.intent.slots = {};
+      else
+        req.request.intent.slots = intentSlots;
+    }
+    req.request.locale = $scope.locale;
+    return req;
+  }
 
   $scope.changeRequestAndIntent = function() {
     var requestType = '';
@@ -28,16 +40,15 @@ violetApp.controller('VioletController', function($scope, $http, voiceSvc) {
     if (intentNdx == -1) {
       // not an intentRequest
       requestType = $scope.requestAndIntent;
-      $scope.request = clone($scope.templates[requestType]);
-      $scope.request.session.attributes = $scope.session;
+      $scope.request = createNewRequest(requestType);
       return;
     }
     requestType = $scope.requestAndIntent.substr(0, intentNdx);
     var intent = $scope.requestAndIntent.substr(intentNdx+1);
-    $scope.request = clone($scope.templates[requestType]);
-    $scope.request.session.attributes = $scope.session;
-    $scope.request.request.intent.slots = {};
-    $scope.request.request.intent.name = intent;
+    $scope.request = createNewRequest(requestType, intent);
+  }
+  $scope.changeLocale = function() {
+    $scope.request.request.locale = $scope.locale;
   }
 
   // get interactionModel
@@ -137,17 +148,10 @@ violetApp.controller('VioletController', function($scope, $http, voiceSvc) {
 
     if (intentInfo.name === 'LaunchRequest') {
       $scope.requestAndIntent = 'LaunchRequest'; // purely for UI
-      $scope.request = clone($scope.templates[intentInfo.name]);
-      $scope.request.session.attributes = $scope.session;
+      $scope.request = createNewRequest(intentInfo.name);
     } else {
       $scope.requestAndIntent = 'IntentRequest:'+intentInfo.name; // purely for UI
-      $scope.request = clone($scope.templates['IntentRequest']);
-      $scope.request.session.attributes = $scope.session;
-      if (intentInfo.slots)
-        $scope.request.request.intent.slots = intentInfo.slots;
-      else
-        $scope.request.request.intent.slots = {};
-      $scope.request.request.intent.name = intentInfo.name;
+      $scope.request = createNewRequest('IntentRequest', intentInfo.name, intentInfo.slots);
     }
 
     $http.post(getSvcPath(), $scope.request).then(function onSuccess(response) {

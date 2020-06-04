@@ -136,6 +136,15 @@
               </select>
             </div>
 
+            <div id="locale">
+              Locale:
+              <select id="locale" ng-model="locale" ng-change="changeLocale()">
+                <option value="en-US">en-US</option>
+                <option value="en-GB">en-GB</option>
+                <option value="fr-FR">fr-FR</option>
+              </select>
+            </div>
+
             <div id="slots" ng-show="getIntent().slots.length">
               Slot Values: <br>
               <div id="slotvalues" style="margin:5px;border:1px solid #ccc;display:inline-block;">

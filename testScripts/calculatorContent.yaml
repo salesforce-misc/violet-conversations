@@ -1,0 +1,13 @@
+add:
+  - Add two numbers
+fr-FR:
+  description:
+    - Je peux ajouter, soustraire, multiplier ou diviser deux nombres
+  addResp:
+    - La somme de [[NumOne]] et [[NumTwo]] est [[app.add(NumOne, NumTwo)]]
+  subtractResp:
+    - La soustraction de [[NumTwo]] de [[NumOne]] donne [[app.subtract (NumOne, NumTwo)]]]
+  multiplyResp:
+    - La multiplication de [[NumOne]] et [[Num Two]] donne [[app.multiply (NumOne, Num Two)]]]
+  divideResp:
+    - La division de [[NumOne]] par [[NumTwo]] donne [[app.divide(NumOne, NumTwo)]]]

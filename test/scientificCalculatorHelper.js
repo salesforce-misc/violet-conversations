@@ -28,7 +28,7 @@ module.exports = (violet) => {
   <app>
     <choice id="launch">
       <expecting>What can you do</expecting>
-      <say>I can add, subtract, multiply, or divide two numbers</say>
+      <say id="description">I can add, subtract, multiply, or divide two numbers</say>
     </choice>
     <choice id="stop">
       <say>Goodbye</say>
@@ -44,7 +44,7 @@ module.exports = (violet) => {
         <prompt>What would you like me to add</prompt>
         <choice>
           <expecting>[[NumOne]] and [[NumTwo]]</expecting>
-          <say>The sum of [[NumOne]] and [[NumTwo]] is [[app.add(NumOne, NumTwo)]]</say>
+          <say id="addResp">The sum of [[NumOne]] and [[NumTwo]] is [[app.add(NumOne, NumTwo)]]</say>
         </choice>
         <choice inheritExpectings="cancel">
           <say>Canceling Addition</say>
@@ -58,7 +58,7 @@ module.exports = (violet) => {
         <prompt>What two numbers would you like me to subtract</prompt>
         <choice>
           <expecting>[[NumOne]] and [[NumTwo]]</expecting>
-          <say>Subtracting [[NumTwo]] from [[NumOne]] gives [[app.subtract(NumOne, NumTwo)]]</say>
+          <say id="subtractResp">Subtracting [[NumTwo]] from [[NumOne]] gives [[app.subtract(NumOne, NumTwo)]]</say>
         </choice>
         <choice inheritExpectings="cancel">
           <say>Canceling Subtraction</say>
@@ -72,7 +72,7 @@ module.exports = (violet) => {
         <prompt>What two numbers would you like me to multiply</prompt>
         <choice>
           <expecting>[[NumOne]] and [[NumTwo]]</expecting>
-          <say>Multiplying [[NumOne]] and [[NumTwo]] gives [[app.multiply(NumOne, NumTwo)]]</say>
+          <say id="multiplyResp">Multiplying [[NumOne]] and [[NumTwo]] gives [[app.multiply(NumOne, NumTwo)]]</say>
         </choice>
         <choice inheritExpectings="cancel">
           <say>Canceling Multiplication</say>
@@ -86,7 +86,7 @@ module.exports = (violet) => {
         <prompt>What two numbers would you like me to divide</prompt>
         <choice>
           <expecting>[[NumOne]] and [[NumTwo]]</expecting>
-          <say>Dividing [[NumOne]] by [[NumTwo]] gives [[app.divide(NumOne, NumTwo)]]</say>
+          <say id="divideResp">Dividing [[NumOne]] by [[NumTwo]] gives [[app.divide(NumOne, NumTwo)]]</say>
         </choice>
         <choice inheritExpectings="cancel">
           <say>Canceling Division</say>

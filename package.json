@@ -42,7 +42,7 @@
     "express-easy-zip": "^1.1.4",
     "js-yaml": "^3.13.1",
     "request": "^2.88.0",
-    "request-promise": "^4.2.1",
+    "request-promise": "^4.2.6",
     "safe-eval": "^0.4.1",
     "uuid": "^3.3.2",
     "ws": "^6.0.0"
